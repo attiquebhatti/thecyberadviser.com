@@ -5,6 +5,12 @@ export const metadata: Metadata = {
   title: 'Portfolio | The Cyber Adviser',
   description:
     'Selected security transformation projects spanning Prisma Access, Prisma SD-WAN, Cortex XDR, XSOAR, XSIAM, and next-generation firewall implementations.',
+  openGraph: {
+    title: 'Portfolio | The Cyber Adviser',
+    description:
+      'Selected security transformation projects spanning Prisma Access, Prisma SD-WAN, Cortex XDR, XSOAR, XSIAM, and next-generation firewall implementations.',
+    type: 'website',
+  },
 };
 
 export default function PortfolioLayout({
