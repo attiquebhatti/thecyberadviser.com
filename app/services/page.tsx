@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 const services = [
   {
     icon: Network,
-    title: 'SASE & Prisma Access Advisory',
+    title: 'SASE & Prisma Access Consultation',
     description:
       'Strategic guidance for Secure Access Service Edge transformation, with deep expertise in Palo Alto Networks Prisma Access. From initial architecture to operational optimization, I ensure SASE deployments deliver on their transformational promise.',
     outcomes: [
