@@ -1,7 +1,19 @@
 import { Metadata } from 'next';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
-import { Shield, Network, Cloud, Lock, TriangleAlert as AlertTriangle, Users, ArrowRight, CircleCheck as CheckCircle2, Layers, GraduationCap, Workflow } from 'lucide-react';
+import {
+  Shield,
+  Network,
+  Cloud,
+  Lock,
+  TriangleAlert as AlertTriangle,
+  Users,
+  ArrowRight,
+  CircleCheck as CheckCircle2,
+  Layers,
+  GraduationCap,
+  Workflow,
+} from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Services | The Cyber Adviser',
@@ -163,55 +175,60 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <Section className="pt-28 pb-14">
+      <Section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12">
         <SectionHeader
           eyebrow="Services"
           title="Strategic Security Expertise"
           description="Comprehensive advisory services spanning architecture, transformation, and executive alignment for enterprises navigating complex security challenges."
+          className="max-w-4xl"
         />
       </Section>
 
-      <Section className="pt-0">
-        <div className="space-y-5">
+      <Section className="pt-0 pb-12 md:pb-14 lg:pb-16">
+        <div className="space-y-4 md:space-y-5">
           {services.map((service) => (
             <div
               key={service.title}
               className="group relative rounded-2xl transition-all duration-500"
             >
-              <div className="absolute inset-0 rounded-2xl border border-white/[0.04] group-hover:border-white/[0.08] transition-colors duration-500" />
+              <div className="absolute inset-0 rounded-2xl border border-white/[0.04] transition-colors duration-500 group-hover:border-white/[0.08]" />
 
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
               </div>
 
-              <div className="relative p-7 md:p-10">
-                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+              <div className="relative p-6 md:p-8 lg:p-10">
+                <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
                   <div>
-                    <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
-                      <service.icon className="w-7 h-7" />
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 md:h-14 md:w-14">
+                      <service.icon className="h-6 w-6 md:h-7 md:w-7" />
                     </div>
-                    <h3 className="text-2xl font-semibold text-white mb-5">
+
+                    <h3 className="mb-4 text-2xl font-semibold text-white">
                       {service.title}
                     </h3>
-                    <p className="text-slate-400 leading-relaxed text-lg">
+
+                    <p className="text-base leading-relaxed text-slate-400 md:text-lg">
                       {service.description}
                     </p>
-                    <div className="mt-8">
+
+                    <div className="mt-6">
                       <CTAButton href="/contact" variant="ghost" showArrow>
                         Discuss This Service
                       </CTAButton>
                     </div>
                   </div>
 
-                  <div className="lg:pt-4">
-                    <h4 className="text-xs font-semibold text-amber-500 uppercase tracking-[0.15em] mb-5">
+                  <div className="lg:pt-2">
+                    <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-amber-500">
                       Key Outcomes
                     </h4>
-                    <ul className="space-y-4">
+
+                    <ul className="space-y-3">
                       {service.outcomes.map((outcome) => (
                         <li key={outcome} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-md bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-amber-500" />
+                          <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-amber-500" />
                           </div>
                           <span className="text-slate-300">{outcome}</span>
                         </li>
@@ -225,17 +242,18 @@ export default function ServicesPage() {
         </div>
       </Section>
 
-      <Section className="relative">
+      <Section className="relative py-12 md:py-14 lg:py-16">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-obsidian-900/20 to-transparent" />
 
-        <div className="relative grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
             <SectionHeader
               eyebrow="Engagement Model"
               title="How We Work Together"
               align="left"
             />
-            <div className="mt-8 space-y-5 text-lg text-slate-400 leading-relaxed">
+
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-slate-400 md:text-lg">
               <p>
                 Every engagement begins with understanding your organization&apos;s
                 unique context, challenges, and objectives. From there, I develop
@@ -250,27 +268,40 @@ export default function ServicesPage() {
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[
-              { step: 1, title: 'Discovery', desc: 'Understand your environment, constraints, and transformation objectives.' },
-              { step: 2, title: 'Strategy', desc: 'Develop actionable recommendations aligned with business objectives.' },
-              { step: 3, title: 'Execution', desc: 'Guide implementation with hands-on expertise and stakeholder alignment.' },
+              {
+                step: 1,
+                title: 'Discovery',
+                desc: 'Understand your environment, constraints, and transformation objectives.',
+              },
+              {
+                step: 2,
+                title: 'Strategy',
+                desc: 'Develop actionable recommendations aligned with business objectives.',
+              },
+              {
+                step: 3,
+                title: 'Execution',
+                desc: 'Guide implementation with hands-on expertise and stakeholder alignment.',
+              },
             ].map((item, index) => (
               <div key={item.step}>
-                <div className="p-6 rounded-xl border border-white/[0.04] bg-white/[0.01]">
-                  <div className="flex items-center gap-4 mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 font-semibold">
+                <div className="rounded-xl border border-white/[0.04] bg-white/[0.01] p-5 md:p-6">
+                  <div className="mb-3 flex items-center gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 font-semibold text-amber-500">
                       {item.step}
                     </div>
-                    <h4 className="font-semibold text-white text-lg">{item.title}</h4>
+                    <h4 className="text-lg font-semibold text-white">
+                      {item.title}
+                    </h4>
                   </div>
-                  <p className="text-slate-400 pl-14">
-                    {item.desc}
-                  </p>
+                  <p className="pl-14 text-slate-400">{item.desc}</p>
                 </div>
+
                 {index < 2 && (
-                  <div className="flex items-center justify-center py-2">
-                    <ArrowRight className="w-5 h-5 text-slate-600 rotate-90" />
+                  <div className="flex items-center justify-center py-1.5">
+                    <ArrowRight className="h-5 w-5 rotate-90 text-slate-600" />
                   </div>
                 )}
               </div>
@@ -279,21 +310,24 @@ export default function ServicesPage() {
         </div>
       </Section>
 
-      <Section className="relative overflow-hidden">
+      <Section className="relative overflow-hidden py-14 md:py-16 lg:py-18">
         <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-radial from-amber-500/[0.06] via-transparent to-transparent opacity-60" />
+          <div className="absolute left-1/2 top-1/2 h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-gradient-radial from-amber-500/[0.06] via-transparent to-transparent opacity-60" />
         </div>
 
-        <div className="relative max-w-3xl mx-auto text-center">
-          <p className="text-amber-500 text-sm font-semibold uppercase tracking-[0.2em] mb-5">
+        <div className="relative mx-auto max-w-3xl text-center">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
             Get Started
           </p>
+
           <h2 className="text-white">Ready to Transform Your Security Posture?</h2>
-          <p className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed">
+
+          <p className="mt-5 text-lg leading-relaxed text-slate-400 md:text-xl">
             Schedule a consultation to discuss your security challenges and explore
             how strategic advisory can accelerate your transformation.
           </p>
-          <div className="mt-10">
+
+          <div className="mt-8">
             <CTAButton href="/contact" variant="primary" size="lg">
               Schedule Consultation
             </CTAButton>
