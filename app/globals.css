@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 96% 3%;
+    --foreground: 0 0% 98%;
+    --card: 210 100% 20%;
+    --card-foreground: 0 0% 98%;
+    --popover: 210 100% 20%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 210 96% 3%;
+    --secondary: 210 100% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 100% 20%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 45 100% 50%;
+    --accent-foreground: 210 96% 3%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 100% 20%;
+    --input: 210 100% 20%;
+    --ring: 45 100% 50%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-white;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] font-bold;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl leading-[1.15] font-semibold;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl leading-tight font-semibold;
+    letter-spacing: -0.01em;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl leading-snug font-medium;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  ::selection {
+    @apply bg-amber-500/30 text-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-white via-white to-slate-400 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-gold {
+    @apply bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent;
+  }
+
+  .card-elevated {
+    @apply bg-gradient-to-b from-obsidian-900/80 to-obsidian-900/40;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  }
+
+  .card-premium {
+    @apply relative overflow-hidden;
+    background: linear-gradient(180deg, rgba(26, 27, 35, 0.9) 0%, rgba(13, 14, 18, 0.95) 100%);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 4px 6px -1px rgba(0, 0, 0, 0.2),
+      0 12px 24px -4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .card-premium::before {
+    content: "";
+    @apply absolute inset-0 rounded-2xl pointer-events-none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+  }
+
+  .glow-gold {
+    box-shadow:
+      0 0 20px rgba(245, 158, 11, 0.15),
+      0 0 40px rgba(245, 158, 11, 0.1),
+      0 0 60px rgba(245, 158, 11, 0.05);
+  }
+
+  .border-glow {
+    @apply relative;
+  }
+
+  .border-glow::after {
+    content: "";
+    @apply absolute inset-0 rounded-2xl pointer-events-none opacity-0 transition-opacity duration-500;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+  }
+
+  .border-glow:hover::after {
+    @apply opacity-100;
+  }
+
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+}
+
+@layer components {
+  .section-spacing {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-spacing-sm {
+    @apply py-12 md:py-14 lg:py-16;
+  }
+
+  .container-narrow {
+    @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply text-amber-500 text-sm font-semibold uppercase tracking-[0.2em] mb-4;
+  }
+
+  .body-large {
+    @apply text-lg md:text-xl text-slate-400 leading-relaxed;
+  }
+
+  .body-default {
+    @apply text-base text-slate-400 leading-relaxed;
+  }
+
+  .body-small {
+    @apply text-sm text-slate-500 leading-relaxed;
+  }
+}
