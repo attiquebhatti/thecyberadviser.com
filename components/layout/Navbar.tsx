@@ -46,13 +46,27 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           <Link
             href="/"
-            className="group flex items-center gap-3 text-white font-semibold text-lg hover:opacity-90 transition-all duration-300"
+            className="group flex items-center gap-3 text-white hover:opacity-90 transition-all duration-300"
           >
-            <div className="relative w-9 h-9 flex items-center justify-center">
+            <div className="relative w-9 h-9 flex items-center justify-center flex-shrink-0">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-lg" />
               <Shield className="relative w-5 h-5 text-amber-500" />
             </div>
-            <span className="tracking-tight">The Cyber Adviser</span>
+
+            <div className="hidden sm:flex flex-col leading-tight">
+              <span className="tracking-tight font-semibold text-lg text-white">
+                The Cyber Adviser
+              </span>
+              <span className="text-[11px] md:text-xs text-slate-400 mt-0.5">
+                Attique Bhatti - Security Consultant
+              </span>
+            </div>
+
+            <div className="sm:hidden">
+              <span className="tracking-tight font-semibold text-lg text-white">
+                The Cyber Adviser
+              </span>
+            </div>
           </Link>
 
           <div className="hidden lg:flex items-center gap-1">
@@ -82,7 +96,9 @@ export function Navbar() {
             >
               <span className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-600" />
               <span className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative text-obsidian-950">Schedule Consultation</span>
+              <span className="relative text-obsidian-950">
+                Schedule Consultation
+              </span>
             </Link>
           </div>
 
@@ -102,6 +118,12 @@ export function Navbar() {
           )}
         >
           <div className="flex flex-col gap-1 pt-4 border-t border-white/5">
+            <div className="px-4 pb-3">
+              <p className="text-xs text-slate-400">
+                Attique Bhatti - Security Consultant
+              </p>
+            </div>
+
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -116,6 +138,7 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
+
             <Link
               href="/contact"
               className="mt-4 inline-flex items-center justify-center px-6 py-3.5 text-sm font-semibold text-obsidian-950 bg-gradient-to-r from-amber-500 to-amber-600 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all duration-300"
