@@ -15,8 +15,8 @@ export function HeroSection() {
     <section className="relative overflow-hidden pt-24 pb-12 md:pt-28 md:pb-14 lg:pt-32 lg:pb-16">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[#000814]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[700px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(255,195,0,0.08),transparent_60%)]" />
-        <div className="absolute top-1/4 right-0 h-[600px] w-[600px] bg-[radial-gradient(circle_at_center,rgba(0,53,102,0.18),transparent_60%)]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[700px] w-[1400px] bg-gradient-radial from-[#FFC300]/[0.05] via-transparent to-transparent" />
+        <div className="absolute top-1/4 right-0 h-[600px] w-[600px] bg-gradient-radial from-[#003566]/[0.16] via-transparent to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
       </div>
 
@@ -24,7 +24,7 @@ export function HeroSection() {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="max-w-4xl">
             <div className="mb-6 inline-flex items-center gap-3">
-              <div className="h-px w-12 bg-gradient-to-r from-[#FFC300] to-transparent" />
+              <div className="h-px w-12 bg-gradient-to-r from-[#FFC300] to-[#FFC300]/0" />
               <span className="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFC300]">
                 Cybersecurity Advisory
               </span>
@@ -33,8 +33,10 @@ export function HeroSection() {
             <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl">
               Architecting
               <br />
-              <span className="bg-gradient-to-r from-[#FFD60A] via-[#FFC300] to-[#e59b00] bg-clip-text text-transparent">
-                Enterprise Security
+              <span className="relative inline-block">
+                <span className="relative z-10 bg-gradient-to-r from-[#FFD60A] via-[#FFC300] to-[#e59b00] bg-clip-text text-transparent">
+                  Enterprise Security
+                </span>
               </span>
               <br />
               <span className="text-slate-400">for the Modern Era</span>
@@ -61,7 +63,7 @@ export function HeroSection() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#FFC300]/10 via-transparent to-[#003566]/20 blur-2xl" />
+            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#FFC300]/8 via-transparent to-[#003566]/20 blur-2xl" />
 
             <div className="relative overflow-hidden rounded-[1.75rem] border border-[#003566]/70 bg-[#001D3D]/70 p-3 shadow-2xl shadow-black/30">
               <div className="overflow-hidden rounded-[1.25rem] border border-[#003566]/60 bg-[#000814]">
