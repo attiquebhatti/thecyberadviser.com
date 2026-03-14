@@ -71,7 +71,7 @@ export function Navbar() {
                   The Cyber Adviser
                 </span>
                 <span className="hidden sm:block text-[11px] md:text-xs text-slate-400 mt-0.5 truncate">
-                  Attique Bhatti - Enterprise Security Consultant
+                  Attique Bhatti - Security Consultant
                 </span>
               </div>
             </Link>
@@ -84,7 +84,7 @@ export function Navbar() {
                   className={cn(
                     'relative px-4 py-2 text-sm font-medium transition-all duration-300',
                     pathname === item.href
-                      ? 'text-white'
+                      ? 'text-amber-400'
                       : 'text-slate-400 hover:text-white'
                   )}
                 >
@@ -146,7 +146,7 @@ export function Navbar() {
           <div className="px-4 pb-6 pt-4">
             <div className="pb-4 border-b border-white/[0.05]">
               <p className="text-xs text-slate-400">
-                Attique Bhatti - Enterprise Security Consultant
+                Attique Bhatti - Security Consultant
               </p>
             </div>
 
@@ -158,7 +158,7 @@ export function Navbar() {
                   className={cn(
                     'px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-300',
                     pathname === item.href
-                      ? 'text-white bg-white/[0.06]'
+                      ? 'text-amber-400 bg-amber-500/10'
                       : 'text-slate-300 hover:text-white hover:bg-white/[0.03]'
                   )}
                 >
