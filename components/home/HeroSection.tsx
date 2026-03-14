@@ -84,14 +84,17 @@ export function HeroSection() {
                   </div>
                 </div>
 
-                <div className="relative aspect-[4/3] bg-[#000814]">
-                  <Image
-                    src="/images/home-architecture.jpg"
-                    alt="Enterprise security architecture diagram"
-                    fill
-                    priority
-                    className="object-cover"
-                  />
+                <div className="relative aspect-[4/3] bg-[#000814] p-4 md:p-5">
+                  <div className="relative h-full w-full overflow-hidden rounded-xl border border-[#003566]/50 bg-[#001D3D]/40">
+                    <Image
+                      src="/images/home-architecture.jpg"
+                      alt="Enterprise security architecture diagram"
+                      fill
+                      priority
+                      className="object-contain object-center"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#000814]/20 via-transparent to-transparent" />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 border-t border-[#003566]/60 bg-[#001D3D]/70 px-4 py-3">
@@ -120,7 +123,7 @@ export function HeroSection() {
         </div>
 
         <div className="mt-12 lg:mt-14">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 md:gap-5">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-5">
             {capabilityCards.map((item) => (
               <div key={item.label} className="group relative">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -128,7 +131,9 @@ export function HeroSection() {
                   <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFC300]/10">
                     <item.icon className="h-5 w-5 text-[#FFC300]" />
                   </div>
-                  <div className="mb-1 text-lg font-semibold text-white">{item.label}</div>
+                  <div className="mb-1 text-lg font-semibold text-white">
+                    {item.label}
+                  </div>
                   <div className="text-sm text-slate-500">{item.desc}</div>
                 </div>
               </div>
