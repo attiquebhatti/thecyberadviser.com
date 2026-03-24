@@ -1,7 +1,9 @@
 {
   "/page": "app/page.js",
-  "/about/page": "app/about/page.js",
-  "/knowledge-base/page": "app/knowledge-base/page.js",
+  "/tools/page": "app/tools/page.js",
   "/services/page": "app/services/page.js",
+  "/about/page": "app/about/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/knowledge-base/page": "app/knowledge-base/page.js",
   "/portfolio/page": "app/portfolio/page.js"
 }
