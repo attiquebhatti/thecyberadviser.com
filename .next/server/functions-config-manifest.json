@@ -2,8 +2,8 @@
   "version": 1,
   "functions": {
     "/about": {},
-    "/knowledge-base/[slug]": {},
     "/contact": {},
+    "/knowledge-base/[slug]": {},
     "/services": {},
     "/tools": {}
   }

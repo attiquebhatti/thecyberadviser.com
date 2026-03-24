@@ -44,7 +44,7 @@ export default function ContactForm() {
       "- Share available slots for a 30-min discovery call",
     ].join("\n");
 
-    const mailto = `mailto:attique@ipcare.ae?subject=${encodeURIComponent(
+    const mailto = `mailto:attique@thecyberadviser.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
 

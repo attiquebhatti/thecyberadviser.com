@@ -60,10 +60,10 @@ export default function ContactPage() {
                   Email
                 </p>
                 <a
-                  href="mailto:attique@ipcare.ae"
+                  href="mailto:attique@thecyberadviser.com"
                   className="mt-2 block text-2xl md:text-3xl font-bold text-white hover:text-[#FFC300] transition"
                 >
-                  attique@ipcare.ae
+                  attique@thecyberadviser.com
                 </a>
               </div>
 
