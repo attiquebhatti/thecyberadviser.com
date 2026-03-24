@@ -16,15 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/about/page.js"
     ],
-    "/knowledge-base/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/knowledge-base/page.js"
-    ],
     "/services/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/services/page.js"
+    ],
+    "/knowledge-base/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/knowledge-base/page.js"
     ],
     "/portfolio/layout": [
       "static/chunks/webpack.js",
