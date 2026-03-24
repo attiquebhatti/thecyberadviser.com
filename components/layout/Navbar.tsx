@@ -91,7 +91,7 @@ export function Navbar() {
                       <button
                         className={cn(
                           'relative px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1.5',
-                          pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+                          pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
                             ? 'text-amber-400'
                             : 'text-slate-400 group-hover/nav:text-amber-400'
                         )}
@@ -101,7 +101,7 @@ export function Navbar() {
                         <span
                           className={cn(
                             'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-300',
-                            (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
+                            pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
                           )}
                         />
                       </button>
