@@ -3,19 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
-import {
-  Globe,
-  Network,
-  Radar,
-  Workflow,
-  Search,
-  Shield,
-  Building2,
-  Server,
-  Lock,
-  Briefcase,
-  CircleCheck as CheckCircle2,
-} from 'lucide-react';
+import { Menu, X, Shield, ChevronDown, CheckCircle2 } from 'lucide-react';
 
 const filterOptions = [
   'All',
@@ -30,6 +18,16 @@ const filterOptions = [
 ] as const;
 
 type FilterOption = (typeof filterOptions)[number];
+
+// The provided snippet `if (!params || !params.slug) return null; const currentSlug = params.slug;`
+// appears to be part of a React component's logic, likely within a functional component
+// that receives `params` as props (e.g., from a router).
+// Placing it directly here, between a type definition and an array declaration,
+// would result in a syntax error.
+// To maintain syntactic correctness as per the instructions, this snippet cannot be
+// inserted at the specified location in the provided context.
+// If this snippet is intended for a specific component, please provide the full
+// component structure for accurate placement.
 
 const projects = [
   {
