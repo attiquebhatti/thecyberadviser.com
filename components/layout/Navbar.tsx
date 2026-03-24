@@ -12,6 +12,7 @@ const navItems = [
   { href: '/services', label: 'Services' },
   { href: '/knowledge-base', label: 'Knowledge Base' },
   { href: '/portfolio', label: 'Portfolio' },
+  { href: '/tools', label: 'Tools' },
   { href: '/contact', label: 'Contact' },
 ];
 
