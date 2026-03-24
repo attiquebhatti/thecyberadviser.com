@@ -1,10 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
 import {
-  Globe,
+  Globe as GlobeIcon,
   Network,
   Radar,
   Workflow,
@@ -33,7 +34,7 @@ type FilterOption = (typeof filterOptions)[number];
 
 const projects = [
   {
-    icon: Globe,
+    icon: GlobeIcon,
     category: 'Prisma Access',
     title: 'Global Prisma Access Rollout for Distributed Workforce',
     summary:
@@ -46,7 +47,7 @@ const projects = [
     ],
   },
   {
-    icon: Globe,
+    icon: GlobeIcon,
     category: 'Prisma Access',
     title: 'Legacy VPN to Prisma Access Migration',
     summary:
@@ -246,55 +247,67 @@ export default function PortfolioPage() {
   }, [activeFilter]);
 
   return (
-    <>
-      <Section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12">
+    <Section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <SectionHeader
           eyebrow="Portfolio"
           title="Selected Security Transformation Projects"
           description="A focused portfolio of implementation and advisory engagements across Prisma Access, Prisma SD-WAN, Cortex operations platforms, and enterprise firewall modernization."
           className="max-w-4xl"
         />
+      </motion.div>
 
-        <div className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-5">
-          {highlights.map((item) => (
-            <div
-              key={item}
-              className="rounded-xl border border-white/[0.05] bg-white/[0.02] px-4 py-3"
-            >
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-amber-500" />
-                </div>
-                <p className="text-sm leading-relaxed text-slate-300">{item}</p>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-5"
+      >
+        {highlights.map((item, index) => (
+          <motion.div
+            key={item}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 * index }}
+            className="rounded-xl border border-white/[0.05] bg-white/[0.02] px-4 py-3"
+          >
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
+                <CheckCircle2 className="h-3.5 w-3.5 text-amber-500" />
               </div>
+              <p className="text-sm leading-relaxed text-slate-300">{item}</p>
             </div>
-          ))}
-        </div>
+          </motion.div>
+        ))}
+      </motion.div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          {filterOptions.map((filter) => {
-            const isActive = activeFilter === filter;
+      <div className="mt-8 flex flex-wrap gap-3">
+        {filterOptions.map((filter) => {
+          const isActive = activeFilter === filter;
 
-            return (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActiveFilter(filter)}
-                className={[
-                  'rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300',
-                  isActive
-                    ? 'border-amber-400/40 bg-amber-500/10 text-amber-400'
-                    : 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:border-white/[0.14] hover:text-white',
-                ].join(' ')}
-              >
-                {filter}
-              </button>
-            );
-          })}
-        </div>
-      </Section>
+          return (
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setActiveFilter(filter)}
+              className={[
+                'rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300',
+                isActive
+                  ? 'border-amber-400/40 bg-amber-500/10 text-amber-400'
+                  : 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:border-white/[0.14] hover:text-white',
+              ].join(' ')}
+            >
+              {filter}
+            </button>
+          );
+        })}
+      </div>
 
-      <Section className="pt-0 pb-12 md:pb-14 lg:pb-16">
+      <div className="mt-12">
         <div className="mb-6 flex items-center justify-between gap-4">
           <p className="text-sm text-slate-400">
             Showing{' '}
@@ -302,41 +315,28 @@ export default function PortfolioPage() {
               {filteredProjects.length}
             </span>{' '}
             project{filteredProjects.length === 1 ? '' : 's'}
-            {activeFilter !== 'All' && (
-              <>
-                {' '}
-                in <span className="font-semibold text-amber-400">{activeFilter}</span>
-              </>
-            )}
           </p>
-
-          {activeFilter !== 'All' && (
-            <button
-              type="button"
-              onClick={() => setActiveFilter('All')}
-              className="text-sm font-medium text-amber-400 transition-colors hover:text-amber-300"
-            >
-              Clear filter
-            </button>
-          )}
         </div>
 
-        <div className="grid gap-4 md:gap-5 lg:grid-cols-2">
-          {filteredProjects.map((project, index) => (
-            <div
-              key={project.title}
-              className="group relative rounded-2xl transition-all duration-500"
-            >
-              <div className="absolute inset-0 rounded-2xl border border-white/[0.04] transition-colors duration-500 group-hover:border-white/[0.08]" />
-              <div className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-              </div>
-
-              <div className="relative p-6 md:p-7 lg:p-8">
+        <motion.div 
+          layout
+          className="grid gap-4 md:gap-6 lg:grid-cols-2"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="group relative rounded-2xl border border-white/[0.04] bg-white/[0.01] p-6 transition-all duration-500 hover:border-white/[0.08] hover:bg-white/[0.02] md:p-8"
+              >
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-500">
-                      Project {String(index + 1).padStart(2, '0')} // {project.category}
+                      {project.category}
                     </p>
                     <h3 className="text-2xl font-semibold text-white">
                       {project.title}
@@ -348,66 +348,30 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <p className="text-base leading-relaxed text-slate-400 md:text-lg">
+                <p className="text-base leading-relaxed text-slate-400">
                   {project.summary}
                 </p>
 
                 <div className="mt-6">
                   <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-amber-500">
-                    Project Scope
+                    Key Outcomes
                   </h4>
-
                   <ul className="space-y-3">
                     {project.scope.map((item) => (
                       <li key={item} className="flex items-start gap-3">
-                        <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-amber-500" />
+                        <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
+                          <CheckCircle2 className="h-3 w-3 text-amber-500" />
                         </div>
-                        <span className="text-slate-300">{item}</span>
+                        <span className="text-sm text-slate-300">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredProjects.length === 0 && (
-          <div className="rounded-2xl border border-white/[0.05] bg-white/[0.02] px-6 py-10 text-center">
-            <p className="text-slate-300">
-              No projects found for this category yet.
-            </p>
-          </div>
-        )}
-      </Section>
-
-      <Section className="relative py-14 md:py-16 lg:py-[4.5rem]">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-obsidian-900/20 to-transparent" />
-
-        <div className="relative mx-auto max-w-3xl text-center">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">
-            Let&apos;s Talk
-          </p>
-
-          <h2 className="text-white">Need a Similar Security Transformation?</h2>
-
-          <p className="mt-5 text-lg leading-relaxed text-slate-400 md:text-xl">
-            Whether you are planning a Prisma Access deployment, a Cortex-driven
-            SOC modernization, or a firewall refresh across Palo Alto Networks,
-            FortiGate, or Check Point, I can help shape the strategy and execution.
-          </p>
-
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <CTAButton href="/contact" variant="primary" size="lg">
-              Schedule Consultation
-            </CTAButton>
-            <CTAButton href="/services" variant="ghost" showArrow>
-              Explore Services
-            </CTAButton>
-          </div>
-        </div>
-      </Section>
-    </>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </Section>
   );
 }

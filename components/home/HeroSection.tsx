@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { motion, Variants } from 'framer-motion';
 import { CTAButton } from '@/components/shared/CTAButton';
 import { Shield, Lock, Cloud, Network, Workflow } from 'lucide-react';
 
@@ -9,6 +12,26 @@ const capabilityCards = [
   { icon: Lock, label: 'Executive', desc: 'Advisory' },
   { icon: Workflow, label: 'Security Automation', desc: 'XSOAR & XSIAM' },
 ];
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
 
 export function HeroSection() {
   return (
@@ -22,15 +45,20 @@ export function HeroSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="max-w-4xl">
-            <div className="mb-6 inline-flex items-center gap-3">
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="max-w-4xl"
+          >
+            <motion.div variants={itemVariants} className="mb-6 inline-flex items-center gap-3">
               <div className="h-px w-12 bg-gradient-to-r from-[#FFC300] to-[#FFC300]/0" />
               <span className="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFC300]">
                 Cybersecurity Advisory
               </span>
-            </div>
+            </motion.div>
 
-            <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl">
+            <motion.h1 variants={itemVariants} className="text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl">
               Architecting
               <br />
               <span className="relative inline-block">
@@ -40,14 +68,14 @@ export function HeroSection() {
               </span>
               <br />
               <span className="text-slate-400">for the Modern Era</span>
-            </h1>
+            </motion.h1>
 
-            <p className="mt-6 max-w-2xl text-xl font-light leading-relaxed text-slate-400 md:text-2xl">
+            <motion.p variants={itemVariants} className="mt-6 max-w-2xl text-xl font-light leading-relaxed text-slate-400 md:text-2xl">
               Strategic advisory for global enterprises navigating Zero Trust
               transformation, SASE architecture, and security modernization at scale.
-            </p>
+            </motion.p>
 
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+            <motion.div variants={itemVariants} className="mt-8 flex flex-col gap-4 sm:flex-row">
               <CTAButton href="/contact" variant="primary" size="lg">
                 Schedule Consultation
               </CTAButton>
@@ -59,10 +87,15 @@ export function HeroSection() {
               >
                 Explore Insights
               </CTAButton>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="relative">
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+            className="relative"
+          >
             <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#FFC300]/8 via-transparent to-[#003566]/20 blur-2xl" />
 
             <div className="relative overflow-hidden rounded-[1.75rem] border border-[#003566]/70 bg-[#001D3D]/70 p-3 shadow-2xl shadow-black/30">
@@ -119,13 +152,19 @@ export function HeroSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mt-12 lg:mt-14">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={containerVariants}
+          className="mt-12 lg:mt-14"
+        >
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-5">
             {capabilityCards.map((item) => (
-              <div key={item.label} className="group relative">
+              <motion.div key={item.label} variants={itemVariants} className="group relative">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="relative rounded-2xl border border-white/[0.04] p-5 transition-colors duration-500 group-hover:border-white/[0.08] md:p-6">
                   <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFC300]/10">
@@ -136,10 +175,10 @@ export function HeroSection() {
                   </div>
                   <div className="text-sm text-slate-500">{item.desc}</div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
