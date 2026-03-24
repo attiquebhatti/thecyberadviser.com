@@ -81,13 +81,20 @@ const articleContent: Record<string, React.ReactNode> = {
   )
 };
 
+export async function generateStaticParams() {
+  return [
+    { slug: 'hybrid-cloud-connectivity' },
+    { slug: 'prisma-split-tunneling' },
+    { slug: 'phishing-triage-playbook' },
+  ];
+}
+
 // ==========================================
 // PAGE COMPONENT
 // ==========================================
-export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+export default function ArticlePage({ params }: { params: { slug: string } }) {
   
-  const resolvedParams = await params;
-  const currentSlug = resolvedParams.slug;
+  const currentSlug = params.slug;
   const formattedTitle = currentSlug.replace(/-/g, ' ').toUpperCase();
   
   const hasContent = articleContent[currentSlug] !== undefined;

@@ -1,0 +1,11 @@
+{
+  "/_not-found": "/_not-found",
+  "/page": "/",
+  "/knowledge-base/page": "/knowledge-base",
+  "/contact/page": "/contact",
+  "/about/page": "/about",
+  "/tools/page": "/tools",
+  "/services/page": "/services",
+  "/knowledge-base/[slug]/page": "/knowledge-base/[slug]",
+  "/portfolio/page": "/portfolio"
+}
