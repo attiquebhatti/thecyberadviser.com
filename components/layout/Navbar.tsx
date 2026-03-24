@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Shield, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -12,7 +12,13 @@ const navItems = [
   { href: '/services', label: 'Services' },
   { href: '/knowledge-base', label: 'Knowledge Base' },
   { href: '/portfolio', label: 'Portfolio' },
-  { href: '/tools', label: 'Tools' },
+  { 
+    href: '/tools', 
+    label: 'Tools',
+    children: [
+      { href: '/tools', label: 'Unified Migration', description: 'Firewall config converter' }
+    ]
+  },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -79,25 +85,70 @@ export function Navbar() {
 
             <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'relative px-4 py-2 text-sm font-medium transition-all duration-300',
-                    pathname === item.href
-                      ? 'text-amber-400'
-                      : 'text-slate-400 hover:text-amber-400'
-                  )}
-                >
-                  {item.label}
-                  {pathname === item.href && (
-                    <span
+                <div key={item.href} className="relative group/nav">
+                  {item.children ? (
+                    <>
+                      <button
+                        className={cn(
+                          'relative px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1.5',
+                          pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
+                            ? 'text-amber-400'
+                            : 'text-slate-400 group-hover/nav:text-amber-400'
+                        )}
+                      >
+                        {item.label}
+                        <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover/nav:opacity-100 transition-all duration-300 group-hover/nav:rotate-180" />
+                        <span
+                          className={cn(
+                            'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-300',
+                            pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
+                          )}
+                        />
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
+                        <div className="w-64 bg-obsidian-900/95 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-2xl p-2 overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="relative flex flex-col gap-0.5 px-4 py-3 rounded-lg hover:bg-white/[0.03] transition-colors group/item"
+                            >
+                              <span className="text-sm font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">
+                                {child.label}
+                              </span>
+                              {child.description && (
+                                <span className="text-[11px] text-slate-500 group-hover/item:text-slate-400 transition-colors">
+                                  {child.description}
+                                </span>
+                              )}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
                       className={cn(
-                        'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-300'
+                        'relative px-4 py-2 text-sm font-medium transition-all duration-300',
+                        pathname === item.href
+                          ? 'text-amber-400'
+                          : 'text-slate-400 hover:text-amber-400'
                       )}
-                    />
+                    >
+                      {item.label}
+                      <span
+                        className={cn(
+                          'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-300',
+                          pathname === item.href ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+                        )}
+                      />
+                    </Link>
                   )}
-                </Link>
+                </div>
               ))}
             </div>
 
@@ -155,18 +206,45 @@ export function Navbar() {
 
             <div className="mt-4 flex flex-col gap-2">
               {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-300',
-                    pathname === item.href
-                      ? 'text-amber-400 bg-amber-500/10'
-                      : 'text-slate-300 hover:text-amber-400 hover:bg-white/[0.03]'
+                <div key={item.href}>
+                  {item.children ? (
+                    <div className="flex flex-col">
+                      <div className="px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-2">
+                        {item.label}
+                      </div>
+                      <div className="flex flex-col gap-1 ml-2">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setIsOpen(false)}
+                            className={cn(
+                              'px-4 py-3 text-base font-medium rounded-xl transition-all duration-300',
+                              pathname === child.href
+                                ? 'text-amber-400 bg-amber-500/10'
+                                : 'text-slate-300 hover:text-amber-400 hover:bg-white/[0.03]'
+                            )}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        'px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-300',
+                        pathname === item.href
+                          ? 'text-amber-400 bg-amber-500/10'
+                          : 'text-slate-300 hover:text-amber-400 hover:bg-white/[0.03]'
+                      )}
+                    >
+                      {item.label}
+                    </Link>
                   )}
-                >
-                  {item.label}
-                </Link>
+                </div>
               ))}
 
               <Link

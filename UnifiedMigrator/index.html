@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UnifiedMigrator V2.1</title>
+    <!-- Use a tech-focused font -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <div id="app" class="dashboard-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--cyan-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="brand-icon"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <div>
+            <h1>UnifiedMigrator</h1>
+            <span class="version">V2.1 - PLATFORM</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-group">
+             <span class="nav-label">CORE</span>
+             <a href="#" class="nav-item active" data-view="view-dashboard">
+               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+               Dashboard
+             </a>
+             <a href="#" class="nav-item" data-view="view-jobs">
+               <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                 <span style="display: flex; align-items: center; gap: 0.75rem;">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                   Migration Jobs
+                 </span>
+                 <span class="nav-badge">4</span>
+               </div>
+             </a>
+             <a href="#" class="nav-item" data-view="view-new-migration">
+               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+               New Migration
+             </a>
+          </div>
+
+          <div class="nav-group">
+            <span class="nav-label">ANALYSIS</span>
+            <a href="#" class="nav-item" data-view="view-report">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              Last Report
+            </a>
+            <a href="#" class="nav-item" data-view="view-audit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+              Audit Log
+            </a>
+          </div>
+
+          <div class="nav-group">
+            <span class="nav-label">SYSTEM</span>
+             <a href="#" class="nav-item" data-view="view-settings">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Settings
+            </a>
+          </div>
+        </nav>
+
+        <div class="sidebar-status">
+            <span class="status-indicator"></span>
+            <div>
+                <div class="status-text">System Online</div>
+                <div class="status-sub">AES-256 - Air-gap Ready</div>
+            </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <div class="grid-overlay"></div>
+        
+        <header class="topbar">
+           <div class="view-title">
+             <h2 id="current-view-title">Dashboard</h2>
+             <span class="view-subtitle" id="current-view-subtitle">Migration overview &bull; March 2026</span>
+           </div>
+           <div class="topbar-actions">
+             <span class="job-id-display">MIG-READY</span>
+             <button class="btn ghost" id="reset-insights-btn" style="color: var(--err-neon); border-color: var(--err-dim);">Reset Insights</button>
+             <button class="btn ghost"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export</button>
+             <button class="btn primary new-migration-trigger">+ New Migration</button>
+           </div>
+        </header>
+
+        <div class="view-container">
+            <!-- VIEW: DASHBOARD -->
+            <section id="view-dashboard" class="view-section active">
+              <div class="stats-row">
+                 <div class="stat-box cyan-border">
+                    <div class="stat-title">TOTAL MIGRATIONS</div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-desc">+3 this month</div>
+                 </div>
+                 <div class="stat-box green-border">
+                    <div class="stat-title">AVG CONVERSION RATE</div>
+                    <div class="stat-value">91%</div>
+                    <div class="stat-desc">Target: ≥ 90%</div>
+                 </div>
+                 <div class="stat-box amber-border">
+                    <div class="stat-title">MANUAL REVIEW ITEMS</div>
+                    <div class="stat-value">18</div>
+                    <div class="stat-desc">Across 4 active jobs</div>
+                 </div>
+                 <div class="stat-box err-border">
+                    <div class="stat-title">CRITICAL EXCEPTIONS</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-desc">Require action</div>
+                 </div>
+              </div>
+
+              <div class="dashboard-body">
+                <div class="recent-jobs panel">
+                   <div class="panel-header">
+                     <h3>RECENT MIGRATION JOBS</h3>
+                     <a href="#" class="view-all">View All &rarr;</a>
+                   </div>
+                   <table class="data-table">
+                     <thead>
+                       <tr>
+                         <th>Job ID</th>
+                         <th>Source</th>
+                         <th>Target</th>
+                         <th style="width: 40%">Confidence</th>
+                         <th>Status</th>
+                       </tr>
+                     </thead>
+                     <tbody id="dash-jobs-tbody">
+                       <!-- Populated by JS -->
+                     </tbody>
+                   </table>
+                </div>
+
+                <div class="coverage-panel panel">
+                   <div class="panel-header">
+                     <h3>CONVERSION COVERAGE</h3>
+                   </div>
+                   <div class="coverage-list" id="coverage-list-container">
+                      <!-- Populated by JS -->
+                   </div>
+
+                   <div class="panel-header" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                     <h3>SUPPORTED PATHS</h3>
+                   </div>
+                   <div class="paths-list">
+                      <div class="path-item"><span>Cisco ASA &rarr; PAN-OS</span> <span class="path-status">Phased ✓</span></div>
+                      <div class="path-item"><span>Check Point R80+ &rarr; PAN-OS</span> <span class="path-status">Phased ✓</span></div>
+                      <div class="path-item"><span>Fortinet FortiOS &rarr; PAN-OS</span> <span class="path-status">Phased ✓</span></div>
+                      <div class="path-item"><span>PAN-OS &rarr; FortiOS</span> <span class="path-status dim">Frozen ⊘</span></div>
+                   </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- VIEW: MIGRATION JOBS -->
+            <section id="view-jobs" class="view-section">
+                <!-- WIP -->
+                <div class="panel jobs-full-panel">
+                    <div class="panel-header space-between">
+                        <h3>ALL JOBS</h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" placeholder="Search jobs..." class="dark-input" />
+                            <button class="btn primary new-migration-trigger">+ New Migration</button>
+                        </div>
+                    </div>
+                    <table class="data-table full-width">
+                     <thead>
+                       <tr>
+                         <th>Job ID</th>
+                         <th>Source Platform</th>
+                         <th>Target</th>
+                         <th>Rules</th>
+                         <th style="width: 20%">Confidence</th>
+                         <th>Date</th>
+                         <th style="text-align: right">Status</th>
+                       </tr>
+                     </thead>
+                     <tbody id="all-jobs-tbody">
+                       <!-- Populated by JS -->
+                     </tbody>
+                   </table>
+                </div>
+            </section>
+
+            <!-- VIEW: NEW MIGRATION (WIZARD/STEPPER) -->
+            <section id="view-new-migration" class="view-section">
+                 <div class="stepper-container">
+                     <div class="step active">
+                         <div class="step-circle">1</div>
+                         <div class="step-label">SOURCE CONFIG</div>
+                     </div>
+                     <div class="step-line"></div>
+                     <div class="step">
+                         <div class="step-circle">2</div>
+                         <div class="step-label dimmed">TARGET PLATFORM</div>
+                     </div>
+                     <div class="step-line"></div>
+                     <div class="step">
+                         <div class="step-circle">3</div>
+                         <div class="step-label dimmed">OPTIONS</div>
+                     </div>
+                     <div class="step-line"></div>
+                     <div class="step">
+                         <div class="step-circle">4</div>
+                         <div class="step-label dimmed">PROCESSING</div>
+                     </div>
+                     <div class="step-line"></div>
+                     <div class="step">
+                         <div class="step-circle">5</div>
+                         <div class="step-label dimmed">RESULTS</div>
+                     </div>
+                 </div>
+
+                 <div class="wizard-panel panel mx-auto">
+                     
+                     <!-- WIZARD STEP 1: SOURCE CONFIG -->
+                     <div id="wizard-step-1" class="wizard-step active">
+                         <h2>Select Source Platform & Upload Config</h2>
+                         <p class="wiz-desc">Choose the firewall vendor and upload or paste the configuration file.</p>
+                         
+                         <div class="form-group">
+                             <label>SOURCE VENDOR</label>
+                             <div class="vendor-grid">
+                                 <div class="vendor-card source-card" data-vendor="cisco">
+                                     <div class="vendor-sphere cisco"></div>
+                                     <div class="vendor-name">Cisco ASA</div>
+                                     <div class="vendor-vers">8.x / 9.x</div>
+                                 </div>
+                                 <div class="vendor-card source-card" data-vendor="checkpoint">
+                                     <div class="vendor-sphere checkpoint"></div>
+                                     <div class="vendor-name">Check Point</div>
+                                     <div class="vendor-vers">R77 / R80+</div>
+                                 </div>
+                                 <div class="vendor-card source-card active" data-vendor="fortigate">
+                                     <div class="vendor-sphere fortigate"></div>
+                                     <div class="vendor-name">FortiGate</div>
+                                     <div class="vendor-vers">5.x / 6.x / 7.x</div>
+                                 </div>
+                                 <div class="vendor-card source-card" data-vendor="panos">
+                                     <div class="vendor-sphere panos"></div>
+                                     <div class="vendor-name">PAN-OS</div>
+                                     <div class="vendor-vers">9.x / 10.x / 11.x</div>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="form-group">
+                             <label>CONFIGURATION FILE</label>
+                             <div class="upload-zone" id="file-drop-zone">
+                                 <input type="file" id="file-input" class="visually-hidden" />
+                                 <div id="upload-prompt">
+                                     <p>Click to browse or drag file here</p>
+                                 </div>
+                                 <div id="upload-success" class="hidden success-banner">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                     <span id="file-name-display">file.conf loaded [0 KB] - Ready</span>
+                                 </div>
+                             </div>
+                             <div class="code-preview" id="code-preview-block">
+                                 <div class="code-lines">
+                                     1 <br>2 <br>3 <br>4 <br>5
+                                 </div>
+                                 <pre><code id="code-preview-content">! Please upload a configuration file...</code></pre>
+                             </div>
+                         </div>
+
+                         <div class="wizard-footer space-between">
+                             <span class="wiz-note">Config will be parsed locally. No data leaves the browser.</span>
+                             <button class="btn primary" id="next-to-target-btn" disabled>Next: Target Platform &rarr;</button>
+                         </div>
+                     </div>
+
+                     <!-- WIZARD STEP 2: TARGET PLATFORM -->
+                     <div id="wizard-step-2" class="wizard-step hidden">
+                         <h2>Select Target Output Platform</h2>
+                         <p class="wiz-desc">Choose the destination vendor format to generate the converted configuration.</p>
+                         
+                         <div class="form-group">
+                             <label>TARGET VENDOR (OUTPUT FORMAT)</label>
+                             <div class="vendor-grid">
+                                 <div class="vendor-card target-card" data-target="cisco">
+                                     <div class="vendor-sphere cisco"></div>
+                                     <div class="vendor-name">Cisco ASA</div>
+                                     <div class="vendor-vers">CLI Commands</div>
+                                 </div>
+                                 <div class="vendor-card target-card" data-target="checkpoint">
+                                     <div class="vendor-sphere checkpoint"></div>
+                                     <div class="vendor-name">Check Point</div>
+                                     <div class="vendor-vers">Mgmt CLI Scripts</div>
+                                 </div>
+                                 <div class="vendor-card target-card" data-target="fortigate">
+                                     <div class="vendor-sphere fortigate"></div>
+                                     <div class="vendor-name">FortiGate</div>
+                                     <div class="vendor-vers">FortiOS CLI</div>
+                                 </div>
+                                 <div class="vendor-card target-card active" data-target="panos">
+                                     <div class="vendor-sphere panos"></div>
+                                     <div class="vendor-name">PAN-OS</div>
+                                     <div class="vendor-vers">config.xml</div>
+                                 </div>
+                             </div>
+                         </div>
+                         
+                         <div class="wizard-footer space-between">
+                             <button class="btn ghost" id="back-to-source-btn">&larr; Back to Source</button>
+                             <button class="btn primary" id="process-migration-btn">Process Migration &rarr;</button>
+                         </div>
+                     </div>
+
+                 </div>
+            </section>
+
+            <!-- VIEW: MIGRATION REPORT -->
+            <section id="view-report" class="view-section">
+                <!-- Needs implementation -->
+                <div style="display:flex; gap: 2rem;">
+                  <div style="flex: 0 0 300px;">
+                    <div class="panel score-panel">
+                       <div class="confidence-ring">
+                          <svg viewBox="0 0 36 36" class="circular-chart amber">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" id="report-ring-path" stroke-dasharray="87, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="16.5" class="percentage">87%</text>
+                            <text x="18" y="22.5" class="perc-label">CONFIDENCE</text>
+                          </svg>
+                       </div>
+                       <div class="risk-badge amber">⚠️ AMBER RISK</div>
+                       <div class="risk-sub">7 manual review items - 2 behavioral changes</div>
+                       
+                       <div class="job-meta">
+                          <div class="meta-row"><span>Source</span> <span class="badge info">Cisco ASA 9.16</span></div>
+                          <div class="meta-row"><span>Target</span> <span class="badge blue">PAN-OS 11.1</span></div>
+                          <div class="meta-row"><span>Rules Processed</span> <span>1,247</span></div>
+                          <div class="meta-row"><span>Objects Processed</span> <span>3,891</span></div>
+                          <div class="meta-row"><span>Processing Time</span> <span>1m 42s</span></div>
+                          <div class="meta-row"><span>Job Date</span> <span id="report-date">2026-03-24</span></div>
+                       </div>
+                    </div>
+                  </div>
+                  <div style="flex: 1;">
+                     <div class="panel report-tabs-panel">
+                        <div class="tabs">
+                           <div class="tab active">Security Rules</div>
+                           <div class="tab">NAT Rules</div>
+                           <div class="tab">Exceptions <span class="tab-badge">7</span></div>
+                           <div class="tab">Behavioral Changes</div>
+                        </div>
+                        <table class="data-table clean-table">
+                          <thead>
+                             <tr>
+                               <th>RULE NAME</th>
+                               <th>SOURCE &rarr; DEST</th>
+                               <th>ACTION</th>
+                               <th style="width: 25%">CONFIDENCE</th>
+                               <th style="text-align:right">STATUS</th>
+                             </tr>
+                          </thead>
+                          <tbody id="report-rules-tbody">
+                             <!-- Computed by JS -->
+                          </tbody>
+                        </table>
+                     </div>
+                  </div>
+                </div>
+            </section>
+
+            <!-- VIEW: AUDIT LOG -->
+            <section id="view-audit" class="view-section">
+                <div class="panel">
+                   <div class="panel-header space-between">
+                      <h3 style="letter-spacing: 2px; color: var(--text-muted)">IMMUTABLE ACTIVITY LOG</h3>
+                      <button class="btn ghost">Export JSON</button>
+                   </div>
+                   <div class="audit-list" id="audit-list">
+                      <!-- Rendered by JS -->
+                   </div>
+                </div>
+            </section>
+
+            <!-- VIEW: SETTINGS -->
+            <section id="view-settings" class="view-section">
+                <div class="panel mx-auto" style="max-width: 800px; padding: 2.5rem;">
+                    <div class="panel-header">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-light);">GENERAL PREFERENCES</h3>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+                        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1.5rem; margin-bottom: 0;">
+                            <div>
+                                <label style="margin:0; font-size: 1.1rem; color: var(--text-light); text-transform: none; letter-spacing: normal;">Strict Parsing Mode</label>
+                                <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.85rem;">Halt migration if unsupported or unrecognized rules are found</p>
+                            </div>
+                            <!-- Styled Toggle -->
+                            <div style="width: 48px; height: 26px; background: rgba(255,255,255,0.1); border-radius: 13px; position: relative; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease;">
+                                <div style="width: 20px; height: 20px; background: var(--text-muted); border-radius: 50%; position: absolute; top: 2px; left: 3px; transition: all 0.3s ease;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1.5rem; margin-bottom: 0;">
+                            <div>
+                                <label style="margin:0; font-size: 1.1rem; color: var(--text-light); text-transform: none; letter-spacing: normal;">Auto-Export Reports</label>
+                                <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.85rem;">Automatically download migration report after processing</p>
+                            </div>
+                            <div style="width: 48px; height: 26px; background: var(--cyan-accent); border-radius: 13px; position: relative; cursor: pointer; border: 1px solid var(--cyan-accent); transition: all 0.3s ease;">
+                                <div style="width: 20px; height: 20px; background: #000; border-radius: 50%; position: absolute; top: 2px; right: 3px; transition: all 0.3s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-header" style="margin-top: 2rem; padding-top: 1rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-light);">API INTEGRATIONS</h3>
+                        <p style="margin: 0.5rem 0 1rem 0; color: var(--text-dim); font-size: 0.9rem; font-family: var(--font-mono);">Secure vault for cross-platform API keys.</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>PAN-OS API KEY</label>
+                            <input type="password" value="************************" class="dark-input" style="width: 100%; max-width: 500px;" />
+                        </div>
+                        <div class="form-group">
+                            <label>FORTIMANAGER IP ADDRESS</label>
+                            <input type="text" placeholder="192.168.1.100" class="dark-input" style="width: 100%; max-width: 500px;" />
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <button class="btn primary">Save & Verify</button>
+                            <button class="btn ghost">Discard Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+      </main>
+    </div>
+    
+    <!-- Render output overlay for PAN-OS generator result -->
+    <div id="output-modal" class="modal hidden">
+        <div class="modal-content panel">
+             <div class="panel-header space-between">
+                 <h2>Generated PAN-OS XML</h2>
+                 <button class="btn ghost" id="close-modal">&times;</button>
+             </div>
+             <pre><code id="xml-output"></code></pre>
+             <div class="wizard-footer space-between">
+                 <button class="btn ghost" id="copy-xml-btn">Copy to Clipboard</button>
+                 <button class="btn primary" id="download-xml-btn">Download .xml</button>
+             </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
