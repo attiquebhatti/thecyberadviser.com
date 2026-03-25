@@ -74,7 +74,7 @@
   }
 
   ::selection {
-    @apply bg-amber-500/30 text-white;
+    @apply bg-[#FFC300]/30 text-white;
   }
 }
 
@@ -88,7 +88,7 @@
   }
 
   .gradient-text-gold {
-    @apply bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#FFD60A] via-[#FFC300] to-[#FFB703] bg-clip-text text-transparent;
   }
 
   .card-elevated {
@@ -118,9 +118,9 @@
 
   .glow-gold {
     box-shadow:
-      0 0 20px rgba(245, 158, 11, 0.15),
-      0 0 40px rgba(245, 158, 11, 0.1),
-      0 0 60px rgba(245, 158, 11, 0.05);
+      0 0 20px rgba(255, 195, 0, 0.15),
+      0 0 40px rgba(255, 195, 0, 0.1),
+      0 0 60px rgba(255, 195, 0, 0.05);
   }
 
   .border-glow {
@@ -130,7 +130,7 @@
   .border-glow::after {
     content: "";
     @apply absolute inset-0 rounded-2xl pointer-events-none opacity-0 transition-opacity duration-500;
-    background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+    background: linear-gradient(180deg, rgba(255, 195, 0, 0.1) 0%, transparent 50%);
   }
 
   .border-glow:hover::after {
@@ -160,7 +160,7 @@
   }
 
   .eyebrow {
-    @apply text-amber-500 text-sm font-semibold uppercase tracking-[0.2em] mb-4;
+    @apply text-[#FFC300] text-sm font-semibold uppercase tracking-[0.2em] mb-4;
   }
 
   .body-large {

@@ -8,6 +8,10 @@ import { PanosGenerator } from './generators/panos.js';
 import { OutputFortigateGenerator } from './generators/out_fortigate.js';
 import { OutputCiscoGenerator } from './generators/out_cisco.js';
 import { OutputCheckpointGenerator } from './generators/out_checkpoint.js';
+import { BehavioralEngine } from './validation/engine.js';
+import { TrafficSimulator } from './validation/simulator.js';
+import { ROLES, PERMISSIONS, hasPermission } from './auth/roles.js';
+import { AuditLogger } from './auth/audit.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -18,13 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
         coverage: {
             'Address Objects': { parsed: 0, total: 0 },
             'Security Policy': { parsed: 0, total: 0 }
+        },
+        currentUser: {
+            id: 'USR-001',
+            name: 'Attique Bhatti',
+            role: ROLES.SUPER_ADMIN
         }
     };
+
+    const auditLogger = new AuditLogger();
 
     function loadState() {
         const saved = localStorage.getItem('unifiedMigratorState');
         if (saved) {
-            appState = JSON.parse(saved);
+            const parsed = JSON.parse(saved);
+            // Merge saved data while preserving default currentUser if missing
+            appState = { 
+                ...appState, 
+                ...parsed,
+                currentUser: parsed.currentUser || appState.currentUser 
+            };
         }
     }
 
@@ -33,16 +50,72 @@ document.addEventListener('DOMContentLoaded', () => {
         populateDashboard();
     }
 
+    function applyPermissions() {
+        // Enforce the current user's role constraints on the UI
+        const role = appState.currentUser.role;
+        
+        // Critical UI Guards
+        const btnReset = document.getElementById('btn-reset-insights');
+        const btnExportAudit = document.getElementById('btn-export-audit');
+        const btnNewMigration = document.getElementById('btn-new-migration');
+        const panelRoleMgmt = document.getElementById('panel-role-management');
+        const navAudit = document.querySelector('[data-view="view-audit"]');
+        const navSettings = document.querySelector('[data-view="view-settings"]');
+
+        if (btnReset) btnReset.style.display = hasPermission(role, PERMISSIONS.INSIGHTS_RESET) ? 'inline-flex' : 'none';
+        if (btnExportAudit) btnExportAudit.style.display = hasPermission(role, PERMISSIONS.AUDIT_EXPORT) ? 'inline-flex' : 'none';
+        if (btnNewMigration) btnNewMigration.disabled = !hasPermission(role, PERMISSIONS.MIGRATION_RUN);
+        if (panelRoleMgmt) panelRoleMgmt.style.display = hasPermission(role, PERMISSIONS.USER_MANAGE) ? 'block' : 'none';
+        
+        // Update sidebar profile
+        const statusText = document.querySelector('.status-text');
+        if (statusText) statusText.textContent = appState.currentUser.name;
+        const statusSub = document.querySelector('.status-sub');
+        if (statusSub) statusSub.textContent = appState.currentUser.role;
+        const statusIndicator = document.querySelector('.status-indicator');
+        if (statusIndicator) statusIndicator.style.background = (role === ROLES.SUPER_ADMIN || role === ROLES.ADMIN) ? 'var(--green-neon)' : 'var(--amber-neon)';
+    }
+
     function resetState() {
+        if (!hasPermission(appState.currentUser.role, PERMISSIONS.INSIGHTS_RESET)) {
+            alert('Access Denied: You do not have permission to reset system insights.');
+            auditLogger.log(appState.currentUser, 'RESET_DENIED', { attempt: 'System Reset' });
+            return;
+        }
+
         if(confirm('Are you sure you want to reset all insights, jobs, and history?')) {
             localStorage.removeItem('unifiedMigratorState');
-            appState = { jobs: [], auditConfigUploads: 0, coverage: { 'Address Objects': { parsed: 0, total: 0 }, 'Security Policy': { parsed: 0, total: 0 }} };
+            auditLogger.log(appState.currentUser, 'INSIGHTS_RESET', { scope: 'Full Data Purge' });
+            appState = { 
+                jobs: [], 
+                auditConfigUploads: 0, 
+                coverage: { 'Address Objects': { parsed: 0, total: 0 }, 'Security Policy': { parsed: 0, total: 0 }},
+                currentUser: appState.currentUser // Keep user
+            };
             populateDashboard();
             switchView('view-dashboard');
+            renderAuditLogs(); // Immediate refresh
         }
     }
 
-    document.getElementById('reset-insights-btn').addEventListener('click', resetState);
+    // Role Switcher Listener
+    const roleSelector = document.getElementById('role-selector');
+    if (roleSelector) {
+        roleSelector.value = appState.currentUser.role;
+        roleSelector.addEventListener('change', (e) => {
+            const oldRole = appState.currentUser.role;
+            appState.currentUser.role = e.target.value;
+            appState.currentUser.name = e.target.value === ROLES.AUDITOR ? 'Jane Auditor' : 'Attique Bhatti';
+            
+            applyPermissions();
+            auditLogger.log(appState.currentUser, 'ROLE_SWAP', { from: oldRole, to: e.target.value });
+            saveState();
+            renderAuditLogs();
+        });
+    }
+
+    document.getElementById('btn-reset-insights')?.addEventListener('click', resetState);
+    applyPermissions(); // Initial run
 
     // --- VIEW ROUTING & SIDEBAR ---
     const navItems = document.querySelectorAll('.nav-item[data-view]');
@@ -108,29 +181,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Job Lists
-        const renderJobRow = (job) => `
+        const renderJobRow = (job, isDashboard = false) => `
             <tr>
               <td style="font-family: var(--font-mono); color: var(--cyan-accent)">${job.id}</td>
               <td style="color: var(--text-muted)">${job.source}</td>
               <td style="color: var(--text-muted)">${job.target}</td>
-              <td style="${allJobsTbody ? '' : 'display:none'}">${job.rules}</td>
+              <td style="${allJobsTbody && !isDashboard ? '' : 'display:none'}">${job.rules}</td>
               <td>
                 <div class="progress-wrap">
                    <div class="progress-bar-bg"><div class="progress-fill ${job.conf >= 90 ? 'green' : 'amber'}" style="width: ${job.conf}%"></div></div>
                    <div class="progress-text ${job.conf >= 90 ? 'status-txt conv' : 'status-txt rev'}">${job.conf}%</div>
                 </div>
               </td>
-              <td style="${allJobsTbody ? 'font-family: var(--font-mono); color: var(--text-dim)' : 'display:none'}">${job.date}</td>
-              <td style="text-align: right"><span class="status-badge ${job.conf >= 90 ? 'green' : 'amber'}">${job.status}</span></td>
+              <td style="${allJobsTbody && !isDashboard ? 'font-family: var(--font-mono); color: var(--text-dim)' : 'display:none'}">${job.date}</td>
+              <td style="text-align: right">
+                ${isDashboard 
+                    ? `<button class="btn ghost btn-sm analyze-btn" data-job="${job.id}">Analyze Behavior &rarr;</button>`
+                    : `<span class="status-badge ${job.conf >= 90 ? 'green' : 'amber'}">${job.status}</span>`
+                }
+              </td>
             </tr>
         `;
 
-        // Reverse to show newest first
-        const reversedJobs = [...appState.jobs].reverse();
-
-        if(dashTbody) dashTbody.innerHTML = reversedJobs.slice(0, 4).map(job => renderJobRow(job)).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No migrations found. Start a new one.</td></tr>';
+        if(dashTbody) dashTbody.innerHTML = reversedJobs.slice(0, 4).map(job => renderJobRow(job, true)).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No migrations found. Start a new one.</td></tr>';
+        
         if(allJobsTbody) allJobsTbody.innerHTML = reversedJobs.map(job => renderJobRow(job)).join('');
         
+        // Add listeners for analyze buttons after rendering
+        document.querySelectorAll('.analyze-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchView('view-report');
+                document.getElementById('tab-validation')?.click();
+            });
+        });
+
         // Badges
         badgers.forEach(b => b.textContent = appState.jobs.length);
 
@@ -175,6 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- REPORT VIEW LOGIC ---
     const reportTabs = document.querySelectorAll('#view-report .tab');
     const reportTbody = document.getElementById('report-rules-tbody');
+    const reportTable = document.getElementById('report-rules-table');
+    const validationContent = document.getElementById('report-content-validation');
+
+    let lastParsedData = null; // Store for validation engine
 
     const reportMockData = {
         'Security Rules': [
@@ -220,15 +308,80 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    function renderValidationTab() {
+        if (!lastParsedData) return;
+        const engine = new BehavioralEngine();
+        const simulator = new TrafficSimulator();
+        
+        // Semantic Analysis (Compare IR with itself to detect potential issues)
+        const validationResults = engine.compare(lastParsedData, lastParsedData);
+        
+        // Drift UI
+        const driftList = document.getElementById('drift-results-list');
+        driftList.innerHTML = validationResults.driftWarnings.length > 0 
+            ? validationResults.driftWarnings.map(w => `
+                <div class="p-3 border-b border-white/5">
+                    <div class="text-amber-400 text-xs font-bold mb-1 uppercase tracking-tighter">${w.rule}</div>
+                    ${w.drifts.map(d => `<div class="text-slate-400 text-[11px]">&bull; ${d.msg}</div>`).join('')}
+                </div>
+            `).join('')
+            : '<div class="text-green-neon/60 p-4 text-center text-xs">No behavioral drift detected. Equivalence confirmed.</div>';
+
+        // Simulation UI
+        const simList = document.getElementById('sim-results-list');
+        const simResults = simulator.runSimulation(lastParsedData, lastParsedData);
+        simList.innerHTML = simResults.map(s => `
+            <div class="p-3 border-b border-white/5 flex items-center justify-between">
+                <div>
+                    <div class="text-slate-300 text-[11px] font-mono">${s.tuple.src} &rarr; ${s.tuple.dst}:${s.tuple.port}</div>
+                    <div class="text-slate-500 text-[10px]">Method: Recursive Path Lookup</div>
+                </div>
+                <div class="text-right">
+                    <span class="text-green-neon text-[10px] block">MATCH</span>
+                    <span class="text-slate-500 text-[9px]">${s.source.action}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
     reportTabs.forEach(tab => {
         tab.addEventListener('click', () => {
              reportTabs.forEach(t => t.classList.remove('active'));
              tab.classList.add('active');
-             // Extract text content ignoring the span badge
+             
              const tabName = tab.childNodes[0].textContent.trim();
-             renderReportTab(tabName);
+             
+             if (tabName === 'Validation & Simulation') {
+                 reportTable.classList.add('hidden');
+                 validationContent.classList.remove('hidden');
+                 renderValidationTab();
+             } else {
+                 reportTable.classList.remove('hidden');
+                 validationContent.classList.add('hidden');
+                 renderReportTab(tabName);
+             }
         });
     });
+
+    function renderAuditLogs() {
+        const auditList = document.getElementById('audit-list');
+        const logs = auditLogger.getLogs();
+        
+        if (logs.length === 0) {
+            auditList.innerHTML = '<div class="text-dim p-8 text-center">No audit records found.</div>';
+            return;
+        }
+
+        auditList.innerHTML = logs.map(log => `
+            <div class="audit-row">
+                <span class="audit-time">${log.timestamp.replace('T', ' ').split('.')[0]}</span>
+                <span class="audit-user">${log.userRole.split(' ')[0]}</span>
+                <span class="audit-event ${log.action.includes('RESET') ? 'warn' : ''}">${log.action}</span>
+                <span class="audit-target">${log.userName}</span>
+                <span class="status-txt conv">${log.status}</span>
+            </div>
+        `).join('');
+    }
 
     // Init first tab
     renderReportTab('Security Rules');
@@ -296,6 +449,8 @@ document.addEventListener('DOMContentLoaded', () => {
             uploadPrompt.classList.add('hidden');
             uploadSuccess.classList.remove('hidden');
             fileNameDisplay.textContent = `${file.name} loaded [${(file.size/1024).toFixed(1)} KB]`;
+            
+            auditLogger.log(appState.currentUser, 'CONFIG_LOAD', { fileName: file.name, size: file.size });
             
             // Generate Code Preview
             const lines = currentFileContent.split('\n').slice(0, 15);
@@ -428,6 +583,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 saveState();
 
+                lastParsedData = parsedData; // Save for validation engine
+                
                 // Reset Wizard form
                 processBtn.innerHTML = 'Process Migration &rarr;';
                 processBtn.disabled = false;
@@ -436,6 +593,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Show Output Modal directly
                 document.getElementById('xml-output').textContent = generatedOutput;
                 document.getElementById('output-modal').classList.remove('hidden');
+
+                auditLogger.log(appState.currentUser, 'MIGRATION_RUN', { jobId: newJobId, source: selectedSource, rules: ruleCount });
 
              } catch(e) {
                 alert("Error parsing config: " + e.message);
@@ -459,11 +618,37 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = `migration_output_${Date.now()}${extType}`;
         a.click();
         URL.revokeObjectURL(url);
+        auditLogger.log(appState.currentUser, 'CONFIG_DOWNLOAD', { type: extType });
     });
 
     document.getElementById('copy-xml-btn').addEventListener('click', (e) => {
         navigator.clipboard.writeText(generatedOutput);
         e.target.textContent = 'Copied!';
         setTimeout(() => e.target.textContent = 'Copy to Clipboard', 2000);
+        auditLogger.log(appState.currentUser, 'CONFIG_COPY');
     });
+
+    // Audit Export Implementation
+    document.getElementById('btn-export-audit')?.addEventListener('click', () => {
+        if (!hasPermission(appState.currentUser.role, PERMISSIONS.AUDIT_EXPORT)) return;
+        
+        const logs = auditLogger.getLogs();
+        const jsonString = JSON.stringify(logs, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `unified_migrator_audit_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        auditLogger.log(appState.currentUser, 'AUDIT_EXPORT', { recordCount: logs.length });
+        renderAuditLogs(); // Show the export action itself
+    });
+
+    // --- INITIALIZATION ---
+    loadState();
+    populateDashboard();
+    renderAuditLogs();
+    applyPermissions();
 });

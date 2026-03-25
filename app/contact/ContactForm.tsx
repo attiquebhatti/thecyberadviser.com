@@ -52,9 +52,9 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="relative rounded-2xl border border-[#003566] bg-[#001D3D]/35 p-7 md:p-8 shadow-2xl overflow-hidden">
-      {/* subtle top accent */}
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#FFC300]/20 via-[#FFC300]/90 to-[#FFC300]/20" />
+    <div className="relative rounded-2xl border border-[#003566] bg-[#001D3D]/35 p-7 md:p-8 shadow-2xl overflow-hidden group transition-all duration-500 hover:border-[#FFC300]/50 hover:shadow-[#FFC300]/10 hover:scale-[1.01]">
+      {/* interactive top highlight */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
 
       {/* soft glow */}
       <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#FFC300]/12 blur-3xl" />

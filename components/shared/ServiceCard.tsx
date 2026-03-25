@@ -25,15 +25,13 @@ export function ServiceCard({
 
       <div className="absolute inset-0 rounded-2xl border border-white/[0.04] group-hover:border-white/[0.08] transition-colors duration-500" />
 
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-      </div>
+      <div className="absolute inset-x-0 top-0 h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl" />
 
       <div className="relative p-8 md:p-10">
         <div className="relative w-14 h-14 mb-6">
-          <div className="absolute inset-0 rounded-xl bg-amber-500/10 group-hover:bg-amber-500/15 transition-colors duration-500" />
+          <div className="absolute inset-0 rounded-xl bg-[#FFC300]/10 group-hover:bg-[#FFC300]/15 transition-colors duration-500" />
           <div className="absolute inset-0 rounded-xl flex items-center justify-center">
-            <Icon className="w-6 h-6 text-amber-500" />
+            <Icon className="w-6 h-6 text-[#FFC300]" />
           </div>
         </div>
 

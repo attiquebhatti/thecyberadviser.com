@@ -11,8 +11,8 @@ export function MetricsSection() {
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-40">
               <div className="inline-flex items-center gap-3 mb-6">
-                <div className="h-px w-12 bg-gradient-to-r from-amber-500 to-amber-500/0" />
-                <span className="text-amber-500 text-sm font-semibold uppercase tracking-[0.2em]">
+                <div className="h-px w-12 bg-gradient-to-r from-[#FFC300] to-[#FFC300]/0" />
+                <span className="text-[#FFC300] text-sm font-semibold uppercase tracking-[0.2em]">
                   Track Record
                 </span>
               </div>
@@ -56,16 +56,16 @@ export function MetricsSection() {
               ].map((metric, index) => (
                 <div
                   key={metric.label}
-                  className="group relative"
+                  className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.01] hover:shadow-[#FFC300]/10"
                 >
-                  <div className="absolute inset-0 rounded-2xl border border-white/[0.04] group-hover:border-white/[0.08] transition-colors duration-500" />
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-                  </div>
+                  <div className="absolute inset-0 border border-white/[0.04] group-hover:border-[#FFC300]/30 transition-colors duration-500" />
+                  
+                  {/* interactive top highlight */}
+                  <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
 
-                  <div className="relative p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
-                    <div className="md:w-32 flex-shrink-0">
-                      <div className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+                  <div className="relative p-8 md:p-12 flex flex-col md:flex-row md:items-center gap-8 md:gap-14">
+                    <div className="md:w-48 lg:w-56 flex-shrink-0">
+                      <div className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
                         {metric.value}
                       </div>
                     </div>

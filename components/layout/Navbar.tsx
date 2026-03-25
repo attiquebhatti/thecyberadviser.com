@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Shield, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -10,8 +11,26 @@ const navItems = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
-  { href: '/knowledge-base', label: 'Knowledge Base' },
-  { href: '/portfolio', label: 'Portfolio' },
+  { 
+    href: '/knowledge-base', 
+    label: 'Knowledge Base',
+    children: [
+      { href: '/knowledge-base?category=PALO+ALTO', label: 'Palo Alto Networks', description: 'Prisma, Cortex, and Strata' },
+      { href: '/knowledge-base?category=CHECK+POINT', label: 'Check Point', description: 'Infinity and Quantum solutions' },
+      { href: '/knowledge-base?category=FORTINET', label: 'Fortinet', description: 'Security Fabric and FortiGate' },
+      { href: '/knowledge-base?category=ARCHITECTURE', label: 'Architecture', description: 'Zero Trust and SASE patterns' },
+    ]
+  },
+  { 
+    href: '/portfolio', 
+    label: 'Portfolio',
+    children: [
+      { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access', description: 'Cloud-delivered security' },
+      { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN', description: 'Branch transformation' },
+      { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations', description: 'Automation and XDR' },
+      { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security', description: 'NGFW and segmentation' },
+    ]
+  },
   { 
     href: '/tools', 
     label: 'Tools',
@@ -25,7 +44,12 @@ const navItems = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const pathname = usePathname();
+
+  const toggleExpanded = (label: string) => {
+    setExpandedItem(expandedItem === label ? null : label);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +62,7 @@ export function Navbar() {
 
   useEffect(() => {
     setIsOpen(false);
+    setExpandedItem(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -58,49 +83,46 @@ export function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
           isScrolled || isOpen
-            ? 'bg-obsidian-950/95 backdrop-blur-xl border-b border-white/[0.04] shadow-lg shadow-black/20'
+            ? 'bg-obsidian-950/40 backdrop-blur-2xl border-b border-white/[0.08] shadow-2xl shadow-black/40'
             : 'bg-transparent'
         )}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-24 md:h-32">
             <Link
               href="/"
               className="group flex items-center gap-3 text-white hover:opacity-90 transition-all duration-300 min-w-0"
             >
-              <div className="relative w-9 h-9 flex items-center justify-center flex-shrink-0">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-lg" />
-                <Shield className="relative w-5 h-5 text-amber-500" />
-              </div>
-
-              <div className="flex flex-col leading-tight min-w-0">
-                <span className="tracking-tight font-semibold text-lg text-white truncate">
-                  The Cyber Adviser
-                </span>
-                <span className="hidden sm:block text-[11px] md:text-xs text-slate-400 mt-0.5 truncate">
-                  Attique Bhatti - Security Consultant
-                </span>
+              <div className="flex flex-col leading-tight min-w-0 py-1">
+                <Image 
+                  src="/images/logo-wide.png" 
+                  alt="The Cyber Adviser" 
+                  width={600} 
+                  height={150} 
+                  className="h-16 md:h-28 w-auto object-contain brightness-110 contrast-[1.05] drop-shadow-2xl"
+                  priority
+                />
               </div>
             </Link>
 
             <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
-                <div key={item.href} className="relative group/nav">
+                <div key={item.label} className="relative group/nav">
                   {item.children ? (
                     <>
                       <button
                         className={cn(
                           'relative px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1.5',
                           pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
-                            ? 'text-amber-400'
-                            : 'text-slate-400 group-hover/nav:text-amber-400'
+                            ? 'text-[#FFC300]'
+                            : 'text-slate-400 group-hover/nav:text-[#FFC300]'
                         )}
                       >
                         {item.label}
                         <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover/nav:opacity-100 transition-all duration-300 group-hover/nav:rotate-180" />
                         <span
                           className={cn(
-                            'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-300',
+                            'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FFC300] to-transparent transition-opacity duration-300',
                             pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
                           )}
                         />
@@ -108,15 +130,15 @@ export function Navbar() {
 
                       {/* Dropdown Menu */}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
-                        <div className="w-64 bg-obsidian-900/95 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-2xl p-2 overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+                        <div className="w-72 bg-obsidian-900/60 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-2 overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#FFC300]/5 to-transparent pointer-events-none" />
                           {item.children.map((child) => (
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="relative flex flex-col gap-0.5 px-4 py-3 rounded-lg hover:bg-white/[0.03] transition-colors group/item"
+                              className="relative flex flex-col gap-0.5 px-4 py-3 rounded-xl hover:bg-white/[0.04] transition-all group/item"
                             >
-                              <span className="text-sm font-semibold text-slate-200 group-hover/item:text-amber-400 transition-colors">
+                              <span className="text-sm font-semibold text-slate-200 group-hover/item:text-[#FFC300] transition-colors">
                                 {child.label}
                               </span>
                               {child.description && (
@@ -135,14 +157,14 @@ export function Navbar() {
                       className={cn(
                         'relative px-4 py-2 text-sm font-medium transition-all duration-300',
                         pathname === item.href
-                          ? 'text-amber-400'
-                          : 'text-slate-400 hover:text-amber-400'
+                          ? 'text-[#FFC300]'
+                          : 'text-slate-400 hover:text-[#FFC300]'
                       )}
                     >
                       {item.label}
                       <span
                         className={cn(
-                          'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent transition-opacity duration-300',
+                          'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FFC300] to-transparent transition-opacity duration-300',
                           pathname === item.href ? 'opacity-100' : 'opacity-0 hover:opacity-100'
                         )}
                       />
@@ -155,10 +177,10 @@ export function Navbar() {
             <div className="hidden lg:block">
               <Link
                 href="/contact"
-                className="group relative inline-flex items-center px-6 py-2.5 text-sm font-semibold overflow-hidden rounded-lg transition-all duration-300"
+                className="group relative inline-flex items-center px-6 py-2.5 text-sm font-semibold overflow-hidden rounded-lg transition-all duration-300 shadow-lg shadow-[#FFC300]/10"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-600" />
-                <span className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute inset-0 bg-gradient-to-r from-[#FFC300] to-[#FFB703]" />
+                <span className="absolute inset-0 bg-gradient-to-r from-[#FFD60A] to-[#FFC300] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative text-obsidian-950">
                   Schedule Consultation
                 </span>
@@ -167,7 +189,7 @@ export function Navbar() {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2.5 text-slate-400 hover:text-amber-400 transition-colors rounded-lg hover:bg-white/5 flex-shrink-0"
+              className="lg:hidden p-2.5 text-slate-400 hover:text-[#FFC300] transition-colors rounded-lg hover:bg-white/5 flex-shrink-0"
               aria-label="Toggle menu"
               aria-expanded={isOpen}
             >
@@ -185,7 +207,7 @@ export function Navbar() {
       >
         <div
           className={cn(
-            'absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300',
+            'absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300',
             isOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setIsOpen(false)}
@@ -193,41 +215,62 @@ export function Navbar() {
 
         <div
           className={cn(
-            'absolute top-20 left-0 right-0 border-b border-white/[0.05] bg-obsidian-950/98 backdrop-blur-xl shadow-2xl transition-all duration-300',
-            isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+            'absolute top-20 left-0 right-0 border-b border-white/[0.1] bg-obsidian-950/60 backdrop-blur-2xl shadow-2xl transition-all duration-500 rounded-b-3xl',
+            isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
           )}
         >
-          <div className="px-4 pb-6 pt-4">
-            <div className="pb-4 border-b border-white/[0.05]">
-              <p className="text-xs text-slate-400">
-                Attique Bhatti - Security Consultant
+          <div className="px-4 pb-8 pt-4">
+            <div className="pb-4 border-b border-white/[0.05] mb-4">
+              <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#FFC300]">
+                Expert Security Advisory
               </p>
             </div>
 
-            <div className="mt-4 flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               {navItems.map((item) => (
-                <div key={item.href}>
+                <div key={item.label} className="flex flex-col">
                   {item.children ? (
                     <div className="flex flex-col">
-                      <div className="px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-2">
+                      <button
+                        onClick={() => toggleExpanded(item.label)}
+                        className={cn(
+                          'flex items-center justify-between px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-300',
+                          pathname && (pathname === item.href || pathname.startsWith(item.href))
+                            ? 'text-[#FFC300] bg-[#FFC300]/5'
+                            : 'text-slate-300 hover:bg-white/[0.03]'
+                        )}
+                      >
                         {item.label}
-                      </div>
-                      <div className="flex flex-col gap-1 ml-2">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => setIsOpen(false)}
-                            className={cn(
-                              'px-4 py-3 text-base font-medium rounded-xl transition-all duration-300',
-                              pathname === child.href
-                                ? 'text-amber-400 bg-amber-500/10'
-                                : 'text-slate-300 hover:text-amber-400 hover:bg-white/[0.03]'
-                            )}
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
+                        <ChevronDown className={cn(
+                          "w-4 h-4 transition-transform duration-300",
+                          expandedItem === item.label ? "rotate-180 text-[#FFC300]" : "opacity-50"
+                        )} />
+                      </button>
+                      
+                      <div className={cn(
+                        "grid transition-all duration-300 ease-in-out px-2",
+                        expandedItem === item.label ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"
+                      )}>
+                        <div className="overflow-hidden flex flex-col gap-1">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setIsOpen(false)}
+                              className={cn(
+                                'px-4 py-3 text-sm font-medium rounded-lg transition-all flex flex-col gap-0.5',
+                                pathname === child.href
+                                  ? 'text-[#FFC300] bg-[#FFC300]/10'
+                                  : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5'
+                              )}
+                            >
+                              <span>{child.label}</span>
+                              {child.description && (
+                                <span className="text-[10px] opacity-60 font-normal">{child.description}</span>
+                              )}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -237,8 +280,8 @@ export function Navbar() {
                       className={cn(
                         'px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-300',
                         pathname === item.href
-                          ? 'text-amber-400 bg-amber-500/10'
-                          : 'text-slate-300 hover:text-amber-400 hover:bg-white/[0.03]'
+                          ? 'text-[#FFC300] bg-[#FFC300]/5'
+                          : 'text-slate-300 hover:text-[#FFC300] hover:bg-white/[0.03]'
                       )}
                     >
                       {item.label}
@@ -249,7 +292,8 @@ export function Navbar() {
 
               <Link
                 href="/contact"
-                className="mt-3 inline-flex items-center justify-center px-6 py-3.5 text-sm font-semibold text-obsidian-950 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all duration-300"
+                onClick={() => setIsOpen(false)}
+                className="mt-6 inline-flex items-center justify-center px-6 py-4 text-base font-bold text-obsidian-950 bg-gradient-to-r from-[#FFC300] to-[#FFB703] rounded-2xl hover:from-[#FFD60A] hover:to-[#FFC300] transition-all duration-300 shadow-xl shadow-[#FFC300]/10"
               >
                 Schedule Consultation
               </Link>

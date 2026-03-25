@@ -277,6 +277,11 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+}
+
 /* --- VIEW CONTAINER --- */
 .view-container {
   flex: 1;
@@ -797,7 +802,27 @@ body {
 .audit-row { display: flex; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
 .audit-row span { display: inline-block; }
 .audit-time { width: 140px; color: var(--text-dim); }
-.audit-user { width: 120px; color: var(--text-muted); }
+/* --- VALIDATION UI UTILITIES --- */
+.grid { display: grid; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.gap-4 { gap: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mt-4 { margin-top: 1rem; }
+.w-full { width: 100%; }
+.hidden { display: none !important; }
+.text-cyan { color: var(--cyan-accent); }
+.text-dim { color: var(--text-dim); }
+.text-xs { font-size: 0.7rem; }
+.text-sm { font-size: 0.8rem; }
+.tracking-wider { letter-spacing: 0.05em; }
+.border-subtle { border: 1px solid rgba(255,255,255,0.03); }
+
+.mini-list {
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.2);
+    border-radius: var(--radius-sm);
+}
 .audit-event { width: 180px; font-weight: 600; color: var(--cyan-accent); }
 .audit-event.warn { color: var(--amber-neon); }
 .audit-event.magenta { color: #d946ef; }

@@ -70,6 +70,17 @@
                 <div class="status-sub">AES-256 - Air-gap Ready</div>
             </div>
         </div>
+        
+        <!-- Role Switcher (Local ONLY) -->
+        <div style="padding: 1rem 1.25rem; border-top: 1px solid var(--border-color); background: rgba(56,189,248,0.03);">
+            <label class="nav-label" style="padding:0 0 0.5rem 0;">SESSION ROLE</label>
+            <select id="role-selector" class="dark-input" style="font-size: 0.75rem; padding: 0.4rem; height: auto;">
+                <option value="Super Admin">Super Admin</option>
+                <option value="Admin">Admin</option>
+                <option value="Standard User">Standard User</option>
+                <option value="Read-Only Auditor" selected>Read-Only Auditor</option>
+            </select>
+        </div>
       </aside>
 
       <!-- MAIN CONTENT -->
@@ -83,8 +94,8 @@
            </div>
            <div class="topbar-actions">
              <span class="job-id-display">MIG-READY</span>
-             <button class="btn ghost" id="reset-insights-btn" style="color: var(--err-neon); border-color: var(--err-dim);">Reset Insights</button>
-             <button class="btn ghost"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export</button>
+             <button class="btn ghost" id="btn-reset-insights" style="color: var(--err-neon); border-color: var(--err-dim);">Reset Insights</button>
+             <button class="btn ghost" id="btn-export-audit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export</button>
              <button class="btn primary new-migration-trigger">+ New Migration</button>
            </div>
         </header>
@@ -166,7 +177,7 @@
                         <h3>ALL JOBS</h3>
                         <div style="display: flex; gap: 1rem;">
                             <input type="text" placeholder="Search jobs..." class="dark-input" />
-                            <button class="btn primary new-migration-trigger">+ New Migration</button>
+                            <button class="btn primary new-migration-trigger" id="btn-new-migration">+ New Migration</button>
                         </div>
                     </div>
                     <table class="data-table full-width">
@@ -350,8 +361,28 @@
                            <div class="tab">NAT Rules</div>
                            <div class="tab">Exceptions <span class="tab-badge">7</span></div>
                            <div class="tab">Behavioral Changes</div>
+                           <div class="tab" id="tab-validation">Validation & Simulation</div>
                         </div>
-                        <table class="data-table clean-table">
+                        <div id="report-content-validation" class="hidden" style="padding: 1.5rem 0;">
+                            <div class="grid grid-2 gap-4">
+                                <div class="panel border-subtle">
+                                    <h4 class="mb-4 text-cyan text-sm tracking-wider">BEHAVIORAL DRIFT ANALYSIS</h4>
+                                    <div id="drift-results-list" class="mini-list">
+                                        <!-- Real drift warnings go here -->
+                                        <div class="text-dim p-4 text-center">Run migration to start analysis</div>
+                                    </div>
+                                </div>
+                                <div class="panel border-subtle">
+                                    <h4 class="mb-4 text-cyan text-sm tracking-wider">PATH SIMULATION TEST</h4>
+                                    <div id="sim-results-list" class="mini-list">
+                                        <!-- Simulation results go here -->
+                                        <div class="text-dim p-4 text-center">Run migration to test traffic tuples</div>
+                                    </div>
+                                    <button class="btn ghost w-full mt-4" id="run-simulation-btn" disabled>Re-run Logic Simulation</button>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="data-table clean-table" id="report-rules-table">
                           <thead>
                              <tr>
                                <th>RULE NAME</th>
@@ -427,8 +458,41 @@
                         </div>
                         <div style="display: flex; gap: 1rem; margin-top: 1rem;">
                             <button class="btn primary">Save & Verify</button>
-                            <button class="btn ghost">Discard Changes</button>
+                            <button class="btn ghost" id="btn-purge-history">Purge History</button>
                         </div>
+                    </div>
+
+                    <!-- NEW: ROLE MANAGEMENT -->
+                    <div class="panel mx-auto" style="max-width: 800px; padding: 2.5rem; margin-top: 2rem;" id="panel-user-management">
+                        <div class="panel-header">
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-light);">USER MANAGEMENT</h3>
+                            <p style="margin: 0.5rem 0 1rem 0; color: var(--text-dim); font-size: 0.9rem;">Assign enterprise roles and maintain permission lists.</p>
+                        </div>
+                        <table class="data-table clean-table">
+                            <thead>
+                                <tr>
+                                    <th>USER</th>
+                                    <th>ROLE</th>
+                                    <th>STATUS</th>
+                                    <th style="text-align: right">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="text-main">attique@thecyberadviser.com</div><div class="text-dim text-xs">ID: USR-001</div></td>
+                                    <td><span class="badge blue">Super Admin</span></td>
+                                    <td><span class="text-green-neon text-xs">ACTIVE</span></td>
+                                    <td style="text-align: right"><button class="btn ghost btn-sm">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="text-main">auditor@client.com</div><div class="text-dim text-xs">ID: USR-042</div></td>
+                                    <td><span class="badge info">Read-Only</span></td>
+                                    <td><span class="text-green-neon text-xs">ACTIVE</span></td>
+                                    <td style="text-align: right"><button class="btn ghost btn-sm">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn ghost w-full mt-4">+ Invite New User</button>
                     </div>
                 </div>
             </section>

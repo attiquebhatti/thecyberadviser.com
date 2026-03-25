@@ -10,11 +10,11 @@ export function CTASection() {
       <div className="relative">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-3 mb-8">
-            <div className="h-px w-12 bg-gradient-to-r from-amber-500/0 to-amber-500" />
-            <span className="text-amber-500 text-sm font-semibold uppercase tracking-[0.2em]">
+            <div className="h-px w-12 bg-gradient-to-r from-[#FFC300]/0 to-[#FFC300]" />
+            <span className="text-[#FFC300] text-sm font-semibold uppercase tracking-[0.2em]">
               Get Started
             </span>
-            <div className="h-px w-12 bg-gradient-to-r from-amber-500 to-amber-500/0" />
+            <div className="h-px w-12 bg-gradient-to-r from-[#FFC300] to-[#FFC300]/0" />
           </div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight">

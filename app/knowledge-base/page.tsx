@@ -1,7 +1,9 @@
-"use client"; // This is required to make the buttons interactive in Next.js
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 // THE MASSIVE ENTERPRISE ARTICLE DATABASE (55 Articles)
 const articles = [
@@ -77,27 +79,33 @@ const articles = [
   { category: 'ARCHITECTURE', title: 'Developing a CSPM Strategy', description: 'Cloud Security Posture Management: Architecting automated compliance tracking in multi-cloud deployments.', date: '2025-12-10', slug: 'developing-cspm-strategy' }
 ];
 
-export default function KnowledgeBase() {
-  // STATE: This tracks which tab is currently selected
+function KnowledgeBaseContent() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState('ALL ARTICLES');
 
-  // FILTER LOGIC: Decides which articles to show based on the active tab
+  useEffect(() => {
+    const category = searchParams.get('category');
+    if (category) {
+      const normalizedCategory = category.toUpperCase().replace('+', ' ');
+      const validTabs = ['ALL ARTICLES', 'PALO ALTO', 'CHECK POINT', 'FORTINET', 'ARCHITECTURE'];
+      if (validTabs.includes(normalizedCategory)) {
+        setActiveTab(normalizedCategory);
+      } else {
+        setActiveTab('ALL ARTICLES');
+      }
+    }
+  }, [searchParams]);
+
   const filteredArticles = articles.filter(article => {
     if (activeTab === 'ALL ARTICLES') return true;
-    
-    // Group all Palo Alto products under one tab
     if (activeTab === 'PALO ALTO') {
       return ['PRISMA ACCESS', 'PRISMA SD-WAN', 'CORTEX XSOAR', 'CORTEX XDR', 'STRATA NGFW'].includes(article.category);
     }
-    
-    // For Check Point, Fortinet, and Architecture, match exactly
     return article.category === activeTab;
   });
 
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
-
-      {/* 1. KNOWLEDGE BASE HEADER */}
       <section className="w-full pt-32 pb-14 px-8 text-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/5 via-[#000814] to-[#000814]">
         <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tighter mb-6">
           Technical <span className="text-slate-500">Knowledge Base</span>
@@ -107,7 +115,6 @@ export default function KnowledgeBase() {
         </p>
       </section>
 
-      {/* 2. INTERACTIVE FILTER TABS */}
       <nav className="w-full border-y border-white/10 bg-[#001D3D]/30 sticky top-0 z-40 backdrop-blur-md">
         <div className="max-w-[1200px] mx-auto px-8 flex flex-wrap justify-start md:justify-center items-center gap-5 md:gap-10 py-5 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {['ALL ARTICLES', 'PALO ALTO', 'CHECK POINT', 'FORTINET', 'ARCHITECTURE'].map((tab) => (
@@ -125,26 +132,42 @@ export default function KnowledgeBase() {
         </div>
       </nav>
 
-      {/* 3. DYNAMIC ARTICLE GRID */}
       <section className="w-full max-w-[1200px] mx-auto px-8 py-16 min-h-[600px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"
+        >
           {filteredArticles.map((article, index) => (
-            <div key={index} className="bg-[#003566]/40 border border-[#003566] p-7 flex flex-col h-full hover:border-[#FFC300]/50 transition-all duration-500 shadow-2xl relative group">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500"></div>
-
+            <motion.div 
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0 }
+              }}
+              whileHover={{ y: -10, transition: { duration: 0.3 } }}
+              className="bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] p-7 flex flex-col h-full hover:border-[#FFC300]/50 transition-all duration-500 shadow-2xl relative group rounded-2xl overflow-hidden hover:shadow-[#FFC300]/10"
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
               <span className="text-[#FFC300] font-mono text-xs font-black uppercase tracking-widest mb-4 block">
                 {article.category}
               </span>
-
               <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFD60A] transition-colors">
                 {article.title}
               </h2>
-
               <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
                 {article.description}
               </p>
-
               <div className="pt-6 border-t border-white/5 flex justify-between items-center">
                 <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
                   {article.date}
@@ -153,12 +176,10 @@ export default function KnowledgeBase() {
                   READ <span className="transition-transform group-hover/link:translate-x-1">→</span>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
+        </motion.div>
 
-        </div>
-
-        {/* Empty State Fallback */}
         {filteredArticles.length === 0 && (
           <div className="text-center py-20">
             <h3 className="text-2xl text-white font-bold mb-4">No articles found in this category.</h3>
@@ -166,7 +187,14 @@ export default function KnowledgeBase() {
           </div>
         )}
       </section>
-
     </main>
+  );
+}
+
+export default function KnowledgeBase() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#000814]" />}>
+      <KnowledgeBaseContent />
+    </Suspense>
   );
 }

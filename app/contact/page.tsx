@@ -46,7 +46,9 @@ export default function ContactPage() {
       <section className="relative w-full max-w-[1200px] mx-auto px-8 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
           {/* Left: Direct channel */}
-          <div className="rounded-2xl border border-[#003566] bg-[#001D3D]/20 p-8 md:p-10">
+          <div className="relative rounded-2xl border border-[#003566] bg-[#001D3D]/40 p-8 md:p-10 shadow-2xl shadow-black/20 group transition-all duration-500 hover:border-[#FFC300]/50 hover:shadow-[#FFC300]/10 hover:scale-[1.01] overflow-hidden">
+            {/* interactive top highlight */}
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
             <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">
               Direct channel
             </h2>

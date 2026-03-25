@@ -9,11 +9,10 @@ export const metadata: Metadata = {
 export default function ToolsPage() {
   return (
     <>
-      <Section className="pt-24 pb-4 md:pt-28 md:pb-6 lg:pt-32 lg:pb-8">
+      <Section className="pt-32 pb-8">
         <SectionHeader
-          eyebrow="Tools"
           title="Unified Migration"
-          description="A powerful tool for managing and visualizing firewall configurations and migrations."
+          align="left"
           className="max-w-4xl"
         />
       </Section>

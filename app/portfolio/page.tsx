@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Section, SectionHeader } from '@/components/layout/Section';
-import { CTAButton } from '@/components/shared/CTAButton';
 import {
   Globe as GlobeIcon,
   Network,
@@ -238,8 +238,19 @@ const highlights = [
   'FortiGate and Check Point enterprise security delivery',
 ];
 
-export default function PortfolioPage() {
+function PortfolioContent() {
+  const searchParams = useSearchParams();
   const [activeFilter, setActiveFilter] = useState<FilterOption>('All');
+
+  useEffect(() => {
+    const filter = searchParams.get('filter');
+    if (filter) {
+      const validFilters = filterOptions as readonly string[];
+      if (validFilters.includes(filter)) {
+        setActiveFilter(filter as FilterOption);
+      }
+    }
+  }, [searchParams]);
 
   const filteredProjects = useMemo(() => {
     if (activeFilter === 'All') return projects;
@@ -276,8 +287,8 @@ export default function PortfolioPage() {
             className="rounded-xl border border-white/[0.05] bg-white/[0.02] px-4 py-3"
           >
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
-                <CheckCircle2 className="h-3.5 w-3.5 text-amber-500" />
+              <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-[#FFC300]/10">
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#FFC300]" />
               </div>
               <p className="text-sm leading-relaxed text-slate-300">{item}</p>
             </div>
@@ -297,7 +308,7 @@ export default function PortfolioPage() {
               className={[
                 'rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300',
                 isActive
-                  ? 'border-amber-400/40 bg-amber-500/10 text-amber-400'
+                   ? 'border-[#FFC300]/40 bg-[#FFC300]/10 text-[#FFC300]'
                   : 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:border-white/[0.14] hover:text-white',
               ].join(' ')}
             >
@@ -331,11 +342,13 @@ export default function PortfolioPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group relative rounded-2xl border border-white/[0.04] bg-white/[0.01] p-6 transition-all duration-500 hover:border-white/[0.08] hover:bg-white/[0.02] md:p-8"
+                className="group relative rounded-2xl border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl p-6 transition-all duration-500 hover:border-[#FFC300]/40 hover:scale-[1.01] shadow-2xl overflow-hidden md:p-8"
               >
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
+
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-500">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#FFC300]">
                       {project.category}
                     </p>
                     <h3 className="text-2xl font-semibold text-white">
@@ -343,7 +356,7 @@ export default function PortfolioPage() {
                     </h3>
                   </div>
 
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[#FFC300]/10 text-[#FFC300]">
                     <project.icon className="h-6 w-6" />
                   </div>
                 </div>
@@ -353,14 +366,14 @@ export default function PortfolioPage() {
                 </p>
 
                 <div className="mt-6">
-                  <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-amber-500">
+                  <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-[#FFC300]">
                     Key Outcomes
                   </h4>
                   <ul className="space-y-3">
                     {project.scope.map((item) => (
                       <li key={item} className="flex items-start gap-3">
-                        <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-amber-500/10">
-                          <CheckCircle2 className="h-3 w-3 text-amber-500" />
+                        <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-[#FFC300]/10">
+                          <CheckCircle2 className="h-3 w-3 text-[#FFC300]" />
                         </div>
                         <span className="text-sm text-slate-300">{item}</span>
                       </li>
@@ -373,5 +386,13 @@ export default function PortfolioPage() {
         </motion.div>
       </div>
     </Section>
+  );
+}
+
+export default function PortfolioPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#000814]" />}>
+      <PortfolioContent />
+    </Suspense>
   );
 }

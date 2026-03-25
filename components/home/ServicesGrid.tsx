@@ -77,30 +77,30 @@ export function ServicesGrid() {
             <Link
               key={service.title}
               href={service.href}
-              className="group relative"
+              className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.01] hover:shadow-[#FFC300]/10"
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 rounded-2xl border border-white/[0.04] group-hover:border-white/[0.08] transition-colors duration-500" />
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-              </div>
+              <div className="absolute inset-0 bg-white/[0.02] group-hover:bg-[#FFC300]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 border border-white/[0.04] group-hover:border-[#FFC300]/30 transition-colors duration-500" />
+              
+              {/* interactive top highlight */}
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
 
               <div className="relative p-8 md:p-10 flex gap-6">
                 <div className="flex-shrink-0">
-                  <div className="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/15 transition-colors duration-300">
-                    <service.icon className="w-7 h-7 text-amber-500" />
+                  <div className="w-14 h-14 rounded-xl bg-[#FFC300]/10 flex items-center justify-center group-hover:bg-[#FFC300]/20 transition-colors duration-300">
+                    <service.icon className="w-7 h-7 text-[#FFC300]" />
                   </div>
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-white group-hover:text-amber-500 transition-colors duration-300">
+                      <h3 className="text-xl font-semibold text-white group-hover:text-[#FFC300] transition-colors duration-300">
                         {service.title}
                       </h3>
                       <div className="text-sm text-slate-500 mt-1">{service.subtitle}</div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-amber-500 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 mt-1" />
+                    <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-[#FFC300] group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 mt-1" />
                   </div>
                   <p className="mt-3 text-slate-400 leading-relaxed">
                     {service.description}

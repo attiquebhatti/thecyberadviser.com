@@ -33,8 +33,8 @@ export function Footer() {
               className="group flex items-center gap-3 text-white font-semibold text-lg"
             >
               <div className="relative w-9 h-9 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-lg" />
-                <Shield className="relative w-5 h-5 text-amber-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FFC300]/20 to-[#FFB703]/10 rounded-lg" />
+                <Shield className="relative w-5 h-5 text-[#FFC300]" />
               </div>
               <span className="tracking-tight">The Cyber Adviser</span>
             </Link>
@@ -46,22 +46,24 @@ export function Footer() {
 
             <div className="flex items-center gap-2 mt-8">
               <a
-                href="#"
-                className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/[0.03] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/10 transition-all duration-300"
+                href="https://www.linkedin.com/in/attiquebhatti/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] text-slate-400 hover:text-[#FFC300] hover:border-[#FFC300]/40 transition-all duration-300 shadow-lg"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/[0.03] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/10 transition-all duration-300"
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] text-slate-400 hover:text-white hover:border-white/20 transition-all duration-300 shadow-lg"
                 aria-label="Twitter"
               >
                 <Twitter className="w-4 h-4" />
               </a>
               <a
-                href="mailto:contact@thecyberadviser.com"
-                className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/[0.03] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/10 transition-all duration-300"
+                href="mailto:attique@thecyberadviser.com"
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] text-slate-400 hover:text-[#FFC300] hover:border-[#FFC300]/40 transition-all duration-300 shadow-lg"
                 aria-label="Email"
               >
                 <Mail className="w-4 h-4" />
@@ -70,7 +72,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-[0.15em] mb-5">
+            <h4 className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
               Navigation
             </h4>
             <ul className="space-y-3.5">
@@ -88,7 +90,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-[0.15em] mb-5">
+            <h4 className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
               Resources
             </h4>
             <ul className="space-y-3.5">
@@ -106,7 +108,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-[0.15em] mb-5">
+            <h4 className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
               Expertise
             </h4>
             <ul className="space-y-3.5">
