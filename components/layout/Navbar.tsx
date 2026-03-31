@@ -4,12 +4,23 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Shield, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
+  {
+    href: '/about',
+    label: 'About',
+    activePaths: ['/about', '/portfolio'],
+    children: [
+      { href: '/about', label: 'About The Cyber Adviser', description: 'Background, focus areas, and advisory approach' },
+      { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access', description: 'Cloud-delivered security' },
+      { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN', description: 'Branch transformation' },
+      { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations', description: 'Automation and XDR' },
+      { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security', description: 'NGFW and segmentation' },
+    ]
+  },
   { href: '/services', label: 'Services' },
   { 
     href: '/knowledge-base', 
@@ -22,13 +33,13 @@ const navItems = [
     ]
   },
   { 
-    href: '/portfolio', 
-    label: 'Portfolio',
+    href: '/blogs', 
+    label: 'Blogs',
     children: [
-      { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access', description: 'Cloud-delivered security' },
-      { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN', description: 'Branch transformation' },
-      { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations', description: 'Automation and XDR' },
-      { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security', description: 'NGFW and segmentation' },
+      { href: '/blogs?category=STRATA', label: 'Strata Security', description: 'NGFW and network resilience' },
+      { href: '/blogs?category=PRISMA', label: 'Prisma SASE', description: 'Coud-delivered network security' },
+      { href: '/blogs?category=CORTEX', label: 'Cortex Operations', description: 'AI-driven detection and response' },
+      { href: '/blogs?category=PANORAMA', label: 'Network Management', description: 'Centralized policy orchestration' },
     ]
   },
   { 
@@ -46,6 +57,11 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const pathname = usePathname();
+
+  const isItemActive = (item: (typeof navItems)[number]) => {
+    const paths = item.activePaths ?? [item.href];
+    return !!pathname && paths.some((path) => pathname === path || (path !== '/' && pathname.startsWith(path)));
+  };
 
   const toggleExpanded = (label: string) => {
     setExpandedItem(expandedItem === label ? null : label);
@@ -88,61 +104,75 @@ export function Navbar() {
         )}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-24 md:h-32">
+          <div className="flex items-center h-24 md:h-[6.75rem]">
             <Link
               href="/"
-              className="group flex items-center gap-3 text-white hover:opacity-90 transition-all duration-300 min-w-0"
+              className="group hidden lg:flex shrink-0 items-center pr-6 xl:pr-8 text-white transition-all duration-300 hover:opacity-90"
             >
-              <div className="flex flex-col leading-tight min-w-0 py-1">
+              <div className="flex items-center py-1">
                 <Image 
-                  src="/images/logo-wide.png" 
+                  src="/images/header-logo.png" 
                   alt="The Cyber Adviser" 
-                  width={600} 
-                  height={150} 
-                  className="h-16 md:h-28 w-auto object-contain brightness-110 contrast-[1.05] drop-shadow-2xl"
+                  width={430} 
+                  height={465} 
+                  className="h-[4.75rem] xl:h-[5.1rem] w-auto shrink-0 object-contain drop-shadow-2xl"
                   priority
                 />
               </div>
             </Link>
 
-            <div className="hidden lg:flex items-center gap-1">
+            <Link
+              href="/"
+              className="group lg:hidden flex min-w-0 items-center gap-3 text-white transition-all duration-300 hover:opacity-90"
+            >
+              <Image 
+                src="/images/header-logo.png" 
+                alt="The Cyber Adviser" 
+                width={430} 
+                height={465} 
+                className="h-14 w-auto object-contain drop-shadow-2xl"
+                priority
+              />
+            </Link>
+
+            <div className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-6 xl:gap-8">
               {navItems.map((item) => (
                 <div key={item.label} className="relative group/nav">
                   {item.children ? (
                     <>
                       <button
                         className={cn(
-                          'relative px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1.5',
-                          pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
+                          'relative flex items-center gap-1.5 whitespace-nowrap px-0 py-2 text-[0.96rem] font-medium tracking-[0.01em] transition-all duration-300',
+                          isItemActive(item)
                             ? 'text-[#FFC300]'
-                            : 'text-slate-400 group-hover/nav:text-[#FFC300]'
+                            : 'text-slate-300 group-hover/nav:text-[#FFC300]'
                         )}
                       >
                         {item.label}
-                        <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover/nav:opacity-100 transition-all duration-300 group-hover/nav:rotate-180" />
+                        <ChevronDown className="h-3.5 w-3.5 opacity-50 text-[#FFC300] transition-all duration-300 group-hover/nav:rotate-180 group-hover/nav:opacity-100" />
                         <span
                           className={cn(
-                            'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FFC300] to-transparent transition-opacity duration-300',
-                            pathname && (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
+                            'absolute left-1/2 -bottom-1 h-[2px] w-12 -translate-x-1/2 bg-[#FFC300] transition-opacity duration-300',
+                            isItemActive(item) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
                           )}
                         />
                       </button>
 
                       {/* Dropdown Menu */}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
-                        <div className="w-72 bg-obsidian-900/60 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-2 overflow-hidden">
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
+                        <div className="w-80 bg-obsidian-900/80 backdrop-blur-3xl border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2.5 overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-br from-[#FFC300]/5 to-transparent pointer-events-none" />
                           {item.children.map((child) => (
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="relative flex flex-col gap-0.5 px-4 py-3 rounded-xl hover:bg-white/[0.04] transition-all group/item"
+                              className="relative flex flex-col gap-0.5 px-4 py-3.5 rounded-xl hover:bg-white/[0.05] transition-all group/item"
                             >
-                              <span className="text-sm font-semibold text-slate-200 group-hover/item:text-[#FFC300] transition-colors">
+                              <span className="text-sm font-bold text-slate-200 group-hover/item:text-[#FFC300] transition-colors">
                                 {child.label}
                               </span>
                               {child.description && (
-                                <span className="text-[11px] text-slate-500 group-hover/item:text-slate-400 transition-colors">
+                                <span className="text-[11px] text-slate-500 group-hover/item:text-slate-400 transition-colors leading-tight">
                                   {child.description}
                                 </span>
                               )}
@@ -155,16 +185,16 @@ export function Navbar() {
                     <Link
                       href={item.href}
                       className={cn(
-                        'relative px-4 py-2 text-sm font-medium transition-all duration-300',
+                        'relative whitespace-nowrap px-0 py-2 text-[0.96rem] font-medium tracking-[0.01em] transition-all duration-300',
                         pathname === item.href
                           ? 'text-[#FFC300]'
-                          : 'text-slate-400 hover:text-[#FFC300]'
+                          : 'text-slate-300 hover:text-[#FFC300]'
                       )}
                     >
                       {item.label}
                       <span
                         className={cn(
-                          'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FFC300] to-transparent transition-opacity duration-300',
+                          'absolute left-1/2 -bottom-1 h-[2px] w-12 -translate-x-1/2 bg-[#FFC300] transition-opacity duration-300',
                           pathname === item.href ? 'opacity-100' : 'opacity-0 hover:opacity-100'
                         )}
                       />
@@ -174,14 +204,14 @@ export function Navbar() {
               ))}
             </div>
 
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex shrink-0 pl-6 xl:pl-8">
               <Link
                 href="/contact"
-                className="group relative inline-flex items-center px-6 py-2.5 text-sm font-semibold overflow-hidden rounded-lg transition-all duration-300 shadow-lg shadow-[#FFC300]/10"
+                className="group relative inline-flex items-center whitespace-nowrap overflow-hidden rounded-2xl px-8 py-3 text-[0.96rem] font-semibold text-obsidian-950 transition-all duration-300 shadow-[0_0_20px_rgba(255,195,0,0.15)] hover:shadow-[0_0_30px_rgba(255,195,0,0.25)]"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-[#FFC300] to-[#FFB703]" />
                 <span className="absolute inset-0 bg-gradient-to-r from-[#FFD60A] to-[#FFC300] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative text-obsidian-950">
+                <span className="relative whitespace-nowrap">
                   Schedule Consultation
                 </span>
               </Link>
@@ -235,7 +265,7 @@ export function Navbar() {
                         onClick={() => toggleExpanded(item.label)}
                         className={cn(
                           'flex items-center justify-between px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-300',
-                          pathname && (pathname === item.href || pathname.startsWith(item.href))
+                          isItemActive(item)
                             ? 'text-[#FFC300] bg-[#FFC300]/5'
                             : 'text-slate-300 hover:bg-white/[0.03]'
                         )}

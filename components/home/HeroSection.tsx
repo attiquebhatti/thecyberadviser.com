@@ -170,6 +170,23 @@ export function HeroSection() {
             transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="relative group"
           >
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.55 }}
+              className="mb-5 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 py-4 backdrop-blur-xl"
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#FFC300]">
+                Advisory Profile
+              </p>
+              <p className="mt-2 text-sm font-medium text-slate-200 md:text-[15px]">
+                Network Security | Cloud Security | Cyber Security
+              </p>
+              <p className="mt-1 text-sm text-slate-400 md:text-[15px]">
+                Attique Bhatti | Enterprise Security Consultant
+              </p>
+            </motion.div>
+
             <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#FFC300]/8 via-transparent to-[#FFC300]/4 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             
             <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl p-1 shadow-2xl transition-all duration-500 group-hover:border-[#FFC300]/40 group-hover:shadow-[#FFC300]/5 group-hover:scale-[1.01]">
