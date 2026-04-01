@@ -9,27 +9,21 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  {
-    href: '/about',
-    label: 'About',
-    activePaths: ['/about', '/portfolio'],
-    children: [
-      { href: '/about', label: 'About The Cyber Adviser', description: 'Background, focus areas, and advisory approach' },
-      { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access', description: 'Cloud-delivered security' },
-      { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN', description: 'Branch transformation' },
-      { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations', description: 'Automation and XDR' },
-      { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security', description: 'NGFW and segmentation' },
-    ]
-  },
+  { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { 
     href: '/knowledge-base', 
     label: 'Knowledge Base',
+    activePaths: ['/knowledge-base', '/portfolio'],
     children: [
       { href: '/knowledge-base?category=PALO+ALTO', label: 'Palo Alto Networks', description: 'Prisma, Cortex, and Strata' },
       { href: '/knowledge-base?category=CHECK+POINT', label: 'Check Point', description: 'Infinity and Quantum solutions' },
       { href: '/knowledge-base?category=FORTINET', label: 'Fortinet', description: 'Security Fabric and FortiGate' },
       { href: '/knowledge-base?category=ARCHITECTURE', label: 'Architecture', description: 'Zero Trust and SASE patterns' },
+      { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access', description: 'Cloud-delivered security delivery highlights' },
+      { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN', description: 'Branch transformation delivery highlights' },
+      { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations', description: 'Automation and XDR implementation highlights' },
+      { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security', description: 'NGFW and segmentation implementation highlights' },
     ]
   },
   { 
