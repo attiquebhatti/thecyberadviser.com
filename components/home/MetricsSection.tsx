@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Section } from '@/components/layout/Section';
 
 export function MetricsSection() {
@@ -27,6 +28,33 @@ export function MetricsSection() {
                 Enterprise-grade security outcomes delivered through strategic
                 architecture, proven methodologies, and deep operational expertise.
               </p>
+
+              <div className="mt-10 overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
+                <div className="relative overflow-hidden rounded-[1rem] border border-white/[0.05]">
+                  <div className="relative aspect-[16/10]">
+                    <Image
+                      src="/images/slides/slide-1.png"
+                      alt="Enterprise security reference design"
+                      fill
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 border-t border-white/[0.06] bg-obsidian-950/90 px-4 py-4">
+                    <div>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Scope</p>
+                      <p className="mt-1 text-xs font-semibold text-slate-300">Enterprise</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Pattern</p>
+                      <p className="mt-1 text-xs font-semibold text-slate-300">Zero Trust</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Mode</p>
+                      <p className="mt-1 text-xs font-semibold text-slate-300">Operational</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

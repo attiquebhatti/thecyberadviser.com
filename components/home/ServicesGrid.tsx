@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
 import { Shield, Network, Cloud, Users, Workflow, ArrowRight } from 'lucide-react';
@@ -52,24 +53,61 @@ export function ServicesGrid() {
       <div className="absolute inset-0 bg-obsidian-950" />
 
       <div className="relative">
-        <div className="max-w-3xl mb-20">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="h-px w-12 bg-gradient-to-r from-amber-500 to-amber-500/0" />
-            <span className="text-amber-500 text-sm font-semibold uppercase tracking-[0.2em]">
-              Services
-            </span>
+        <div className="mb-20 grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7 max-w-3xl">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <div className="h-px w-12 bg-gradient-to-r from-amber-500 to-amber-500/0" />
+              <span className="text-amber-500 text-sm font-semibold uppercase tracking-[0.2em]">
+                Services
+              </span>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-[1.1] tracking-tight mb-6">
+              Strategic Security
+              <br />
+              <span className="text-slate-400">Expertise</span>
+            </h2>
+
+            <p className="text-xl text-slate-400 leading-relaxed">
+              Comprehensive advisory services spanning architecture, transformation,
+              and executive alignment for enterprises navigating complex security challenges.
+            </p>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-white leading-[1.1] tracking-tight mb-6">
-            Strategic Security
-            <br />
-            <span className="text-slate-400">Expertise</span>
-          </h2>
-
-          <p className="text-xl text-slate-400 leading-relaxed">
-            Comprehensive advisory services spanning architecture, transformation,
-            and executive alignment for enterprises navigating complex security challenges.
-          </p>
+          <div className="lg:col-span-5">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1rem]">
+                  <Image
+                    src="/images/slides/slide-3.png"
+                    alt="SASE architecture design"
+                    fill
+                    className="object-cover object-center"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1rem]">
+                    <Image
+                      src="/images/slides/slide-4.png"
+                      alt="Cortex XDR visibility"
+                      fill
+                      className="object-cover object-center"
+                    />
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-[#FFC300]/15 bg-[#FFC300]/[0.04] px-5 py-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#FFC300]">
+                    Delivery Lens
+                  </p>
+                  <p className="mt-2 text-sm text-slate-300">
+                    Architecture guidance backed by platform-level operational context.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-4">

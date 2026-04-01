@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
 
@@ -54,7 +55,37 @@ export function PhilosophySection() {
 
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-40">
-              <div className="relative">
+              <div className="space-y-6">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-obsidian-900/40 p-2">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FFC300]/10 via-transparent to-transparent" />
+                  <div className="relative overflow-hidden rounded-[1.1rem] border border-white/[0.05] bg-obsidian-950">
+                    <div className="absolute inset-x-0 top-0 z-10 h-1 bg-gradient-to-r from-[#FFC300]/70 via-[#FFD60A] to-[#FFC300]/70" />
+                    <div className="relative aspect-[4/3]">
+                      <Image
+                        src="/images/home-architecture2.jpg"
+                        alt="Enterprise security architecture preview"
+                        fill
+                        className="object-cover object-center"
+                      />
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 border-t border-white/[0.06] bg-white/[0.02] px-5 py-4">
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Design</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-300">Reference Patterns</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Focus</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-300">Secure Access</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Outcome</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-300">Operational Clarity</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative">
                 <div className="absolute -inset-8 bg-gradient-to-br from-[#FFC300]/10 via-transparent to-transparent blur-3xl opacity-40" />
 
                 <div className="relative rounded-2xl border border-white/[0.06] overflow-hidden group transition-all duration-500 hover:border-[#FFC300]/30 hover:shadow-[#FFC300]/5">
@@ -86,6 +117,7 @@ export function PhilosophySection() {
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
