@@ -3,6 +3,7 @@ import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
 import { Shield, Network, Cloud, Users, Workflow, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { VendorIcon } from '@/components/shared/VendorLogos';
 
 const services = [
   {
@@ -12,14 +13,16 @@ const services = [
     description:
       'Comprehensive Zero Trust architecture design and implementation roadmaps tailored to enterprise environments.',
     href: '/services',
+    vendors: ['Palo Alto Networks', 'Zscaler']
   },
   {
     icon: Network,
     title: 'SASE',
     subtitle: 'Transformation',
     description:
-      'Strategic guidance on Secure Access Service Edge adoption, including Prisma Access deployment and optimization.',
+      'Strategic guidance on Secure Access Service Edge adoption, including Prisma Access and Netskope deployment.',
     href: '/services',
+    vendors: ['Palo Alto Networks', 'Netskope']
   },
   {
     icon: Cloud,
@@ -28,6 +31,7 @@ const services = [
     description:
       'Multi-cloud security posture management, workload protection, and cloud-native security architecture.',
     href: '/services',
+    vendors: ['Microsoft Azure', 'Amazon Web Services', 'Google Cloud']
   },
   {
     icon: Users,
@@ -36,14 +40,16 @@ const services = [
     description:
       'Board-level security strategy, risk communication, and alignment of security investments with business objectives.',
     href: '/services',
+    vendors: ['Check Point', 'CrowdStrike']
   },
   {
     icon: Workflow,
     title: 'Security Automation',
     subtitle: 'Cortex XSOAR & XSIAM',
     description:
-      'Security orchestration, automation, and response (SOAR) implementation with Cortex XSOAR and extended security intelligence with XSIAM.',
+      'Security orchestration, automation, and response (SOAR) implementation with Cortex XSOAR and XSIAM.',
     href: '/services',
+    vendors: ['Palo Alto Networks', 'Fortigate']
   },
 ];
 
@@ -143,6 +149,18 @@ export function ServicesGrid() {
                   <p className="mt-3 text-slate-400 leading-relaxed">
                     {service.description}
                   </p>
+
+                  {/* Vendor Logos */}
+                  <div className="mt-6 flex items-center gap-4 border-t border-white/5 pt-6">
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-600">Powered By</span>
+                    <div className="flex items-center gap-3">
+                      {service.vendors.map((vendor) => (
+                        <div key={vendor} className="w-5 h-5 text-slate-500 group-hover:text-slate-300 transition-colors" title={vendor}>
+                          <VendorIcon name={vendor} className="w-full h-full" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </Link>

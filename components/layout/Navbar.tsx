@@ -40,7 +40,9 @@ const navItems = [
     href: '/tools', 
     label: 'Tools',
     children: [
-      { href: '/tools', label: 'Unified Migration', description: 'Firewall config converter' }
+      { href: '/tools/unified-migration', label: 'Unified Migration', description: 'Firewall config converter' },
+      { href: '/tools/prisma-access-sizing', label: 'Prisma Access Sizing Calculator', description: 'Interactive Prisma Access estimator' },
+      { href: '/tools/siem-sizing', label: 'SIEM Sizing Calculator', description: 'Estimate storage, compute, and architecture' }
     ]
   },
   { href: '/contact', label: 'Contact' },
@@ -328,3 +330,4 @@ export function Navbar() {
     </>
   );
 }
+

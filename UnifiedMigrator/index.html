@@ -401,15 +401,27 @@
                 </div>
             </section>
 
-            <!-- VIEW: AUDIT LOG -->
+            <!-- VIEW: AUDIT LOG (COMPLIANCE TIMELINE) -->
             <section id="view-audit" class="view-section">
                 <div class="panel">
                    <div class="panel-header space-between">
-                      <h3 style="letter-spacing: 2px; color: var(--text-muted)">IMMUTABLE ACTIVITY LOG</h3>
-                      <button class="btn ghost">Export JSON</button>
+                      <div>
+                        <h3 style="letter-spacing: 2px; color: var(--text-muted)">COMPLIANCE EVIDENCE TRAIL</h3>
+                        <p class="text-xs text-dim mt-1">Immutable SHA-256 Hashing Chain &bull; SOC2 Readiness</p>
+                      </div>
+                      <div class="flex gap-2">
+                        <button class="btn ghost btn-sm" id="btn-validate-integrity" style="border-color: var(--cyan-dim)">Verify Chain Integrity</button>
+                        <button class="btn primary btn-sm" id="btn-export-evidence">Export Evidence Package</button>
+                      </div>
                    </div>
-                   <div class="audit-list" id="audit-list">
-                      <!-- Rendered by JS -->
+                   
+                   <div id="integrity-status-banner" class="hidden" style="margin: 1rem; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.75rem;">
+                      <!-- Status content injected here -->
+                   </div>
+
+                   <div class="compliance-timeline" id="audit-timeline">
+                      <!-- Timeline nodes injected by JS -->
+                      <div class="text-center p-12 text-dim">Loading secure evidence chain...</div>
                    </div>
                 </div>
             </section>

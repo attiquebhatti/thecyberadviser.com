@@ -11,7 +11,7 @@ import { OutputCheckpointGenerator } from './generators/out_checkpoint.js';
 import { BehavioralEngine } from './validation/engine.js';
 import { TrafficSimulator } from './validation/simulator.js';
 import { ROLES, PERMISSIONS, hasPermission } from './auth/roles.js';
-import { AuditLogger } from './auth/audit.js';
+import { AuditService, AuditAction } from './auth/auditService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const auditLogger = new AuditLogger();
+    // auditLogger initialization removed in favor of static AuditService
 
     function loadState() {
         const saved = localStorage.getItem('unifiedMigratorState');
@@ -79,13 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetState() {
         if (!hasPermission(appState.currentUser.role, PERMISSIONS.INSIGHTS_RESET)) {
             alert('Access Denied: You do not have permission to reset system insights.');
-            auditLogger.log(appState.currentUser, 'RESET_DENIED', { attempt: 'System Reset' });
+            AuditService.log(appState.currentUser.role, AuditAction.LOGIN_FAIL, 'System Reset', { reason: 'Insufficient Permissions' }, false);
             return;
         }
 
         if(confirm('Are you sure you want to reset all insights, jobs, and history?')) {
             localStorage.removeItem('unifiedMigratorState');
-            auditLogger.log(appState.currentUser, 'INSIGHTS_RESET', { scope: 'Full Data Purge' });
+            AuditService.log(appState.currentUser.role, AuditAction.VAULT_WIPE, 'System State', { scope: 'Full Data Purge' });
             appState = { 
                 jobs: [], 
                 auditConfigUploads: 0, 
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             appState.currentUser.name = e.target.value === ROLES.AUDITOR ? 'Jane Auditor' : 'Attique Bhatti';
             
             applyPermissions();
-            auditLogger.log(appState.currentUser, 'ROLE_SWAP', { from: oldRole, to: e.target.value });
+            AuditService.log(appState.currentUser.role, AuditAction.ROLE_CHANGE, 'User Identity', { from: oldRole, to: e.target.value });
             saveState();
             renderAuditLogs();
         });
@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             switchView(item.getAttribute('data-view'));
+            if (item.getAttribute('data-view') === 'view-audit') renderAuditTimeline();
         });
     });
 
@@ -363,24 +364,84 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function renderAuditLogs() {
-        const auditList = document.getElementById('audit-list');
-        const logs = auditLogger.getLogs();
-        
-        if (logs.length === 0) {
-            auditList.innerHTML = '<div class="text-dim p-8 text-center">No audit records found.</div>';
+    async function renderAuditTimeline() {
+        const timeline = document.getElementById('audit-timeline');
+        if (!timeline) return;
+
+        const logs = await AuditStore.getLogs();
+        const reversedLogs = [...logs].reverse();
+
+        if (reversedLogs.length === 0) {
+            timeline.innerHTML = '<div class="text-center p-12 text-dim">No evidence records found in the current session.</div>';
             return;
         }
 
-        auditList.innerHTML = logs.map(log => `
-            <div class="audit-row">
-                <span class="audit-time">${log.timestamp.replace('T', ' ').split('.')[0]}</span>
-                <span class="audit-user">${log.userRole.split(' ')[0]}</span>
-                <span class="audit-event ${log.action.includes('RESET') ? 'warn' : ''}">${log.action}</span>
-                <span class="audit-target">${log.userName}</span>
-                <span class="status-txt conv">${log.status}</span>
-            </div>
-        `).join('');
+        timeline.innerHTML = reversedLogs.map(log => {
+            const dateStr = new Date(log.timestamp).toLocaleString();
+            const statusClass = log.success === false ? 'failure' : (log.action.includes('FAIL') || log.action.includes('REJECT') ? 'warning' : 'success');
+            const icon = log.success === false ? '!' : '✓';
+
+            return `
+                <div class="timeline-node ${statusClass}">
+                    <div class="timeline-icon">${icon}</div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-actor">@${log.actor}</span>
+                            <span class="timeline-time">${dateStr}</span>
+                        </div>
+                        <div class="timeline-action" style="color: ${log.success ? 'var(--cyan-accent)' : 'var(--err-neon)'}">${log.action}</div>
+                        <div class="timeline-target">${log.target}</div>
+                        ${log.details ? `<div class="timeline-details">${JSON.stringify(log.details)}</div>` : ''}
+                        <div class="timeline-hash">
+                            <span>Hash: ${log.hash.slice(0, 16)}...</span>
+                            <span style="opacity: 0.5;">Lnk: ${log.previousHash.slice(0, 12)}...</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    async function handleIntegrityCheck() {
+        const banner = document.getElementById('integrity-status-banner');
+        if (!banner) return;
+
+        banner.classList.remove('hidden', 'verified', 'tampered');
+        banner.innerHTML = '<span class="loading-spinner"></span> Verification in progress...';
+        banner.style.display = 'flex';
+
+        // Add a slight delay for UI feel
+        await new Promise(r => setTimeout(r, 800));
+
+        const result = await AuditStore.validateIntegrity();
+        
+        if (result.valid) {
+            banner.classList.add('verified');
+            banner.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Chain Integrity Verified: Seal is Intact. All hashing sequences match the cryptograph trail.</span>
+            `;
+        } else {
+            banner.classList.add('tampered');
+            banner.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>Tamper Detected: The log chain has been broken at item ${result. brokenIndex} (ID: ${result.entryId}). Evidence package invalidated.</span>
+            `;
+        }
+    }
+
+    async function handleEvidenceExport() {
+        const pkg = await AuditService.generateEvidencePackage();
+        const blob = new Blob([JSON.stringify(pkg, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `comliance_evidence_${new Date().getTime()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        AuditService.log(appState.currentUser.role, AuditAction.DOWNLOAD, 'Compliance Evidence Package', { packageId: pkg.packageId });
+        renderAuditTimeline();
     }
 
     // Init first tab
@@ -450,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
             uploadSuccess.classList.remove('hidden');
             fileNameDisplay.textContent = `${file.name} loaded [${(file.size/1024).toFixed(1)} KB]`;
             
-            auditLogger.log(appState.currentUser, 'CONFIG_LOAD', { fileName: file.name, size: file.size });
+            AuditService.log(appState.currentUser.role, AuditAction.UPLOAD, file.name, { size: file.size, type: file.type });
             
             // Generate Code Preview
             const lines = currentFileContent.split('\n').slice(0, 15);
@@ -594,7 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('xml-output').textContent = generatedOutput;
                 document.getElementById('output-modal').classList.remove('hidden');
 
-                auditLogger.log(appState.currentUser, 'MIGRATION_RUN', { jobId: newJobId, source: selectedSource, rules: ruleCount });
+                AuditService.log(appState.currentUser.role, AuditAction.MIGRATION_RUN, newJobId, { source: selectedSource, target: selectedTarget, rules: ruleCount, confidence: avgConfidence });
 
              } catch(e) {
                 alert("Error parsing config: " + e.message);
@@ -618,7 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = `migration_output_${Date.now()}${extType}`;
         a.click();
         URL.revokeObjectURL(url);
-        auditLogger.log(appState.currentUser, 'CONFIG_DOWNLOAD', { type: extType });
+        AuditService.log(appState.currentUser.role, AuditAction.DOWNLOAD, `Output File`, { type: extType });
     });
 
     document.getElementById('copy-xml-btn').addEventListener('click', (e) => {
@@ -628,27 +689,15 @@ document.addEventListener('DOMContentLoaded', () => {
         auditLogger.log(appState.currentUser, 'CONFIG_COPY');
     });
 
-    // Audit Export Implementation
-    document.getElementById('btn-export-audit')?.addEventListener('click', () => {
-        if (!hasPermission(appState.currentUser.role, PERMISSIONS.AUDIT_EXPORT)) return;
-        
-        const logs = auditLogger.getLogs();
-        const jsonString = JSON.stringify(logs, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `unified_migrator_audit_${new Date().toISOString().split('T')[0]}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        
-        auditLogger.log(appState.currentUser, 'AUDIT_EXPORT', { recordCount: logs.length });
-        renderAuditLogs(); // Show the export action itself
-    });
+        // New Compliance Listeners
+        document.getElementById('btn-validate-integrity')?.addEventListener('click', handleIntegrityCheck);
+        document.getElementById('btn-export-evidence')?.addEventListener('click', handleEvidenceExport);
+
+        renderAuditTimeline();
 
     // --- INITIALIZATION ---
     loadState();
     populateDashboard();
-    renderAuditLogs();
+    renderAuditTimeline();
     applyPermissions();
 });

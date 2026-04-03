@@ -1,0 +1,146 @@
+{
+  "metadata": {
+    "disclaimer": "Architectural estimate only. This embedded calculator uses editable heuristic assumptions and does not represent official Palo Alto Networks pricing, licensing, or final sizing guidance.",
+    "supportedRegions": [
+      "North America",
+      "Europe",
+      "Asia Pacific",
+      "Middle East",
+      "Latin America"
+    ]
+  },
+  "normalization": {
+    "throughputToGbps": {
+      "Mbps": 0.001,
+      "Gbps": 1
+    },
+    "defaultConcurrentRatio": 0.35,
+    "defaultBranchUsersPerSite": 100,
+    "branchWeights": {
+      "small": 1,
+      "medium": 3,
+      "large": 6
+    },
+    "branchBandwidthMbps": {
+      "small": 75,
+      "medium": 200,
+      "large": 600
+    },
+    "featureUplifts": {
+      "ademEnabled": 2,
+      "cleanPipeEnabled": 1,
+      "localBreakoutEnabled": 1
+    },
+    "branchUserBandwidthMbps": {
+      "perUser": 0.45,
+      "minimumPerSite": 25
+    },
+    "loggingStorageGbPerUserPerDay": 0.015,
+    "loggingRetentionDays": {
+      "7-days": 7,
+      "30-days": 30,
+      "90-days": 90,
+      "12-month": 365
+    },
+    "deploymentMultipliers": {
+      "ngfw": {
+        "branchBandwidth": 0.2,
+        "loggingStorage": 1
+      },
+      "remote-networks": {
+        "branchBandwidth": 1,
+        "loggingStorage": 1
+      },
+      "mobile-users": {
+        "branchBandwidth": 0.4,
+        "loggingStorage": 1
+      },
+      "ztna": {
+        "branchBandwidth": 0.45,
+        "loggingStorage": 0.7
+      },
+      "service-connections": {
+        "branchBandwidth": 0.5,
+        "loggingStorage": 0.55
+      },
+      "branch-offices": {
+        "branchBandwidth": 0.95,
+        "loggingStorage": 0.9
+      },
+      "mixed-deployment": {
+        "branchBandwidth": 1.1,
+        "loggingStorage": 1.1
+      }
+    },
+    "storageEstimation": {
+      "mobileUserGbPerUserPerDay": 0.023822,
+      "remoteNetworkGbPerMbpsPerDay": 0.097,
+      "ngfwGbPerLogRatePerSecondPerDay": 0.1965
+    }
+  },
+  "thresholds": {
+    "connectorsPerApps": [
+      { "maxApps": 10, "connectors": 2 },
+      { "maxApps": 25, "connectors": 4 },
+      { "maxApps": 60, "connectors": 6 },
+      { "maxApps": 999999, "connectors": 8 }
+    ],
+    "logging": [
+      { "option": "7-days", "recommendation": "Short retention suits lightweight operations or downstream SIEM-led monitoring." },
+      { "option": "30-days", "recommendation": "Thirty-day retention is a practical enterprise baseline for operations and investigations." },
+      { "option": "90-days", "recommendation": "Longer retention usually signals stronger compliance or SOC workflow expectations." },
+      { "option": "12-month", "recommendation": "Twelve-month retention is typically associated with audit-heavy environments and long-running investigation needs." }
+    ],
+    "minimumRegionsByRedundancy": {
+      "standard": 1,
+      "enhanced": 2,
+      "mission-critical": 2
+    },
+    "scoreBands": [
+      {
+        "maxScore": 20,
+        "tier": "Foundation",
+        "regions": 1,
+        "haModel": "single-region-standard",
+        "mobileGuidance": "A single-region estimate is often enough for early-stage or focused user deployments.",
+        "networkGuidance": "Group sites into compact onboarding waves and validate large site outliers separately.",
+        "ztnaGuidance": "Start with a minimal redundant connector set and confirm segmentation assumptions.",
+        "serviceGuidance": "Keep service connections aligned to core production paths."
+      },
+      {
+        "maxScore": 45,
+        "tier": "Scale",
+        "regions": 2,
+        "haModel": "dual-region-active-passive",
+        "mobileGuidance": "Distribute users across at least two regions and validate peak authentication bursts.",
+        "networkGuidance": "Separate standard and high-throughput sites for cleaner resilience planning.",
+        "ztnaGuidance": "Run redundant connectors per region with spare capacity for maintenance events.",
+        "serviceGuidance": "Map service connections to production and recovery environments."
+      },
+      {
+        "maxScore": 80,
+        "tier": "Enterprise Plus",
+        "regions": 3,
+        "haModel": "dual-region-active-active",
+        "mobileGuidance": "Model user affinity and failover load at a regional level rather than as one aggregate.",
+        "networkGuidance": "Use regional onboarding zones and isolate high-bandwidth branches for review.",
+        "ztnaGuidance": "Plan multi-region connector pools with explicit spare capacity.",
+        "serviceGuidance": "Distribute service connections across hybrid estates and validate east-west dependencies."
+      },
+      {
+        "maxScore": 999,
+        "tier": "Global Strategic",
+        "regions": 4,
+        "haModel": "regional-ha-plus-breakout",
+        "mobileGuidance": "Treat mobility, resilience, and traffic localization as separate global workstreams.",
+        "networkGuidance": "Break the deployment into regional programs and model concentration risk explicitly.",
+        "ztnaGuidance": "Plan connector pools per region with operational ownership and staged failover testing.",
+        "serviceGuidance": "Align service connections to global cloud and datacenter topology, including recovery patterns."
+      }
+    ],
+    "advisories": {
+      "highThroughputGbps": 20,
+      "mixedComplexityScore": 8
+    }
+  }
+}

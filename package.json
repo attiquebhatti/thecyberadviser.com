@@ -1,14 +1,73 @@
 {
-  "name": "nextjs",
-  "version": "0.1.0",
+  "name": "unified-migrator",
+  "version": "1.0.0",
   "private": true,
+  "main": "electron/main.cjs",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test:unified-migrator": "sucrase-node test/unified-migrator.test.ts",
+    "test:prisma-sizing": "sucrase-node test/prisma-sizing.test.ts",
+    "test:siem-sizing": "sucrase-node test/siem-sizing.test.ts",
+    "desktop:dev": "cross-env UNIFIED_MIGRATOR_DESKTOP_URL=http://localhost:3000 electron .",
+    "desktop:build": "next build && electron-builder --win",
+    "desktop:build-all": "next build && electron-builder --win --mac --linux",
     "postinstall": "next build"
+  },
+  "build": {
+    "appId": "com.thecyberadviser.unified-migrator",
+    "productName": "UnifiedMigrator",
+    "directories": {
+      "output": "dist-desktop"
+    },
+    "files": [
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": ".next/standalone",
+        "to": "app/.next/standalone"
+      },
+      {
+        "from": ".next/static",
+        "to": "app/.next/static"
+      },
+      {
+        "from": "public",
+        "to": "app/public"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "electron/assets/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "electron/assets/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "attiquebhatti",
+      "repo": "thecyberadviser.com"
+    }
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -71,5 +130,12 @@
     "typescript": "5.2.2",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "sucrase": "^3.34.0"
   }
 }
+

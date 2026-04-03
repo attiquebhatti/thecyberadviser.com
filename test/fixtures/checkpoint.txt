@@ -1,0 +1,7 @@
+add host name "web1" ip-address "10.20.30.40"
+add network name "dmz_net" subnet4 "10.20.30.0" mask-length4 "24"
+add group name "dmz_group"
+set group name "dmz_group" members.add "web1"
+add service-tcp name "HTTPS" port "443"
+add access-rule layer "Network" name "Allow-Web" position "top" source "dmz_group" destination "Any" service "HTTPS" action "Accept"
+add nat-rule package "Standard" position "top" original-source "dmz_group" translated-source "Hide-NAT" method "hide"

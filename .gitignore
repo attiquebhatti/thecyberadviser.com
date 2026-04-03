@@ -31,3 +31,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+dist-desktop/
+codex-next-dev.err.log
+codex-next-dev.out.log
+electron_build.log
+electron_build_dir.log
+git_log.txt
+test_err.txt
+test_errors.txt
+test_out.txt
+unified_utils_tmp_old.ts

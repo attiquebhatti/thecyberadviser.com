@@ -1,0 +1,14 @@
+Version 9.16(1)
+interface GigabitEthernet0/0
+ nameif outside
+interface GigabitEthernet0/1
+ nameif inside
+object network WEB01
+ host 10.0.0.10
+object-group network WEB-SERVERS
+ network-object object WEB01
+object service HTTPS
+ service tcp destination eq 443
+access-list outside_access_in extended permit tcp any object WEB01 eq 443 log
+nat (inside,outside) source dynamic WEB-SERVERS interface
+route outside 0.0.0.0 0.0.0.0 203.0.113.1 1
