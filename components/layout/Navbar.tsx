@@ -148,7 +148,7 @@ export function Navbar() {
                         <ChevronDown className="h-3.5 w-3.5 opacity-50 text-[#FFC300] transition-all duration-300 group-hover/nav:rotate-180 group-hover/nav:opacity-100" />
                         <span
                           className={cn(
-                            'absolute left-1/2 -bottom-1 h-[2px] w-12 -translate-x-1/2 bg-[#FFC300] transition-opacity duration-300',
+                            'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FFC300] to-transparent transition-opacity duration-300',
                             isItemActive(item) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
                           )}
                         />
@@ -190,7 +190,7 @@ export function Navbar() {
                       {item.label}
                       <span
                         className={cn(
-                          'absolute left-1/2 -bottom-1 h-[2px] w-12 -translate-x-1/2 bg-[#FFC300] transition-opacity duration-300',
+                          'absolute inset-x-2 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FFC300] to-transparent transition-opacity duration-300',
                           pathname === item.href ? 'opacity-100' : 'opacity-0 hover:opacity-100'
                         )}
                       />
@@ -330,4 +330,5 @@ export function Navbar() {
     </>
   );
 }
+
 
