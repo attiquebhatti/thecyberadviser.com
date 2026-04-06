@@ -8,6 +8,17 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'thecyberadviser.com',
+          },
+        ],
+        destination: 'https://www.thecyberadviser.com/:path*',
+        permanent: true,
+      },
+      {
         source: '/blog',
         destination: '/knowledge-base',
         permanent: true,
