@@ -9,29 +9,34 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="relative w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] overflow-hidden">
-      {/* Background polish */}
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,195,0,0.10),_transparent_55%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/5 to-transparent" />
 
-      {/* Header */}
-      <section className="relative w-full max-w-[1200px] mx-auto px-8 pt-28 pb-10">
+      <section className="relative mx-auto w-full max-w-[1200px] px-8 pb-10 pt-28">
         <p className="text-xs font-black uppercase tracking-[0.35em] text-[#FFC300]/80">
           Contact
         </p>
 
-        <h1 className="mt-4 text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.02]">
-          Let's talk{" "}
-          <span className="text-slate-500 block md:inline">about your environment.</span>
+        <h1 className="mt-4 text-5xl font-bold leading-[1.02] tracking-tight text-white md:text-7xl">
+          Let&apos;s talk{" "}
+          <span className="block text-slate-500 md:inline">
+            about your environment.
+          </span>
         </h1>
 
-        <p className="mt-6 text-lg md:text-xl text-slate-300 max-w-3xl leading-relaxed">
-          Available for strategic consulting, architecture reviews, and enterprise-grade security deployments across the GCC.
+        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300 md:text-xl">
+          Available for strategic consulting, architecture reviews, and
+          enterprise-grade security deployments across the GCC.
         </p>
 
-        {/* small trust chips */}
         <div className="mt-8 flex flex-wrap gap-3">
-          {["GCC + Global", "Response: 24–48h", "Architecture-first", "Production-ready"].map((t) => (
+          {[
+            "GCC + Global",
+            "Response: 24-48h",
+            "Architecture-first",
+            "Production-ready",
+          ].map((t) => (
             <span
               key={t}
               className="rounded-full border border-[#003566] bg-[#003566]/20 px-4 py-2 text-xs font-bold uppercase tracking-[0.25em] text-slate-200/80"
@@ -42,18 +47,17 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Content */}
-      <section className="relative w-full max-w-[1200px] mx-auto px-8 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-          {/* Left: Direct channel */}
-          <div className="relative rounded-2xl border border-[#003566] bg-[#001D3D]/40 p-8 md:p-10 shadow-2xl shadow-black/20 group transition-all duration-500 hover:border-[#FFC300]/50 hover:shadow-[#FFC300]/10 hover:scale-[1.01] overflow-hidden">
-            {/* interactive top highlight */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
-            <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">
+      <section className="relative mx-auto w-full max-w-[1200px] px-8 pb-20">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-10">
+          <div className="group relative overflow-hidden rounded-2xl border border-[#003566] bg-[#001D3D]/40 p-8 shadow-2xl shadow-black/20 transition-all duration-500 hover:scale-[1.01] hover:border-[#FFC300]/50 hover:shadow-[#FFC300]/10 md:p-10">
+            <div className="absolute left-0 top-0 h-1.5 w-full rounded-t-2xl bg-[#FFC300]/20 transition-colors duration-500 group-hover:bg-[#FFC300]" />
+
+            <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
               Direct channel
             </h2>
             <p className="mt-2 text-sm text-slate-300">
-              Prefer a quick route? Email or call — I'll reply with next steps.
+              Prefer a quick route? Email or call - I&apos;ll reply with next
+              steps.
             </p>
 
             <div className="mt-8 space-y-6">
@@ -63,7 +67,7 @@ export default function ContactPage() {
                 </p>
                 <a
                   href="mailto:attique@thecyberadviser.com"
-                  className="mt-2 block text-2xl md:text-3xl font-bold text-white hover:text-[#FFC300] transition"
+                  className="mt-2 block text-2xl font-bold text-white transition hover:text-[#FFC300] md:text-3xl"
                 >
                   attique@thecyberadviser.com
                 </a>
@@ -75,30 +79,32 @@ export default function ContactPage() {
                 </p>
                 <a
                   href="tel:+971569383383"
-                  className="mt-2 block text-2xl md:text-3xl font-bold text-white hover:text-[#FFC300] transition"
+                  className="mt-2 block text-2xl font-bold text-white transition hover:text-[#FFC300] md:text-3xl"
                 >
                   +971 56 938 3383
                 </a>
               </div>
             </div>
 
-            <div className="mt-10 pt-8 border-t border-[#003566]">
+            <div className="mt-10 border-t border-[#003566] pt-8">
               <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-400">
                 Operational status
               </p>
               <div className="mt-4 flex items-center gap-4">
                 <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFC300] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#FFC300]" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#FFC300] opacity-75" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[#FFC300]" />
                 </span>
-                <span className="text-base text-white font-medium">
+                <span className="text-base font-medium text-white">
                   Currently accepting new enterprise projects
                 </span>
               </div>
 
               <div className="mt-8 space-y-3 text-sm text-slate-300">
-                <p className="text-slate-200 font-semibold">To move fast, include:</p>
-                <ul className="list-disc pl-5 space-y-2">
+                <p className="font-semibold text-slate-200">
+                  To move fast, include:
+                </p>
+                <ul className="list-disc space-y-2 pl-5">
                   <li>Current architecture + key bottleneck</li>
                   <li>Target outcome (performance, security, compliance)</li>
                   <li>Scale (users/sites/cloud/DC) and timeline</li>
@@ -108,15 +114,14 @@ export default function ContactPage() {
               <div className="mt-10">
                 <Link
                   href="/services"
-                  className="inline-flex items-center gap-3 rounded-xl border border-[#003566] bg-[#003566]/20 px-5 py-3 text-xs font-black uppercase tracking-[0.25em] text-slate-200/90 hover:border-[#FFC300]/40 hover:bg-[#003566]/40 transition"
+                  className="inline-flex items-center gap-3 rounded-xl border border-[#003566] bg-[#003566]/20 px-5 py-3 text-xs font-black uppercase tracking-[0.25em] text-slate-200/90 transition hover:border-[#FFC300]/40 hover:bg-[#003566]/40"
                 >
-                  View services <span className="text-[#FFC300]">→</span>
+                  View services <span className="text-[#FFC300]">-&gt;</span>
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Right: Form */}
           <ContactForm />
         </div>
       </section>

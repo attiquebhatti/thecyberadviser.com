@@ -10,6 +10,11 @@ type FormState = {
   details: string;
 };
 
+type SubmitState =
+  | { type: "success"; text: string }
+  | { type: "error"; text: string }
+  | null;
+
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>({
     fullName: "",
@@ -18,6 +23,8 @@ export default function ContactForm() {
     topic: "Architecture Review",
     details: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<SubmitState>(null);
 
   const isValid = useMemo(() => {
     return form.email.trim().length > 3 && form.details.trim().length > 10;
@@ -27,51 +34,77 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!isValid || isSubmitting) return;
 
-    const subject = `Consultation Request — ${form.topic}`;
-    const body = [
-      `Full Name: ${form.fullName || "-"}`,
-      `Corporate Email: ${form.email || "-"}`,
-      `Company: ${form.company || "-"}`,
-      `Topic: ${form.topic || "-"}`,
-      "",
-      "Requirement Details:",
-      form.details || "-",
-      "",
-      "Preferred next step:",
-      "- Share available slots for a 30-min discovery call",
-    ].join("\n");
+    setIsSubmitting(true);
+    setSubmitState(null);
 
-    const mailto = `mailto:attique@thecyberadviser.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
 
-    window.location.href = mailto;
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        throw new Error(
+          result?.error || "Unable to send your inquiry right now."
+        );
+      }
+
+      setForm({
+        fullName: "",
+        email: "",
+        company: "",
+        topic: "Architecture Review",
+        details: "",
+      });
+      setSubmitState({
+        type: "success",
+        text: "Inquiry sent successfully. A response should follow shortly.",
+      });
+    } catch (error) {
+      setSubmitState({
+        type: "error",
+        text:
+          error instanceof Error
+            ? error.message
+            : "Unable to send your inquiry right now.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
-    <div className="relative rounded-2xl border border-[#003566] bg-[#001D3D]/35 p-7 md:p-8 shadow-2xl overflow-hidden group transition-all duration-500 hover:border-[#FFC300]/50 hover:shadow-[#FFC300]/10 hover:scale-[1.01]">
-      {/* interactive top highlight */}
-      <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
+    <div className="group relative overflow-hidden rounded-2xl border border-[#003566] bg-[#001D3D]/35 p-7 shadow-2xl transition-all duration-500 hover:scale-[1.01] hover:border-[#FFC300]/50 hover:shadow-[#FFC300]/10 md:p-8">
+      <div className="absolute left-0 top-0 h-1.5 w-full rounded-t-2xl bg-[#FFC300]/20 transition-colors duration-500 group-hover:bg-[#FFC300]" />
 
-      {/* soft glow */}
-      <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#FFC300]/12 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#FFC300]/12 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#003566]/30 blur-3xl opacity-60" />
 
       <div className="relative">
-        <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">
+        <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
           Send an inquiry
         </h2>
         <p className="mt-2 text-sm text-slate-300">
-          Share your goal and current bottleneck. I’ll respond with next steps and availability.
+          Share your goal and current bottleneck. I&apos;ll respond with next
+          steps and availability.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="space-y-2">
-              <label htmlFor="fullName" className="text-xs font-black uppercase tracking-[0.25em] text-slate-300">
+              <label
+                htmlFor="fullName"
+                className="text-xs font-black uppercase tracking-[0.25em] text-slate-300"
+              >
                 Full name
               </label>
               <input
@@ -81,13 +114,15 @@ export default function ContactForm() {
                 value={form.fullName}
                 onChange={(e) => update("fullName", e.target.value)}
                 placeholder="John Doe"
-                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500
-                           focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 focus:border-[#FFC300]/40 transition"
+                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-[#FFC300]/40 focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 transition"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="company" className="text-xs font-black uppercase tracking-[0.25em] text-slate-300">
+              <label
+                htmlFor="company"
+                className="text-xs font-black uppercase tracking-[0.25em] text-slate-300"
+              >
                 Company
               </label>
               <input
@@ -97,15 +132,17 @@ export default function ContactForm() {
                 value={form.company}
                 onChange={(e) => update("company", e.target.value)}
                 placeholder="Company / Program"
-                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500
-                           focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 focus:border-[#FFC300]/40 transition"
+                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-[#FFC300]/40 focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 transition"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-xs font-black uppercase tracking-[0.25em] text-slate-300">
+              <label
+                htmlFor="email"
+                className="text-xs font-black uppercase tracking-[0.25em] text-slate-300"
+              >
                 Corporate email <span className="text-[#FFC300]">*</span>
               </label>
               <input
@@ -116,21 +153,22 @@ export default function ContactForm() {
                 value={form.email}
                 onChange={(e) => update("email", e.target.value)}
                 placeholder="john@company.com"
-                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500
-                           focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 focus:border-[#FFC300]/40 transition"
+                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-[#FFC300]/40 focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 transition"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="topic" className="text-xs font-black uppercase tracking-[0.25em] text-slate-300">
+              <label
+                htmlFor="topic"
+                className="text-xs font-black uppercase tracking-[0.25em] text-slate-300"
+              >
                 Topic
               </label>
               <select
                 id="topic"
                 value={form.topic}
                 onChange={(e) => update("topic", e.target.value)}
-                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white
-                           focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 focus:border-[#FFC300]/40 transition"
+                className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white focus:border-[#FFC300]/40 focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 transition"
               >
                 <option>Architecture Review</option>
                 <option>Prisma / SASE / ZTNA</option>
@@ -143,7 +181,10 @@ export default function ContactForm() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="details" className="text-xs font-black uppercase tracking-[0.25em] text-slate-300">
+            <label
+              htmlFor="details"
+              className="text-xs font-black uppercase tracking-[0.25em] text-slate-300"
+            >
               Requirement details <span className="text-[#FFC300]">*</span>
             </label>
             <textarea
@@ -153,24 +194,33 @@ export default function ContactForm() {
               value={form.details}
               onChange={(e) => update("details", e.target.value)}
               placeholder="Example: We're migrating from legacy VPN to ZTNA for ~4,000 users across GCC/APAC. Current pain: latency on M365 + inconsistent access policy. Target: phased rollout without downtime..."
-              className="w-full rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500
-                         focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 focus:border-[#FFC300]/40 transition resize-none"
+              className="w-full resize-none rounded-xl border border-[#003566] bg-[#000814]/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-[#FFC300]/40 focus:outline-none focus:ring-2 focus:ring-[#FFC300]/50 transition"
             />
           </div>
 
           <button
             type="submit"
-            disabled={!isValid}
-            className="w-full rounded-xl py-4 font-black uppercase tracking-[0.25em]
-                       bg-[#FFC300] text-[#000814] shadow-xl
-                       hover:bg-[#FFD60A] transition
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!isValid || isSubmitting}
+            className="w-full rounded-xl bg-[#FFC300] py-4 font-black uppercase tracking-[0.25em] text-[#000814] shadow-xl transition hover:bg-[#FFD60A] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Send inquiry
+            {isSubmitting ? "Sending..." : "Send inquiry"}
           </button>
 
+          {submitState && (
+            <p
+              className={`text-sm ${
+                submitState.type === "success"
+                  ? "text-emerald-400"
+                  : "text-rose-400"
+              }`}
+            >
+              {submitState.text}
+            </p>
+          )}
+
           <p className="text-xs text-slate-400">
-            This opens your email client with a pre-filled message (no form backend required).
+            Your inquiry is sent directly from the site and does not require a
+            local email client.
           </p>
         </form>
       </div>
