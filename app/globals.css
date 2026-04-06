@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* force fresh frontend asset rebuild */
+
 @layer base {
   :root {
     --background: 210 96% 3%;
