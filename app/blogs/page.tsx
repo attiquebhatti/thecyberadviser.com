@@ -6,6 +6,13 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 const blogs = [
+  {
+    category: 'CORTEX CLOUD',
+    title: 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
+    description: 'A practical code-to-cloud-to-SOC guide covering Cortex Cloud architecture, capabilities, use cases, and rollout priorities.',
+    date: '2026-04-06',
+    slug: 'what-is-palo-alto-networks-cortex-cloud'
+  },
   { 
     category: 'STRATA', 
     title: 'Strata Next-Gen Firewalls: The Foundation of Zero Trust', 
@@ -87,7 +94,7 @@ function BlogsContent() {
       return ['PRISMA ACCESS', 'PRISMA SD-WAN', 'PRISMA SASE'].includes(blog.category);
     }
     if (activeTab === 'CORTEX') {
-      return ['CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
+      return ['CORTEX CLOUD', 'CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
     }
     return blog.category === activeTab;
   });
