@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
+import { AccentTerms } from '@/components/shared/AccentTerms';
 import { ProfileImage } from '@/components/about/ProfileImage';
 import { Shield, Target, Briefcase, Award, CircleCheck as CheckCircle2 } from 'lucide-react';
 
@@ -158,7 +159,7 @@ export function AboutContent() {
                             <div className="w-10 h-10 rounded-xl bg-[#FFC300]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#FFC300]/20 transition-all duration-300">
                               <CheckCircle2 className="w-4 h-4 text-[#FFC300]" />
                             </div>
-                            <span className="text-slate-200 font-semibold text-sm tracking-wide">{item}</span>
+                            <span className="text-slate-200 font-semibold text-sm tracking-wide"><AccentTerms text={item} /></span>
                           </div>
                         </motion.div>
                       ))}

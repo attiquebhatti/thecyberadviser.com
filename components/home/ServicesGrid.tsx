@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
+import { AccentTerms } from '@/components/shared/AccentTerms';
 import { Shield, Network, Cloud, Users, Workflow, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { VendorIcon } from '@/components/shared/VendorLogos';
@@ -52,6 +53,11 @@ const services = [
     vendors: ['Palo Alto Networks', 'Fortigate']
   },
 ];
+
+const isCortexService = (service: (typeof services)[number]) =>
+  /(Cortex Cloud|Cortex Operations|Cortex|XDR|XSOAR|XSIAM)/i.test(
+    `${service.title} ${service.subtitle} ${service.description}`
+  );
 
 export function ServicesGrid() {
   return (
@@ -117,37 +123,43 @@ export function ServicesGrid() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-4">
-          {services.map((service, index) => (
+          {services.map((service, index) => {
+            const cortexService = isCortexService(service);
+            const accent = cortexService ? '#6BD348' : '#FFC300';
+            const accentSoft = cortexService ? 'rgba(107, 211, 72, 0.10)' : 'rgba(255, 195, 0, 0.10)';
+            const accentBorder = cortexService ? 'rgba(107, 211, 72, 0.30)' : 'rgba(255, 195, 0, 0.30)';
+
+            return (
             <Link
               key={service.title}
               href={service.href}
-              className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.01] hover:shadow-[#FFC300]/10"
+              className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.01]"
             >
-              <div className="absolute inset-0 bg-white/[0.02] group-hover:bg-[#FFC300]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 border border-white/[0.04] group-hover:border-[#FFC300]/30 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ backgroundColor: accentSoft }} />
+              <div className="absolute inset-0 border border-white/[0.04] transition-colors duration-500" style={{ borderColor: cortexService ? accentBorder : undefined }} />
               
               {/* interactive top highlight */}
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
+              <div className="absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 rounded-t-2xl" style={{ backgroundColor: cortexService ? 'rgba(107, 211, 72, 0.25)' : 'rgba(255, 195, 0, 0.20)' }}></div>
 
               <div className="relative p-8 md:p-10 flex gap-6">
                 <div className="flex-shrink-0">
-                  <div className="w-14 h-14 rounded-xl bg-[#FFC300]/10 flex items-center justify-center group-hover:bg-[#FFC300]/20 transition-colors duration-300">
-                    <service.icon className="w-7 h-7 text-[#FFC300]" />
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center transition-colors duration-300" style={{ backgroundColor: cortexService ? 'rgba(107, 211, 72, 0.12)' : 'rgba(255, 195, 0, 0.10)' }}>
+                    <service.icon className="w-7 h-7" style={{ color: accent }} />
                   </div>
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-white group-hover:text-[#FFC300] transition-colors duration-300">
-                        {service.title}
+                      <h3 className="text-xl font-semibold text-white transition-colors duration-300">
+                        <AccentTerms text={service.title} />
                       </h3>
-                      <div className="text-sm text-slate-500 mt-1">{service.subtitle}</div>
+                      <div className="text-sm text-slate-500 mt-1"><AccentTerms text={service.subtitle} /></div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-[#FFC300] group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 mt-1" />
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 mt-1" style={{ color: cortexService ? accent : undefined }} />
                   </div>
                   <p className="mt-3 text-slate-400 leading-relaxed">
-                    {service.description}
+                    <AccentTerms text={service.description} />
                   </p>
 
                   {/* Vendor Logos */}
@@ -164,7 +176,8 @@ export function ServicesGrid() {
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-16 flex justify-center">

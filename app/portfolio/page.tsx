@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Section, SectionHeader } from '@/components/layout/Section';
+import { AccentTerms } from '@/components/shared/AccentTerms';
 import {
   Globe as GlobeIcon,
   Network,
@@ -290,7 +291,7 @@ function PortfolioContent() {
               <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-[#FFC300]/10">
                 <CheckCircle2 className="h-3.5 w-3.5 text-[#FFC300]" />
               </div>
-              <p className="text-sm leading-relaxed text-slate-300">{item}</p>
+              <p className="text-sm leading-relaxed text-slate-300"><AccentTerms text={item} /></p>
             </div>
           </motion.div>
         ))}
@@ -312,7 +313,7 @@ function PortfolioContent() {
                   : 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:border-white/[0.14] hover:text-white',
               ].join(' ')}
             >
-              {filter}
+              <AccentTerms text={filter} />
             </button>
           );
         })}
@@ -349,10 +350,10 @@ function PortfolioContent() {
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#FFC300]">
-                      {project.category}
+                      <AccentTerms text={project.category} />
                     </p>
                     <h3 className="text-2xl font-semibold text-white">
-                      {project.title}
+                      <AccentTerms text={project.title} />
                     </h3>
                   </div>
 
@@ -362,7 +363,7 @@ function PortfolioContent() {
                 </div>
 
                 <p className="text-base leading-relaxed text-slate-400">
-                  {project.summary}
+                  <AccentTerms text={project.summary} />
                 </p>
 
                 <div className="mt-6">
@@ -375,7 +376,7 @@ function PortfolioContent() {
                         <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-[#FFC300]/10">
                           <CheckCircle2 className="h-3 w-3 text-[#FFC300]" />
                         </div>
-                        <span className="text-sm text-slate-300">{item}</span>
+                        <span className="text-sm text-slate-300"><AccentTerms text={item} /></span>
                       </li>
                     ))}
                   </ul>

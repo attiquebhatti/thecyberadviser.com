@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AccentTerms } from '@/components/shared/AccentTerms';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -165,11 +166,11 @@ export function Navbar() {
                               className="relative flex flex-col gap-0.5 px-4 py-3.5 rounded-xl hover:bg-white/[0.05] transition-all group/item"
                             >
                               <span className="text-sm font-bold text-slate-200 group-hover/item:text-[#FFC300] transition-colors">
-                                {child.label}
+                                <AccentTerms text={child.label} />
                               </span>
                               {child.description && (
                                 <span className="text-[11px] text-slate-500 group-hover/item:text-slate-400 transition-colors leading-tight">
-                                  {child.description}
+                                  <AccentTerms text={child.description} />
                                 </span>
                               )}
                             </Link>
@@ -290,9 +291,9 @@ export function Navbar() {
                                   : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5'
                               )}
                             >
-                              <span>{child.label}</span>
+                              <span><AccentTerms text={child.label} /></span>
                               {child.description && (
-                                <span className="text-[10px] opacity-60 font-normal">{child.description}</span>
+                                <span className="text-[10px] opacity-60 font-normal"><AccentTerms text={child.description} /></span>
                               )}
                             </Link>
                           ))}

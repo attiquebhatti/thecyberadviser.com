@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { CTAButton } from '@/components/shared/CTAButton';
+import { AccentTerms } from '@/components/shared/AccentTerms';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
@@ -206,7 +207,7 @@ export function HeroSection() {
                         exit={{ opacity: 0, y: -5 }}
                         className="mt-1 text-sm font-medium text-slate-200"
                       >
-                        {slides[currentSlide].title}
+                        <AccentTerms text={slides[currentSlide].title} />
                       </motion.p>
                     </AnimatePresence>
                   </div>
@@ -265,15 +266,15 @@ export function HeroSection() {
                     >
                       <div>
                         <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Focus</p>
-                        <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].focus}</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-300"><AccentTerms text={slides[currentSlide].focus} /></p>
                       </div>
                       <div>
                         <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Platforms</p>
-                        <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].platforms}</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-300"><AccentTerms text={slides[currentSlide].platforms} /></p>
                       </div>
                       <div>
                         <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Strategy</p>
-                        <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].strategy}</p>
+                        <p className="mt-1 text-xs font-semibold text-slate-300"><AccentTerms text={slides[currentSlide].strategy} /></p>
                       </div>
                     </motion.div>
                   </AnimatePresence>

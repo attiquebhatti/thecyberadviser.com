@@ -4,8 +4,16 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { AccentTerms } from '@/components/shared/AccentTerms';
 
 const blogs = [
+  {
+    category: 'CORTEX OPERATIONS',
+    title: 'Prisma Cloud vs Cortex Cloud: Architecture and SOC Operating Model',
+    description: 'A technical comparison of Prisma Cloud and Cortex Cloud, including platform scope, detection depth, SOC workflows, and rollout strategy.',
+    date: '2026-04-08',
+    slug: 'prisma-cloud-vs-cortex-cloud'
+  },
   {
     category: 'CORTEX CLOUD',
     title: 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
@@ -74,6 +82,10 @@ const blogs = [
 function BlogsContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState('ALL BLOGS');
+  const isCortexBlog = (blog: (typeof blogs)[number]) =>
+    /(CORTEX|XDR|XSOAR|XSIAM)/i.test(blog.category) ||
+    /(Cortex Cloud|Cortex Operations|Cortex|XDR|XSOAR|XSIAM)/i.test(blog.title) ||
+    /(Cortex Cloud|Cortex Operations|Cortex|XDR|XSOAR|XSIAM)/i.test(blog.description);
 
   useEffect(() => {
     const category = searchParams.get('category');
@@ -94,7 +106,7 @@ function BlogsContent() {
       return ['PRISMA ACCESS', 'PRISMA SD-WAN', 'PRISMA SASE'].includes(blog.category);
     }
     if (activeTab === 'CORTEX') {
-      return ['CORTEX CLOUD', 'CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
+      return ['CORTEX OPERATIONS', 'CORTEX CLOUD', 'CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
     }
     return blog.category === activeTab;
   });
@@ -143,7 +155,12 @@ function BlogsContent() {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"
         >
-          {filteredBlogs.map((blog, index) => (
+          {filteredBlogs.map((blog, index) => {
+            const cortexBlog = isCortexBlog(blog);
+            const accent = cortexBlog ? '#6BD348' : '#FFC300';
+            const accentSoft = cortexBlog ? 'rgba(107, 211, 72, 0.2)' : 'rgba(255, 195, 0, 0.2)';
+
+            return (
             <motion.div 
               key={index}
               variants={{
@@ -151,28 +168,35 @@ function BlogsContent() {
                 show: { opacity: 1, y: 0 }
               }}
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="bg-obsidian-900/40 backdrop-blur-xl border-t border-l border-white/10 border-b border-r border-black/60 p-7 flex flex-col h-full hover:border-[#FFC300]/50 transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_20px_40px_rgba(0,0,0,0.4)] relative group rounded-2xl overflow-hidden hover:shadow-[#FFC300]/10"
+              className="bg-obsidian-900/40 backdrop-blur-xl border-t border-l border-white/10 border-b border-r border-black/60 p-7 flex flex-col h-full transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_20px_40px_rgba(0,0,0,0.4)] relative group rounded-2xl overflow-hidden"
+              style={{
+                borderColor: cortexBlog ? 'rgba(107, 211, 72, 0.22)' : undefined,
+                boxShadow: cortexBlog
+                  ? 'inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(107,211,72,0.08)'
+                  : undefined,
+              }}
             >
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
-              <span className="text-[#FFC300] font-mono text-xs font-black uppercase tracking-widest mb-4 block">
-                {blog.category}
+              <div className="absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 rounded-t-2xl" style={{ backgroundColor: accentSoft }}></div>
+              <span className="font-mono text-xs font-black uppercase tracking-widest mb-4 block" style={{ color: accent }}>
+                <AccentTerms text={blog.category} />
               </span>
               <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFD60A] transition-colors">
-                {blog.title}
+                <AccentTerms text={blog.title} />
               </h2>
               <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
-                {blog.description}
+                <AccentTerms text={blog.description} />
               </p>
               <div className="pt-6 border-t border-white/5 flex justify-between items-center">
                 <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
                   {blog.date}
                 </span>
-                <Link href={`/blogs/${blog.slug}`} className="text-[#FFC300] font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link hover:text-[#FFD60A] transition-colors">
+                <Link href={`/blogs/${blog.slug}`} className="font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link transition-colors" style={{ color: accent }}>
                   READ ARTICLE <span className="transition-transform group-hover/link:translate-x-1">→</span>
                 </Link>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </motion.div>
 
         {filteredBlogs.length === 0 && (
