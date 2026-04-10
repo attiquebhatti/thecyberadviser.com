@@ -1,106 +1,15 @@
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-import { AccentTerms } from '@/components/shared/AccentTerms';
 
 // ==========================================
 // BLOG CONTENT DICTIONARY
 // ==========================================
 const blogContent: Record<string, React.ReactNode> = {
-  'prisma-cloud-vs-cortex-cloud': (
-    <div className="space-y-8 text-lg text-slate-300 font-light leading-relaxed">
-      <h2 className="text-4xl font-bold text-[#6BD348] tracking-tight leading-tight">
-        Prisma Cloud vs Cortex Cloud
-      </h2>
-      <p className="text-2xl text-[#6BD348] font-medium">
-        <AccentTerms text="A Technical View for Cortex Operations and SOC Teams" />
-      </p>
-
-      <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/[0.03] shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
-        <div className="relative aspect-[16/10] bg-[#0b0f10] p-2 md:p-3">
-          <Image
-            src="/images/blogs/cortex-cloud/1.png"
-            alt="Cortex Cloud operations dashboard showing posture, risk, and investigation context"
-            fill
-            className="object-contain"
-          />
-        </div>
-        <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400">
-          <AccentTerms text="Platform comparison should focus on operational outcomes, not just feature checklists." />
-        </div>
-      </div>
-
-      <section className="space-y-5">
-        <h3 className="text-3xl font-bold text-[#6BD348]">Short Answer</h3>
-        <p>
-          <AccentTerms text="Prisma Cloud is the CNAPP foundation for application security, cloud posture, vulnerability context, and runtime risk across cloud environments." />
-        </p>
-        <p>
-          <AccentTerms text="Cortex Cloud extends that value into a broader Cortex Operations model by aligning cloud risk with SOC investigation, detection, and response workflows." />
-        </p>
-      </section>
-
-      <section className="space-y-5">
-        <h3 className="text-3xl font-bold text-[#6BD348]">Where Prisma Cloud Leads</h3>
-        <ul className="space-y-3 list-disc pl-6 text-slate-400">
-          <li>Code-to-cloud security context for AppSec and CloudSec teams.</li>
-          <li>Cloud posture and entitlement visibility across accounts and projects.</li>
-          <li>Strong runtime signal for containers, Kubernetes, and workloads.</li>
-          <li>Data and identity context that improves remediation priority.</li>
-        </ul>
-      </section>
-
-      <section className="space-y-5">
-        <h3 className="text-3xl font-bold text-[#6BD348]">Where Cortex Cloud Changes the Model</h3>
-        <p>
-          <AccentTerms text="Cortex Cloud is most valuable when organizations need cloud findings to become first-class SOC work, not a separate backlog." />
-        </p>
-        <ul className="space-y-3 list-disc pl-6 text-slate-400">
-          <li>Case-driven investigation across posture, runtime, and identity context.</li>
-          <li>Operational handoff into SOC queues and response automation.</li>
-          <li>
-            <AccentTerms text="Stronger alignment with Cortex XDR, XSOAR, and XSIAM investigation patterns." />
-          </li>
-          <li>Faster triage when teams need one investigation object instead of many tool pivots.</li>
-        </ul>
-      </section>
-
-      <section className="space-y-5">
-        <h3 className="text-3xl font-bold text-[#6BD348]">Decision Framework</h3>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-          <p className="mb-3">
-            Choose platform emphasis based on operating model:
-          </p>
-          <ul className="space-y-3 list-disc pl-6 text-slate-400">
-            <li>
-              <strong className="text-white">Cloud-first backlog model:</strong> prioritize Prisma Cloud depth and ownership maturity.
-            </li>
-            <li>
-              <strong className="text-white">SOC-driven response model:</strong> prioritize Cortex Cloud integration and case quality.
-            </li>
-            <li>
-              <strong className="text-white">Enterprise target state:</strong> combine both with clear ownership and automation guardrails.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="space-y-5">
-        <h3 className="text-3xl font-bold text-[#6BD348]">Final Take</h3>
-        <p>
-          <AccentTerms text="Prisma Cloud vs Cortex Cloud is not a winner-vs-loser decision." />
-        </p>
-        <p>
-          The better technical question is whether your team needs stronger cloud risk discovery, stronger SOC operationalization, or both. The right design links code, cloud, runtime, and response with clear ownership so critical risk gets closed faster.
-        </p>
-      </section>
-    </div>
-  ),
-
   'what-is-palo-alto-networks-cortex-cloud': (
     <div className="space-y-10 text-lg text-slate-300 font-light leading-relaxed">
       <h2 className="text-4xl font-bold text-[#6BD348] tracking-tight leading-tight">What Is Palo Alto Networks Cortex Cloud?</h2>
-        <p className="text-2xl text-[#6BD348] font-medium"><AccentTerms text="A Technical View from Code to Cloud to SOC" /></p>
+      <p className="text-2xl text-[#6BD348] font-medium">A Technical View from Code to Cloud to SOC</p>
 
       <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/[0.03] shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
         <div className="relative aspect-[16/10] bg-[#0b0f10] p-2 md:p-3">
@@ -112,14 +21,14 @@ const blogContent: Record<string, React.ReactNode> = {
           />
         </div>
         <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400">
-          <AccentTerms text="Cortex Cloud connects posture, runtime, identity, and response into a single investigation flow." />
+          Cortex Cloud connects posture, runtime, identity, and response into a single investigation flow.
         </div>
       </div>
 
       <section className="space-y-6">
         <p>A clean dashboard does not always mean a secure environment.</p>
-        <p><AccentTerms text="In real cloud environments, the issue is rarely a total lack of tooling. The issue is usually fragmented context across application security, cloud posture, runtime telemetry, and SOC response. Palo Alto Networks positions Cortex Cloud as the platform that unifies those layers into one operating model from code to cloud to SOC." /></p>
-        <p><AccentTerms text="At a technical level, Cortex Cloud is Palo Alto Networks' cloud security platform on the Cortex stack, combining the CNAPP capabilities historically associated with Prisma Cloud with cloud detection and response (CDR) and broader SOC workflows on a shared platform. Palo Alto says it unifies first- and third-party findings, software supply chain signals, cloud infrastructure context, and runtime telemetry, then applies AI and automation for prioritization and response." /></p>
+        <p>In real cloud environments, the issue is rarely a total lack of tooling. The issue is usually fragmented context across application security, cloud posture, runtime telemetry, and SOC response. Palo Alto Networks positions Cortex Cloud as the platform that unifies those layers into one operating model from code to cloud to SOC.</p>
+        <p>At a technical level, Cortex Cloud is Palo Alto Networks&apos; cloud security platform on the Cortex stack, combining the CNAPP capabilities historically associated with Prisma Cloud with cloud detection and response (CDR) and broader SOC workflows on a shared platform. Palo Alto says it unifies first- and third-party findings, software supply chain signals, cloud infrastructure context, and runtime telemetry, then applies AI and automation for prioritization and response.</p>
       </section>
 
       <section className="space-y-6">
@@ -134,12 +43,12 @@ const blogContent: Record<string, React.ReactNode> = {
           </ul>
         </div>
         <p>But attackers do not operate in those silos.</p>
-        <p><AccentTerms text="That is why the core value of Cortex Cloud is not 'one more dashboard.' The technical value is that it tries to preserve the same security story as risk moves from code, into CI/CD, into cloud assets, into runtime behavior, and finally into investigation and response." /></p>
+        <p>That is why the core value of Cortex Cloud is not “one more dashboard.” The technical value is that it tries to preserve the same security story as risk moves from code, into CI/CD, into cloud assets, into runtime behavior, and finally into investigation and response.</p>
       </section>
 
       <section className="space-y-6">
         <h3 className="text-3xl font-bold text-[#6BD348]">What Cortex Cloud Includes</h3>
-        <p><AccentTerms text="Based on Palo Alto Networks' product pages and documentation, Cortex Cloud spans a broad set of capabilities under one platform, including application security, cloud posture security, runtime security, vulnerability management, data security, identity security, API security, attack surface management, detection rules, investigations, cases, playbooks, and XQL-based analysis workflows. The admin documentation also shows onboarding and integrations for AWS, Azure, Google Cloud, and OCI, plus support areas such as container registry scanning, Kubernetes Connector, Snowflake, Databricks, Microsoft 365, on-prem file shares, Okta, and Azure identity-related logging." /></p>
+        <p>Based on Palo Alto Networks&apos; product pages and documentation, Cortex Cloud spans a broad set of capabilities under one platform, including application security, cloud posture security, runtime security, vulnerability management, data security, identity security, API security, attack surface management, detection rules, investigations, cases, playbooks, and XQL-based analysis workflows. The admin documentation also shows onboarding and integrations for AWS, Azure, Google Cloud, and OCI, plus support areas such as container registry scanning, Kubernetes Connector, Snowflake, Databricks, Microsoft 365, on-prem file shares, Okta, and Azure identity-related logging.</p>
         <p>That matters because modern cloud incidents usually involve more than one control plane. A single issue may include:</p>
         <ul className="space-y-3 list-disc pl-6 text-slate-400">
           <li>IaC misconfiguration</li>
@@ -158,11 +67,11 @@ const blogContent: Record<string, React.ReactNode> = {
         <div className="space-y-5">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">1) Ingest and normalize signals</h4>
-            <p><AccentTerms text="Cortex Cloud is designed to bring in data from scanners, software supply chains, cloud infrastructure, third-party sources, and runtime activity into a unified data model. Palo Alto explicitly describes this as a unified dataplane so teams do not have to manually stitch separate tools together during triage." /></p>
+            <p>Cortex Cloud is designed to bring in data from scanners, software supply chains, cloud infrastructure, third-party sources, and runtime activity into a unified data model. Palo Alto explicitly describes this as a unified dataplane so teams do not have to manually stitch separate tools together during triage.</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">2) Add posture plus runtime context</h4>
-            <p><AccentTerms text="Cloud posture without runtime context is incomplete. Palo Alto positions Cortex Cloud as extending beyond peace-time posture assessment by bringing CDR and runtime protection into the same workflow, so teams can evaluate whether a vulnerability or misconfiguration is merely present or actually exposed and active." /></p>
+            <p>Cloud posture without runtime context is incomplete. Palo Alto positions Cortex Cloud as extending beyond “peace-time” posture assessment by bringing CDR and runtime protection into the same workflow, so teams can evaluate whether a vulnerability or misconfiguration is merely present or actually exposed and active.</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">3) Correlate risk into cases</h4>
@@ -170,7 +79,7 @@ const blogContent: Record<string, React.ReactNode> = {
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">4) Prioritize with AI</h4>
-            <p><AccentTerms text="Palo Alto says Cortex Cloud uses Precision AI, with more than 7,000 detectors and 2,400+ machine learning models, to identify higher-risk threats and guide teams toward faster resolution. In practice, this matters because cloud teams do not need more findings; they need better ranking of what is actually exploitable, exposed, and urgent." /></p>
+            <p>Palo Alto says Cortex Cloud uses Precision AI, with more than 7,000 detectors and 2,400+ machine learning models, to identify higher-risk threats and guide teams toward faster resolution. In practice, this matters because cloud teams do not need more findings; they need better ranking of what is actually exploitable, exposed, and urgent.</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">5) Automate response</h4>
@@ -188,7 +97,7 @@ const blogContent: Record<string, React.ReactNode> = {
             />
           </div>
           <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400">
-            <AccentTerms text="Cortex Cloud overview from code to cloud to SOC." />
+            Cortex Cloud overview from code to cloud to SOC.
           </div>
         </div>
       </section>
@@ -240,7 +149,7 @@ const blogContent: Record<string, React.ReactNode> = {
         <div className="space-y-6">
           <div>
             <h4 className="text-2xl font-semibold text-[#6BD348] mb-3">Use Case 1: Misconfiguration + identity + exposure correlation</h4>
-            <p><AccentTerms text="A storage service is publicly reachable, the workload has an over-privileged role, and the related asset contains sensitive data. In many environments, those are three different teams and three different tools. Cortex Cloud's value is in correlating posture, identity, and data context so the issue is worked as one risk, not three independent tickets. This aligns with Palo Alto's positioning around correlated risks and identity/data security workflows." /></p>
+            <p>A storage service is publicly reachable, the workload has an over-privileged role, and the related asset contains sensitive data. In many environments, those are three different teams and three different tools. Cortex Cloud&apos;s value is in correlating posture, identity, and data context so the issue is worked as one risk, not three independent tickets. This aligns with Palo Alto&apos;s positioning around correlated risks and identity/data security workflows.</p>
           </div>
           <div>
             <h4 className="text-2xl font-semibold text-[#6BD348] mb-3">Use Case 2: Vulnerable container image reaches production</h4>
@@ -250,23 +159,23 @@ const blogContent: Record<string, React.ReactNode> = {
               <li>Is it internet exposed?</li>
               <li>Is there suspicious runtime behavior?</li>
             </ul>
-            <p><AccentTerms text="Cortex Cloud documentation and product pages emphasize container registry scanning, Kubernetes support, runtime protection, and attack-path style prioritization for exactly this type of scenario." /></p>
+            <p>Cortex Cloud documentation and product pages emphasize container registry scanning, Kubernetes support, runtime protection, and attack-path style prioritization for exactly this type of scenario.</p>
           </div>
           <div>
             <h4 className="text-2xl font-semibold text-[#6BD348] mb-3">Use Case 3: CI/CD to runtime traceability</h4>
-            <p><AccentTerms text="A developer pushes a risky change, the pipeline builds successfully, and the workload later generates runtime alerts. Cortex Cloud's code-to-cloud positioning is meant to help teams trace the relationship between the application, the pipeline, the deployed asset, and the resulting runtime issue, instead of investigating each stage separately." /></p>
+            <p>A developer pushes a risky change, the pipeline builds successfully, and the workload later generates runtime alerts. Cortex Cloud&apos;s code-to-cloud positioning is meant to help teams trace the relationship between the application, the pipeline, the deployed asset, and the resulting runtime issue, instead of investigating each stage separately.</p>
           </div>
           <div>
             <h4 className="text-2xl font-semibold text-[#6BD348] mb-3">Use Case 4: API exposure and cloud workload defense</h4>
-            <p><AccentTerms text="Palo Alto's documentation includes Web and API Security, API inventory, API threat monitoring, and ingestion from services such as AWS API Gateway, Azure APIM, Apigee, Kong, and F5. That makes Cortex Cloud relevant when the risk is not only in the VM or container, but at the API layer where abuse, exposure, or weak controls become entry points." /></p>
+            <p>Palo Alto&apos;s documentation includes Web and API Security, API inventory, API threat monitoring, and ingestion from services such as AWS API Gateway, Azure APIM, Apigee, Kong, and F5. That makes Cortex Cloud relevant when the risk is not only in the VM or container, but at the API layer where abuse, exposure, or weak controls become entry points.</p>
           </div>
           <div>
             <h4 className="text-2xl font-semibold text-[#6BD348] mb-3">Use Case 5: Data security across cloud and SaaS</h4>
-            <p><AccentTerms text="The docs show Data Security onboarding for Snowflake, Databricks, Microsoft 365, and on-prem file shares. That gives Cortex Cloud practical value where the real question is not only 'Is the asset misconfigured?' but also 'What sensitive data is actually on it?' and 'How should that change prioritization?'" /></p>
+            <p>The docs show Data Security onboarding for Snowflake, Databricks, Microsoft 365, and on-prem file shares. That gives Cortex Cloud practical value where the real question is not only “Is the asset misconfigured?” but also “What sensitive data is actually on it?” and “How should that change prioritization?”</p>
           </div>
           <div>
             <h4 className="text-2xl font-semibold text-[#6BD348] mb-3">Use Case 6: SOC-driven cloud incident investigation</h4>
-            <p><AccentTerms text="Palo Alto states Cortex Cloud is available on Cortex XSIAM, with the intention that analysts can pivot between runtime threats, cloud misconfigurations, and identity risks in the same operating context. For mature SOCs, that is the difference between cloud findings sitting in a separate backlog and cloud risk becoming part of real incident response." /></p>
+            <p>Palo Alto states Cortex Cloud is available on Cortex XSIAM, with the intention that analysts can pivot between runtime threats, cloud misconfigurations, and identity risks in the same operating context. For mature SOCs, that is the difference between cloud findings sitting in a separate backlog and cloud risk becoming part of real incident response.</p>
           </div>
         </div>
 
@@ -280,7 +189,7 @@ const blogContent: Record<string, React.ReactNode> = {
             />
           </div>
           <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400">
-            <AccentTerms text="Cortex Cloud connects posture, runtime, identity, and response into a single investigation flow." />
+            Cortex Cloud connects posture, runtime, identity, and response into a single investigation flow.
           </div>
         </div>
       </section>
@@ -301,7 +210,7 @@ const blogContent: Record<string, React.ReactNode> = {
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">3. Over-trusting severity</h4>
-            <p><AccentTerms text="A critical issue with no exploit path, no exposure, and no runtime signal may deserve less attention than a medium issue tied to internet exposure, toxic permissions, and suspicious behavior. Cortex Cloud's prioritization model is meant to reduce that gap, but the team still has to validate the underlying assumptions." /></p>
+            <p>A “critical” issue with no exploit path, no exposure, and no runtime signal may deserve less attention than a medium issue tied to internet exposure, toxic permissions, and suspicious behavior. Cortex Cloud&apos;s prioritization model is meant to reduce that gap, but the team still has to validate the underlying assumptions.</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <h4 className="text-xl font-semibold text-[#6BD348] mb-3">4. Automating too early</h4>
@@ -312,7 +221,7 @@ const blogContent: Record<string, React.ReactNode> = {
 
       <section className="space-y-6">
         <h3 className="text-3xl font-bold text-[#6BD348]">Technical Design Checklist</h3>
-        <p><AccentTerms text="Before calling a Cortex Cloud deployment operational, I would validate these areas:" /></p>
+        <p>Before calling a Cortex Cloud deployment operational, I would validate these areas:</p>
         <ul className="space-y-3 list-disc pl-6 text-slate-400">
           <li><strong className="text-white">Asset lineage:</strong> Can you trace from repo or image to workload to cloud asset?</li>
           <li><strong className="text-white">Identity context:</strong> Do you know which human or machine identity can actually reach or modify the resource?</li>
@@ -327,13 +236,13 @@ const blogContent: Record<string, React.ReactNode> = {
 
       <section id="final-take" className="space-y-6">
         <h3 className="text-3xl font-bold text-[#6BD348]">Why Cortex Cloud Is Different Technically</h3>
-        <p><AccentTerms text="The strongest technical argument for Cortex Cloud is that it tries to collapse the old split between CNAPP and SOC. Palo Alto explicitly positions it as a unified platform where AppSec, CloudSec, runtime security, and SecOps operate on shared context instead of disconnected consoles. It also claims measurable operational outcomes such as lower MTTR and reduced analyst workload through unified workflows and automation, though those outcomes will depend heavily on deployment maturity and process discipline." /></p>
+        <p>The strongest technical argument for Cortex Cloud is that it tries to collapse the old split between CNAPP and SOC. Palo Alto explicitly positions it as a unified platform where AppSec, CloudSec, runtime security, and SecOps operate on shared context instead of disconnected consoles. It also claims measurable operational outcomes such as lower MTTR and reduced analyst workload through unified workflows and automation, though those outcomes will depend heavily on deployment maturity and process discipline.</p>
       </section>
 
       <section className="space-y-6">
         <h3 className="text-3xl font-bold text-[#6BD348]">Final Take</h3>
-        <p><AccentTerms text="So, what is Palo Alto Networks Cortex Cloud?" /></p>
-        <p><AccentTerms text="Technically, it is a unified cloud security platform that brings together application security, cloud posture, runtime protection, identity, data, API security, prioritization, and SOC response on the Cortex platform. Its real value is not that it shows more findings. Its value is that it helps security teams understand which cloud risks are connected, which are active, and which need action first." /></p>
+        <p>So, what is Palo Alto Networks Cortex Cloud?</p>
+        <p>Technically, it is a unified cloud security platform that brings together application security, cloud posture, runtime protection, identity, data, API security, prioritization, and SOC response on the Cortex platform. Its real value is not that it shows more findings. Its value is that it helps security teams understand which cloud risks are connected, which are active, and which need action first.</p>
         <p>That is the difference between having visibility and having operational control.</p>
       </section>
 
@@ -350,7 +259,7 @@ const blogContent: Record<string, React.ReactNode> = {
             />
           </div>
           <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400">
-            <AccentTerms text="Cortex Cloud connects posture, runtime, identity, and response into a single investigation flow." />
+            Cortex Cloud connects posture, runtime, identity, and response into a single investigation flow.
           </div>
         </div>
 
@@ -414,11 +323,11 @@ const blogContent: Record<string, React.ReactNode> = {
   'cortex-xdr-ai-defense': (
     <div className="space-y-8 text-lg text-slate-300 font-light leading-relaxed">
       <p className="text-xl text-white font-medium">
-        <AccentTerms text="Traditional EDR is limited by its narrow focus. Cortex XDR shatters these siloes by integrating network, endpoint, and cloud telemetry into a unified investigation and response platform." />
+        Traditional EDR is limited by its narrow focus. Cortex XDR shatters these siloes by integrating network, endpoint, and cloud telemetry into a unified investigation and response platform.
       </p>
       <h3 className="text-2xl font-bold text-white mt-12 mb-4">The Power of Cross-Data Integration</h3>
       <p>
-        <AccentTerms text={'By stitching together disparate data sources, Cortex XDR uses AI and behavioral analytics to identify sophisticated attacks that previously went unnoticed. It automatically groups related alerts into incidents, reducing "alert fatigue" and allowing analysts to focus on what matters.'} />
+        By stitching together disparate data sources, Cortex XDR uses AI and behavioral analytics to identify sophisticated attacks that previously went unnoticed. It automatically groups related alerts into incidents, reducing "alert fatigue" and allowing analysts to focus on what matters.
       </p>
       <h3 className="text-2xl font-bold text-white mt-12 mb-4">Core Strengths</h3>
       <ul className="space-y-4 list-disc pl-6 text-slate-400">
@@ -432,13 +341,13 @@ const blogContent: Record<string, React.ReactNode> = {
   'automating-soc-xsoar': (
     <div className="space-y-8 text-lg text-slate-300 font-light leading-relaxed">
       <p className="text-xl text-white font-medium">
-        <AccentTerms text="Security Orchestration, Automation, and Response (SOAR) is the connective tissue of a modern SOC. Cortex XSOAR is the platform that makes it all possible." />
+        Security Orchestration, Automation, and Response (SOAR) is the connective tissue of a modern SOC. Cortex XSOAR is the platform that makes it all possible.
       </p>
       <h3 className="text-2xl font-bold text-white mt-12 mb-4">From Manual Triage to Automated Response</h3>
       <p>
-        <AccentTerms text="Cortex XSOAR allows security teams to codify their expertise into automated playbooks. These playbooks handle the repetitive tasks of enrichment and triage, freeing up analysts for higher-value threat hunting and strategy." />
+        Cortex XSOAR allows security teams to codify their expertise into automated playbooks. These playbooks handle the repetitive tasks of enrichment and triage, freeing up analysts for higher-value threat hunting and strategy.
       </p>
-      <h3 className="text-2xl font-bold text-white mt-12 mb-4"><AccentTerms text="XSOAR Ecosystem" /></h3>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">XSOAR Ecosystem</h3>
       <ul className="space-y-4 list-disc pl-6 text-slate-400">
         <li><strong className="text-white">Hundreds of Integrations:</strong> Connect your entire security stack through an extensive marketplace of pre-built integrations.</li>
         <li><strong className="text-white">Interactive War Room:</strong> A collaborative space for analysts to work together on complex incidents with real-time evidence tracking.</li>
@@ -486,11 +395,11 @@ const blogContent: Record<string, React.ReactNode> = {
   'future-secops-xsiam': (
     <div className="space-y-8 text-lg text-slate-300 font-light leading-relaxed">
       <p className="text-xl text-white font-medium">
-        <AccentTerms text="The traditional SIEM is dead. It was designed for a world of logs, not a world of data. Cortex XSIAM is the AI-driven platform that is redefining security operations." />
+        The traditional SIEM is dead. It was designed for a world of logs, not a world of data. Cortex XSIAM is the AI-driven platform that is redefining security operations.
       </p>
       <h3 className="text-2xl font-bold text-white mt-12 mb-4">The Autonomous SOC</h3>
       <p>
-        <AccentTerms text="Cortex XSIAM (Extended Security Intelligence and Automation Management) replaces the legacy SIEM/SOAR/ASM stack with a unified, cloud-native platform. By leveraging out-of-the-box data science and massive-scale automation, XSIAM allows organizations to move from reactive detection to proactive, autonomous response." />
+        Cortex XSIAM (Extended Security Intelligence and Automation Management) replaces the legacy SIEM/SOAR/ASM stack with a unified, cloud-native platform. By leveraging out-of-the-box data science and massive-scale automation, XSIAM allows organizations to move from reactive detection to proactive, autonomous response.
       </p>
       <h3 className="text-2xl font-bold text-white mt-12 mb-4">Strategic Advantages</h3>
       <ul className="space-y-4 list-disc pl-6 text-slate-400">
@@ -525,7 +434,6 @@ const blogContent: Record<string, React.ReactNode> = {
 // ==========================================
 export async function generateStaticParams() {
   return [
-    { slug: 'prisma-cloud-vs-cortex-cloud' },
     { slug: 'what-is-palo-alto-networks-cortex-cloud' },
     { slug: 'strata-next-gen-firewalls' },
     { slug: 'prisma-access-sase-revolution' },
@@ -545,7 +453,6 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   
   const currentSlug = params.slug;
   const blogTitles: Record<string, string> = {
-    'prisma-cloud-vs-cortex-cloud': 'Prisma Cloud vs Cortex Cloud: Architecture and SOC Operating Model',
     'what-is-palo-alto-networks-cortex-cloud': 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
   };
   const formattedTitle = blogTitles[currentSlug] ?? currentSlug.replace(/-/g, ' ').toUpperCase();
@@ -562,7 +469,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             ← Back to Blog
           </Link>
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tighter mb-8 leading-tight">
-            <AccentTerms text={formattedTitle} />
+            {formattedTitle}
           </h1>
         </div>
       </section>

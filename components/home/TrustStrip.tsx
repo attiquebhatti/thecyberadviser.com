@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { VendorIcon } from '@/components/shared/VendorLogos';
-import { AccentTerms } from '@/components/shared/AccentTerms';
 
 export function TrustStrip() {
   const platforms = [
@@ -142,7 +141,7 @@ export function TrustStrip() {
                     {platform.name}
                   </h3>
                   <p className="max-w-[28ch] text-sm leading-6 text-slate-400">
-                    <AccentTerms text={platform.summary} />
+                    {platform.summary}
                   </p>
                 </div>
 

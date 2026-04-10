@@ -16,12 +16,6 @@ import {
   GraduationCap,
   Workflow,
 } from 'lucide-react';
-import { AccentTerms } from '@/components/shared/AccentTerms';
-
-const isCortexService = (service: { title: string; description: string; outcomes: string[] }) =>
-  /(Cortex Cloud|Cortex Operations|Cortex|XDR|XSOAR|XSIAM)/i.test(
-    `${service.title} ${service.description} ${service.outcomes.join(' ')}`
-  );
 
 const services = [
   {
@@ -202,13 +196,7 @@ export function ServicesContent() {
           viewport={{ once: true, margin: "-50px" }}
           className="space-y-4 md:space-y-5"
         >
-          {services.map((service) => {
-            const cortexService = isCortexService(service);
-            const accent = cortexService ? '#6BD348' : '#FFC300';
-            const accentSoft = cortexService ? 'rgba(107, 211, 72, 0.10)' : 'rgba(255, 195, 0, 0.10)';
-            const accentBorder = cortexService ? 'rgba(107, 211, 72, 0.40)' : 'rgba(255, 195, 0, 0.40)';
-
-            return (
+          {services.map((service) => (
             <motion.div
               key={service.title}
               variants={{
@@ -216,29 +204,23 @@ export function ServicesContent() {
                 show: { opacity: 1, y: 0 }
               }}
               whileHover={{ y: -5, transition: { duration: 0.3 } }}
-              className="group relative rounded-2xl transition-all duration-500 overflow-hidden border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl shadow-2xl"
-              style={{
-                borderColor: cortexService ? accentBorder : undefined,
-                boxShadow: cortexService
-                  ? '0 25px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04)'
-                  : undefined,
-              }}
+              className="group relative rounded-2xl transition-all duration-500 hover:shadow-[#FFC300]/5 overflow-hidden border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl hover:border-[#FFC300]/40 shadow-2xl"
             >
-              <div className="absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 rounded-t-2xl" style={{ backgroundColor: cortexService ? 'rgba(107, 211, 72, 0.25)' : 'rgba(255, 195, 0, 0.20)' }}></div>
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
 
               <div className="relative p-6 md:p-8 lg:p-10">
                 <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
                   <div>
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl md:h-14 md:w-14" style={{ backgroundColor: accentSoft, color: accent }}>
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFC300]/10 text-[#FFC300] md:h-14 md:w-14">
                       <service.icon className="h-6 w-6 md:h-7 md:w-7" />
                     </div>
 
                     <h3 className="mb-4 text-2xl font-semibold text-white">
-                      <AccentTerms text={service.title} />
+                      {service.title}
                     </h3>
 
                     <p className="text-base leading-relaxed text-slate-400 md:text-lg">
-                      <AccentTerms text={service.description} />
+                      {service.description}
                     </p>
 
                     <div className="mt-6">
@@ -249,19 +231,17 @@ export function ServicesContent() {
                   </div>
 
                   <div className="lg:pt-2">
-                    <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em]" style={{ color: accent }}>
+                    <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-[#FFC300]">
                       Key Outcomes
                     </h4>
 
                     <ul className="space-y-3">
                       {service.outcomes.map((outcome) => (
                         <li key={outcome} className="flex items-start gap-3">
-                          <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md" style={{ backgroundColor: accentSoft }}>
-                            <CheckCircle2 className="h-3.5 w-3.5" style={{ color: accent }} />
+                          <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-[#FFC300]/10">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-[#FFC300]" />
                           </div>
-                          <span className="text-slate-300">
-                            <AccentTerms text={outcome} />
-                          </span>
+                          <span className="text-slate-300">{outcome}</span>
                         </li>
                       ))}
                     </ul>
@@ -269,8 +249,7 @@ export function ServicesContent() {
                 </div>
               </div>
             </motion.div>
-            );
-          })}
+          ))}
         </motion.div>
       </Section>
 

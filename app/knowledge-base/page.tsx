@@ -4,7 +4,6 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { AccentTerms } from '@/components/shared/AccentTerms';
 
 // THE MASSIVE ENTERPRISE ARTICLE DATABASE (55 Articles)
 const articles = [
@@ -161,13 +160,13 @@ function KnowledgeBaseContent() {
             >
               <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
               <span className="text-[#FFC300] font-mono text-xs font-black uppercase tracking-widest mb-4 block">
-                <AccentTerms text={article.category} />
+                {article.category}
               </span>
               <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFD60A] transition-colors">
-                <AccentTerms text={article.title} />
+                {article.title}
               </h2>
               <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
-                <AccentTerms text={article.description} />
+                {article.description}
               </p>
               <div className="pt-6 border-t border-white/5 flex justify-between items-center">
                 <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
