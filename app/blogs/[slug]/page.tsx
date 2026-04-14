@@ -6,6 +6,89 @@ import Image from 'next/image';
 // BLOG CONTENT DICTIONARY
 // ==========================================
 const blogContent: Record<string, React.ReactNode> = {
+  'quantum-computing-cybersecurity-readiness': (
+    <div className="space-y-10 text-lg text-slate-300 font-light leading-relaxed">
+      <h2 className="text-4xl font-bold text-[#FFC300] tracking-tight leading-tight">⚛️ Quantum Computing is Coming</h2>
+      <p className="text-2xl text-[#FFC300] font-medium">⚠️ Most Security Teams Aren&apos;t Ready</p>
+
+      <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/[0.03] shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+        <div className="relative aspect-[16/10] bg-[#0b0f10] p-2 md:p-3 text-center flex items-center justify-center">
+          <Image
+            src="/images/blogs/quantum-computing/quantum-shield.png"
+            alt="Futuristic post-quantum cryptography shield dashboard"
+            width={1200}
+            height={750}
+            className="object-contain"
+          />
+        </div>
+        <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400">
+          The Harvest Now, Decrypt Later (HNDL) threat makes quantum readiness a current security priority.
+        </div>
+      </div>
+
+      <section className="space-y-6">
+        <p className="text-xl text-white font-medium">🔥 The Next Cybersecurity Disruption Has Already Started</p>
+        <p>For decades, cybersecurity relied on one core belief: <strong>Modern encryption is practically unbreakable.</strong></p>
+        <p>That belief is now fading.</p>
+        <p>Quantum computing is moving from research labs to real-world capability — and when it reaches scale, it could break the cryptographic foundations of today&apos;s digital world. RSA. ECC. Diffie-Hellman.</p>
+        <p>These algorithms protect VPNs, banking systems, cloud infrastructure, digital identity, and secure communications. And they were never designed for quantum adversaries.</p>
+      </section>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">🧠 Why Quantum Computing Changes Everything</h3>
+        <p>Classical computers use bits (0 or 1). Quantum computers use qubits (0 and 1 simultaneously), powered by Superposition and Entanglement. This allows them to solve complex mathematical problems — specifically those that form the basis of our current encryption — in minutes, rather than millennia.</p>
+        
+        <div className="rounded-2xl border border-white/10 bg-[#001D3D]/30 p-6">
+          <h4 className="text-xl font-bold text-white mb-4">🛑 The "Harvest Now, Decrypt Later" Threat</h4>
+          <p>You might think, &quot;We don&apos;t have quantum computers yet, so we have time.&quot; <strong>Wrong.</strong></p>
+          <p>Threat actors are already engaging in <strong>Harvest Now, Decrypt Later (HNDL)</strong> attacks. They are stealing encrypted data today, knowing they can decrypt it in a few years when quantum power becomes available. If your data needs to remain secret for 10+ years, it is already at risk.</p>
+        </div>
+      </section>
+
+      <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/[0.03] shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+        <div className="relative aspect-[16/10] bg-white p-2 md:p-3 text-center flex items-center justify-center">
+          <Image
+            src="/images/blogs/quantum-computing/quantum-readiness.png"
+            alt="Infographic about the Quantum Era and cybersecurity readiness"
+            width={1200}
+            height={750}
+            className="object-contain"
+          />
+        </div>
+        <div className="border-t border-white/10 px-6 py-4 text-sm text-slate-400 text-center">
+          Building crypto-agility is the first step toward post-quantum resilience.
+        </div>
+      </div>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">🛠️ How to Prepare: Post-Quantum Cryptography (PQC)</h3>
+        <p>The transition to quantum-resistant security isn&apos;t just a software update; it&apos;s a fundamental architectural shift.</p>
+        <div className="grid gap-5 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <h4 className="text-lg font-semibold text-[#FFC300] mb-2">1. Inventory Your Encryption</h4>
+            <p className="text-sm">Know where RSA and ECC are used in your environment today.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <h4 className="text-lg font-semibold text-[#FFC300] mb-2">2. Prioritize Long-Life Data</h4>
+            <p className="text-sm">Identify data that must remain confidential for a decade or more.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <h4 className="text-lg font-semibold text-[#FFC300] mb-2">3. Adopt Crypto-Agility</h4>
+            <p className="text-sm">Build systems that can swap cryptographic algorithms without rebuilding the stack.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <h4 className="text-lg font-semibold text-[#FFC300] mb-2">4. NIST Standards</h4>
+            <p className="text-sm">Start testing Kyber (ML-KEM) and other quantum-resistant standards.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="final-take" className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">🏁 Bottom Line</h3>
+        <p>Quantum computing isn&apos;t just a &quot;future problem.&quot; The cryptographic transition is a multi-year journey that needs to start <strong>now.</strong> Is your security roadmap quantum-ready? ⚛️</p>
+      </section>
+    </div>
+  ),
   'what-is-palo-alto-networks-cortex-cloud': (
     <div className="space-y-10 text-lg text-slate-300 font-light leading-relaxed">
       <h2 className="text-4xl font-bold text-[#6BD348] tracking-tight leading-tight">What Is Palo Alto Networks Cortex Cloud?</h2>
@@ -434,6 +517,7 @@ const blogContent: Record<string, React.ReactNode> = {
 // ==========================================
 export async function generateStaticParams() {
   return [
+    { slug: 'quantum-computing-cybersecurity-readiness' },
     { slug: 'what-is-palo-alto-networks-cortex-cloud' },
     { slug: 'strata-next-gen-firewalls' },
     { slug: 'prisma-access-sase-revolution' },
@@ -453,6 +537,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   
   const currentSlug = params.slug;
   const blogTitles: Record<string, string> = {
+    'quantum-computing-cybersecurity-readiness': '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
     'what-is-palo-alto-networks-cortex-cloud': 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
   };
   const formattedTitle = blogTitles[currentSlug] ?? currentSlug.replace(/-/g, ' ').toUpperCase();

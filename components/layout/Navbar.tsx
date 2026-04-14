@@ -154,7 +154,6 @@ export function Navbar() {
                         />
                       </button>
 
-                      {/* Dropdown Menu */}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
                         <div className="w-80 bg-obsidian-900/80 backdrop-blur-3xl border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2.5 overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-br from-[#FFC300]/5 to-transparent pointer-events-none" />
@@ -164,7 +163,12 @@ export function Navbar() {
                               href={child.href}
                               className="relative flex flex-col gap-0.5 px-4 py-3.5 rounded-xl hover:bg-white/[0.05] transition-all group/item"
                             >
-                              <span className="text-sm font-bold text-slate-200 group-hover/item:text-[#FFC300] transition-colors">
+                              <span className={cn(
+                                "text-sm font-bold transition-colors",
+                                child.label === 'Cortex Operations' 
+                                  ? "text-[#6BD348] group-hover/item:text-[#6BD348]/80" 
+                                  : "text-slate-200 group-hover/item:text-[#FFC300]"
+                              )}>
                                 {child.label}
                               </span>
                               {child.description && (
@@ -286,8 +290,8 @@ export function Navbar() {
                               className={cn(
                                 'px-4 py-3 text-sm font-medium rounded-lg transition-all flex flex-col gap-0.5',
                                 pathname === child.href
-                                  ? 'text-[#FFC300] bg-[#FFC300]/10'
-                                  : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5'
+                                  ? (child.label === 'Cortex Operations' ? 'text-[#6BD348] bg-[#6BD348]/10' : 'text-[#FFC300] bg-[#FFC300]/10')
+                                  : (child.label === 'Cortex Operations' ? 'text-[#6BD348]/80 hover:text-[#6BD348] hover:bg-white/5' : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5')
                               )}
                             >
                               <span>{child.label}</span>

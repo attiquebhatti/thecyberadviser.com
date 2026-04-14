@@ -7,6 +7,13 @@ import { motion } from 'framer-motion';
 
 const blogs = [
   {
+    category: 'PRISMA SASE',
+    title: '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
+    description: 'Quantum computing is moving from research labs to real-world capability. When it reaches scale, it could break today\'s cryptographic foundations. Are you ready?',
+    date: '2024-04-14',
+    slug: 'quantum-computing-cybersecurity-readiness'
+  },
+  {
     category: 'CORTEX CLOUD',
     title: 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
     description: 'A practical code-to-cloud-to-SOC guide covering Cortex Cloud architecture, capabilities, use cases, and rollout priorities.',

@@ -10,6 +10,73 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    slug: 'quantum-computing-cybersecurity-readiness',
+    title: '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
+    excerpt: 'Quantum computing is moving from research labs to real-world capability. When it reaches scale, it could break the cryptographic foundations of today’s digital world. Is your organization prepared for the post-quantum era?',
+    category: 'PRISMA SASE',
+    date: '2024-04-14',
+    readTime: '12 min read',
+    content: `
+# ⚛️ Quantum Computing is Coming
+## ⚠️ Most Security Teams Aren’t Ready
+### 🔥 The Next Cybersecurity Disruption Has Already Started
+
+For decades, cybersecurity relied on one core belief: **Modern encryption is practically unbreakable.**
+
+That belief is now fading.
+
+Quantum computing is moving from research labs to real-world capability — and when it reaches scale, it could break the cryptographic foundations of today’s digital world.
+
+RSA. ECC. Diffie-Hellman. These algorithms protect:
+- VPNs
+- Banking systems
+- Cloud infrastructure
+- Digital identity
+- Secure communications
+
+And they were never designed for quantum adversaries.
+
+⚠️ **Most security teams aren’t ready for this shift.**
+
+![Quantum Cryptography Shield](/images/blogs/quantum-computing/quantum-shield.png)
+
+## 🧠 Why Quantum Computing Changes Everything
+
+Classical computers use bits (0 or 1). Quantum computers use qubits (0 and 1 simultaneously), powered by:
+- **Superposition**: Processing vast amounts of data at once.
+- **Entanglement**: Linking qubits for exponential power.
+
+This allows quantum computers to solve complex mathematical problems — specifically those that form the basis of our current encryption — in minutes, rather than millennia.
+
+## 🛑 The "Harvest Now, Decrypt Later" Threat
+
+You might think, *"We don't have quantum computers yet, so we have time."*
+
+**Wrong.**
+
+Threat actors are already engaging in **Harvest Now, Decrypt Later (HNDL)** attacks. They are stealing encrypted data today, knowing they can decrypt it in a few years when quantum power becomes available.
+
+If your data needs to remain secret for 5, 10, or 20 years, it is already at risk.
+
+![Quantum Readiness Infographic](/images/blogs/quantum-computing/quantum-readiness.png)
+
+## 🛠️ How to Prepare: Post-Quantum Cryptography (PQC)
+
+The transition to quantum-resistant security isn't just a software update; it's a fundamental architectural shift.
+
+1. **Inventory Your Encryption**: Know where RSA and ECC are used in your environment.
+2. **Prioritize Long-Life Data**: Focus on data that must remain confidential for a decade or more.
+3. **Adopt Crypto-Agility**: Build systems that can swap out cryptographic algorithms without rebuilding the entire stack.
+4. **Transition to NIST-Approved Algorithms**: Start testing Kyber (now ML-KEM) and other quantum-resistant standards.
+
+## 🏁 Bottom Line
+
+Quantum computing isn't just a "future problem." The cryptographic transition is a multi-year journey that needs to start **now**.
+
+Is your security roadmap quantum-ready? ⚛️
+    `,
+  },
+  {
     slug: 'hybrid-cloud-connectivity',
     title: 'Architecting Hybrid Cloud Connectivity for Enterprise Resilience',
     excerpt: 'A strategic framework for designing secure, scalable hybrid cloud architectures that balance performance with Zero Trust principles.',
