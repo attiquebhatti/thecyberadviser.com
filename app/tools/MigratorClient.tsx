@@ -61,7 +61,8 @@ export default function MigratorClient() {
         setState('error');
       }
     } catch (err) {
-      setError('Load failed');
+      const message = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(`Failed to load project: ${message}`);
       setState('error');
     }
   }, []);
@@ -77,6 +78,9 @@ export default function MigratorClient() {
 
       try {
         const content = await file.text();
+        if (!content || content.trim().length === 0) {
+          throw new Error('File is empty or unreadable');
+        }
         const migrationResult = runMigration(
           {
             fileName: file.name,

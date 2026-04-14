@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
+  images: { 
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
   },
-  images: { unoptimized: true },
   async redirects() {
     return [
       {
