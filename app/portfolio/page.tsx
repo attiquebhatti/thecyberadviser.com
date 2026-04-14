@@ -358,21 +358,13 @@ function PortfolioContent() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{ scale: 1.01 }}
                 className="group relative rounded-2xl border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl p-6 transition-all duration-500 shadow-2xl overflow-hidden md:p-8"
                 style={{
                   borderColor: `${accentColor}40`,
-                  '--hover-border': `${accentColor}40`,
                 } as React.CSSProperties}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}40`;
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.01)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}40`;
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-                }}
               >
-                <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-colors duration-500" style={{ backgroundColor: accentColor, opacity: 0.2 }} onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.2'; }}></div>
+                <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-all duration-500 group-hover:opacity-100" style={{ backgroundColor: accentColor, opacity: 0.2 }}></div>
 
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>

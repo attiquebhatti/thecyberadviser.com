@@ -181,20 +181,13 @@ function KnowledgeBaseContent() {
                 show: { opacity: 1, y: 0 }
               }}
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] p-7 flex flex-col h-full transition-all duration-500 shadow-2xl relative group rounded-2xl overflow-hidden"
+              className="bg-obsidian-900/40 backdrop-blur-xl border p-7 flex flex-col h-full transition-all duration-500 shadow-2xl relative group rounded-2xl overflow-hidden"
               style={{
-                borderColor: `${accentColor}00`,
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}80`;
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 20px ${accentColor}20`;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}00`;
-                (e.currentTarget as HTMLElement).style.boxShadow = '';
-              }}
+                borderColor: `${accentColor}40`,
+                '--hover-shadow': `${accentColor}20`,
+              } as React.CSSProperties}
             >
-              <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-colors duration-500" style={{ backgroundColor: accentColor, opacity: 0.2 }} onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.2'; }}></div>
+              <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-all duration-500 group-hover:opacity-100" style={{ backgroundColor: accentColor, opacity: 0.2 }}></div>
               <span className="font-mono text-xs font-black uppercase tracking-widest mb-4 block" style={{ color: accentColor }}>
                 {article.category}
               </span>
