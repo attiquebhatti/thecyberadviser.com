@@ -238,6 +238,11 @@ const highlights = [
   'FortiGate and Check Point enterprise security delivery',
 ];
 
+// Helper function to detect if a project/category is Cortex
+const isCortexCategory = (category: string): boolean => {
+  return ['Cortex XDR', 'Cortex XSOAR', 'Cortex XSIAM'].includes(category);
+};
+
 function PortfolioContent() {
   const searchParams = useSearchParams();
   const [activeFilter, setActiveFilter] = useState<FilterOption>('All');
@@ -299,6 +304,8 @@ function PortfolioContent() {
       <div className="mt-8 flex flex-wrap gap-3">
         {filterOptions.map((filter) => {
           const isActive = activeFilter === filter;
+          const isCortex = isCortexCategory(filter);
+          const activeColor = isCortex ? '#6BD348' : '#FFC300';
 
           return (
             <button
@@ -308,9 +315,14 @@ function PortfolioContent() {
               className={[
                 'rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300',
                 isActive
-                   ? 'border-[#FFC300]/40 bg-[#FFC300]/10 text-[#FFC300]'
+                  ? `border-[${activeColor}]/40 bg-[${activeColor}]/10 text-[${activeColor}]`
                   : 'border-white/[0.08] bg-white/[0.02] text-slate-300 hover:border-white/[0.14] hover:text-white',
               ].join(' ')}
+              style={isActive ? {
+                borderColor: `${activeColor}40`,
+                backgroundColor: `${activeColor}10`,
+                color: activeColor,
+              } : {}}
             >
               {filter}
             </button>
@@ -334,7 +346,11 @@ function PortfolioContent() {
           className="grid gap-4 md:gap-6 lg:grid-cols-2"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
+            {filteredProjects.map((project, index) => {
+              const isCortex = isCortexCategory(project.category);
+              const accentColor = isCortex ? '#6BD348' : '#FFC300';
+
+              return (
               <motion.div
                 key={project.title}
                 layout
@@ -342,13 +358,25 @@ function PortfolioContent() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group relative rounded-2xl border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl p-6 transition-all duration-500 hover:border-[#FFC300]/40 hover:scale-[1.01] shadow-2xl overflow-hidden md:p-8"
+                className="group relative rounded-2xl border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl p-6 transition-all duration-500 shadow-2xl overflow-hidden md:p-8"
+                style={{
+                  borderColor: `${accentColor}40`,
+                  '--hover-border': `${accentColor}40`,
+                } as React.CSSProperties}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}40`;
+                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.01)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}40`;
+                  (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+                }}
               >
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
+                <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-colors duration-500" style={{ backgroundColor: accentColor, opacity: 0.2 }} onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.2'; }}></div>
 
                 <div className="mb-5 flex items-start justify-between gap-4">
                   <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#FFC300]">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: accentColor }}>
                       {project.category}
                     </p>
                     <h3 className="text-2xl font-semibold text-white">
@@ -356,7 +384,7 @@ function PortfolioContent() {
                     </h3>
                   </div>
 
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[#FFC300]/10 text-[#FFC300]">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: `${accentColor}10`, color: accentColor }}>
                     <project.icon className="h-6 w-6" />
                   </div>
                 </div>
@@ -366,14 +394,14 @@ function PortfolioContent() {
                 </p>
 
                 <div className="mt-6">
-                  <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-[#FFC300]">
+                  <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em]" style={{ color: accentColor }}>
                     Key Outcomes
                   </h4>
                   <ul className="space-y-3">
                     {project.scope.map((item) => (
                       <li key={item} className="flex items-start gap-3">
-                        <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-[#FFC300]/10">
-                          <CheckCircle2 className="h-3 w-3 text-[#FFC300]" />
+                        <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md" style={{ backgroundColor: `${accentColor}10` }}>
+                          <CheckCircle2 className="h-3 w-3" style={{ color: accentColor }} />
                         </div>
                         <span className="text-sm text-slate-300">{item}</span>
                       </li>
@@ -381,7 +409,8 @@ function PortfolioContent() {
                   </ul>
                 </div>
               </motion.div>
-            ))}
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       </div>

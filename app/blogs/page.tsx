@@ -100,10 +100,10 @@ function BlogsContent() {
   });
 
   return (
-    <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
-      <section className="w-full pt-32 pb-14 px-8 text-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/5 via-[#000814] to-[#000814]">
+    <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#6BD348] selection:text-[#000814] pb-24">
+      <section className="w-full pt-32 pb-14 px-8 text-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-500/5 via-[#000814] to-[#000814]">
         <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tighter mb-6">
-          Security <span className="text-[#FFC300]">Insights Blog</span>
+          Security <span className="text-[#6BD348]">Insights Blog</span>
         </h1>
         <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
           The latest perspectives on Palo Alto Networks solutions, cybersecurity trends, and enterprise-grade resilience.
@@ -112,18 +112,23 @@ function BlogsContent() {
 
       <nav className="w-full border-y border-white/10 bg-[#001D3D]/30 sticky top-0 z-40 backdrop-blur-md">
         <div className="max-w-[1200px] mx-auto px-8 flex flex-wrap justify-start md:justify-center items-center gap-5 md:gap-10 py-5 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {['ALL BLOGS', 'STRATA', 'PRISMA', 'CORTEX', 'PANORAMA'].map((tab) => (
+          {['ALL BLOGS', 'STRATA', 'PRISMA', 'CORTEX', 'PANORAMA'].map((tab) => {
+            const isCortexTab = tab === 'CORTEX';
+            const tabColor = isCortexTab ? '#6BD348' : '#FFC300';
+            return (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`font-bold uppercase tracking-[0.2em] text-xs md:text-sm transition-all pb-1 border-b-2
                 ${activeTab === tab
-                  ? 'text-[#FFC300] border-[#FFC300]'
+                  ? 'border-transparent'
                   : 'text-slate-500 border-transparent hover:text-white hover:border-white/30'}`}
+              style={activeTab === tab ? { color: tabColor, borderColor: tabColor } : {}}
             >
               {tab}
             </button>
-          ))}
+            );
+          })}
         </div>
       </nav>
 
@@ -143,36 +148,60 @@ function BlogsContent() {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"
         >
-          {filteredBlogs.map((blog, index) => (
-            <motion.div 
-              key={index}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                show: { opacity: 1, y: 0 }
-              }}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="bg-obsidian-900/40 backdrop-blur-xl border-t border-l border-white/10 border-b border-r border-black/60 p-7 flex flex-col h-full hover:border-[#FFC300]/50 transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_20px_40px_rgba(0,0,0,0.4)] relative group rounded-2xl overflow-hidden hover:shadow-[#FFC300]/10"
-            >
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
-              <span className="text-[#FFC300] font-mono text-xs font-black uppercase tracking-widest mb-4 block">
-                {blog.category}
-              </span>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFD60A] transition-colors">
-                {blog.title}
-              </h2>
-              <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
-                {blog.description}
-              </p>
-              <div className="pt-6 border-t border-white/5 flex justify-between items-center">
-                <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
-                  {blog.date}
+          {filteredBlogs.map((blog, index) => {
+            const isCortex = ['CORTEX CLOUD', 'CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
+            const accentColor = isCortex ? '#6BD348' : '#FFC300';
+            const accentColorHex = isCortex ? 'bg-[#6BD348]' : 'bg-[#FFC300]';
+            const accentColorBorder = isCortex ? 'hover:border-[#6BD348]/50' : 'hover:border-[#FFC300]/50';
+            const accentColorShadow = isCortex ? 'hover:shadow-[#6BD348]/10' : 'hover:shadow-[#FFC300]/10';
+            const accentColorText = isCortex ? 'text-[#6BD348]' : 'text-[#FFC300]';
+            const accentColorOpacity = isCortex ? 'bg-[#6BD348]/20' : 'bg-[#FFC300]/20';
+            
+            return (
+            <Link href={`/blogs/${blog.slug}`} key={index}>
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  show: { opacity: 1, y: 0 }
+                }}
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                className="bg-obsidian-900/40 backdrop-blur-xl border-t border-l border-white/10 border-b border-r border-black/60 p-7 flex flex-col h-full transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_20px_40px_rgba(0,0,0,0.4)] relative group rounded-2xl overflow-hidden cursor-pointer"
+                style={{
+                  borderColor: `color-mix(in srgb, ${accentColor} 50%, rgba(0,0,0,0.6))`,
+                  boxShadow: `inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px ${accentColor}20`,
+                }}
+              >
+                <div 
+                  className="absolute top-0 left-0 w-full h-1.5 group-hover:opacity-100 opacity-50 transition-all duration-500 rounded-t-2xl"
+                  style={{ backgroundColor: accentColor }}
+                ></div>
+                <span 
+                  className="font-mono text-xs font-black uppercase tracking-widest mb-4 block"
+                  style={{ color: accentColor }}
+                >
+                  {blog.category}
                 </span>
-                <Link href={`/blogs/${blog.slug}`} className="text-[#FFC300] font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link hover:text-[#FFD60A] transition-colors">
-                  READ ARTICLE <span className="transition-transform group-hover/link:translate-x-1">→</span>
-                </Link>
-              </div>
-            </motion.div>
-          ))}
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight transition-colors">
+                  {blog.title}
+                </h2>
+                <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
+                  {blog.description}
+                </p>
+                <div className="pt-6 border-t border-white/5 flex justify-between items-center">
+                  <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
+                    {blog.date}
+                  </span>
+                  <span 
+                    className="font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link transition-colors"
+                    style={{ color: accentColor }}
+                  >
+                    READ ARTICLE <span className="transition-transform group-hover/link:translate-x-1">→</span>
+                  </span>
+                </div>
+              </motion.div>
+            </Link>
+            );
+          })}
         </motion.div>
 
         {filteredBlogs.length === 0 && (

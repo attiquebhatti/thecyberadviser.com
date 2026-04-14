@@ -79,6 +79,11 @@ const articles = [
   { category: 'ARCHITECTURE', title: 'Developing a CSPM Strategy', description: 'Cloud Security Posture Management: Architecting automated compliance tracking in multi-cloud deployments.', date: '2025-12-10', slug: 'developing-cspm-strategy' }
 ];
 
+// Helper function to detect if an article category is Cortex
+const isCortexCategory = (category: string): boolean => {
+  return ['CORTEX XSOAR', 'CORTEX XDR', 'CORTEX XSIAM'].includes(category);
+};
+
 function KnowledgeBaseContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState('ALL ARTICLES');
@@ -105,7 +110,17 @@ function KnowledgeBaseContent() {
   });
 
   return (
-    <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
+    <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] pb-24" style={{ WebkitTextFillColor: 'white' }}>
+      <style>{`
+        main::selection {
+          background-color: #6BD348;
+          color: #000814;
+        }
+        main *::selection {
+          background-color: #6BD348;
+          color: #000814;
+        }
+      `}</style>
       <section className="w-full pt-32 pb-14 px-8 text-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/5 via-[#000814] to-[#000814]">
         <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tighter mb-6">
           Technical <span className="text-slate-500">Knowledge Base</span>
@@ -117,18 +132,24 @@ function KnowledgeBaseContent() {
 
       <nav className="w-full border-y border-white/10 bg-[#001D3D]/30 sticky top-0 z-40 backdrop-blur-md">
         <div className="max-w-[1200px] mx-auto px-8 flex flex-wrap justify-start md:justify-center items-center gap-5 md:gap-10 py-5 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {['ALL ARTICLES', 'PALO ALTO', 'CHECK POINT', 'FORTINET', 'ARCHITECTURE'].map((tab) => (
+          {['ALL ARTICLES', 'PALO ALTO', 'CHECK POINT', 'FORTINET', 'ARCHITECTURE'].map((tab) => {
+            const isPaloAlto = tab === 'PALO ALTO';
+            const activeColor = isPaloAlto ? '#6BD348' : '#FFC300';
+            
+            return (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`font-bold uppercase tracking-[0.2em] text-xs md:text-sm transition-all pb-1 border-b-2
                 ${activeTab === tab
-                  ? 'text-[#FFC300] border-[#FFC300]'
+                  ? 'border-transparent'
                   : 'text-slate-500 border-transparent hover:text-white hover:border-white/30'}`}
+              style={activeTab === tab ? { color: activeColor, borderColor: activeColor } : {}}
             >
               {tab}
             </button>
-          ))}
+            );
+          })}
         </div>
       </nav>
 
@@ -148,7 +169,11 @@ function KnowledgeBaseContent() {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"
         >
-          {filteredArticles.map((article, index) => (
+          {filteredArticles.map((article, index) => {
+            const isCortex = isCortexCategory(article.category);
+            const accentColor = isCortex ? '#6BD348' : '#FFC300';
+
+            return (
             <motion.div 
               key={index}
               variants={{
@@ -156,13 +181,24 @@ function KnowledgeBaseContent() {
                 show: { opacity: 1, y: 0 }
               }}
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] p-7 flex flex-col h-full hover:border-[#FFC300]/50 transition-all duration-500 shadow-2xl relative group rounded-2xl overflow-hidden hover:shadow-[#FFC300]/10"
+              className="bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] p-7 flex flex-col h-full transition-all duration-500 shadow-2xl relative group rounded-2xl overflow-hidden"
+              style={{
+                borderColor: `${accentColor}00`,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}80`;
+                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 20px ${accentColor}20`;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = `${accentColor}00`;
+                (e.currentTarget as HTMLElement).style.boxShadow = '';
+              }}
             >
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
-              <span className="text-[#FFC300] font-mono text-xs font-black uppercase tracking-widest mb-4 block">
+              <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-colors duration-500" style={{ backgroundColor: accentColor, opacity: 0.2 }} onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.2'; }}></div>
+              <span className="font-mono text-xs font-black uppercase tracking-widest mb-4 block" style={{ color: accentColor }}>
                 {article.category}
               </span>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFD60A] transition-colors">
+              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight hover:text-[#FFD60A] transition-colors">
                 {article.title}
               </h2>
               <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
@@ -172,18 +208,19 @@ function KnowledgeBaseContent() {
                 <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
                   {article.date}
                 </span>
-                <Link href={`/knowledge-base/${article.slug}`} className="text-[#FFC300] font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link hover:text-[#FFD60A] transition-colors">
+                <Link href={`/knowledge-base/${article.slug}`} className="font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link hover:text-[#FFD60A] transition-colors" style={{ color: accentColor }}>
                   READ <span className="transition-transform group-hover/link:translate-x-1">→</span>
                 </Link>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </motion.div>
 
         {filteredArticles.length === 0 && (
           <div className="text-center py-20">
             <h3 className="text-2xl text-white font-bold mb-4">No articles found in this category.</h3>
-            <button onClick={() => setActiveTab('ALL ARTICLES')} className="text-[#FFC300] hover:underline">Return to All Articles</button>
+            <button onClick={() => setActiveTab('ALL ARTICLES')} className="font-bold hover:underline" style={{ color: '#6BD348' }}>Return to All Articles</button>
           </div>
         )}
       </section>

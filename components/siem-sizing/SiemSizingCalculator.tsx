@@ -115,19 +115,19 @@ function PlatformCard({
       className={cn(
         'rounded-[1.35rem] border p-4 text-left transition-all duration-300',
         active
-          ? 'border-[#FFC300]/60 bg-[#FFC300]/10 shadow-[0_12px_30px_rgba(255,195,0,0.08)]'
+          ? 'border-[#6BD348]/60 bg-[#6BD348]/10 shadow-[0_12px_30px_rgba(107,211,72,0.08)]'
           : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
       )}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/60 text-[#FFC300]">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/60 text-[#6BD348]">
           <Icon className="h-5 w-5" />
         </div>
         <Badge
           variant="outline"
           className={cn(
             'rounded-full border px-2.5 py-0.5 text-[11px] uppercase tracking-[0.18em]',
-            active ? 'border-[#FFC300]/40 text-[#FFC300]' : 'border-white/10 text-slate-500'
+            active ? 'border-[#6BD348]/40 text-[#6BD348]' : 'border-white/10 text-slate-500'
           )}
         >
           {platform.shortLabel}
@@ -152,9 +152,9 @@ function NodeBadge({
 }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-      <Icon className="mx-auto h-5 w-5 text-[#FFC300]" />
+      <Icon className="mx-auto h-5 w-5 text-[#6BD348]" />
       <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
-      <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#FFC300]/80">{label}</p>
+      <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#6BD348]/80">{label}</p>
     </div>
   );
 }
@@ -171,7 +171,7 @@ function StatCard({
   return (
     <div className="rounded-2xl border border-white/10 bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
       <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/60 text-[#FFC300]">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/60 text-[#6BD348]">
           <Icon className="h-5 w-5" />
         </div>
         <div>
@@ -201,7 +201,7 @@ export default function SiemSizingCalculator() {
         <Card className="card-premium overflow-hidden rounded-[2rem] border border-white/10">
           <CardHeader className="space-y-6 p-7 md:p-8">
             <div className="flex flex-wrap gap-2">
-              <Badge className="rounded-full bg-[#FFC300] px-3 py-1 text-black hover:bg-[#FFC300]">Free Tool</Badge>
+                <Badge className="rounded-full bg-[#6BD348] px-3 py-1 text-black hover:bg-[#6BD348]">Free Tool</Badge>
               <Badge variant="outline" className="rounded-full border-white/15 px-3 py-1 text-slate-200">
                 Beta
               </Badge>
@@ -217,10 +217,10 @@ export default function SiemSizingCalculator() {
 
             <Tabs value={input.mode} onValueChange={(value) => setMode(value as SiemSizingMode)} className="w-full">
               <TabsList className="grid w-full max-w-sm grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.03] p-1">
-                <TabsTrigger value="simple" className="rounded-xl data-[state=active]:bg-[#FFC300] data-[state=active]:text-black">
+                <TabsTrigger value="simple" className="rounded-xl data-[state=active]:bg-[#6BD348] data-[state=active]:text-black">
                   Simple
                 </TabsTrigger>
-                <TabsTrigger value="advanced" className="rounded-xl data-[state=active]:bg-[#FFC300] data-[state=active]:text-black">
+                <TabsTrigger value="advanced" className="rounded-xl data-[state=active]:bg-[#6BD348] data-[state=active]:text-black">
                   Advanced
                 </TabsTrigger>
               </TabsList>
@@ -329,9 +329,9 @@ export default function SiemSizingCalculator() {
 
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
         <div className="space-y-6 lg:sticky lg:top-28">
-          <Card className="overflow-hidden rounded-[2rem] border border-[#FFC300]/20 bg-[radial-gradient(circle_at_top,_rgba(255,195,0,0.14),_transparent_38%),linear-gradient(180deg,_rgba(18,20,32,0.98),_rgba(10,12,20,0.98))] text-white shadow-[0_24px_60px_rgba(0,0,0,0.4)]">
+          <Card className="overflow-hidden rounded-[2rem] border border-[#6BD348]/20 bg-[radial-gradient(circle_at_top,_rgba(107,211,72,0.14),_transparent_38%),linear-gradient(180deg,_rgba(18,20,32,0.98),_rgba(10,12,20,0.98))] text-white shadow-[0_24px_60px_rgba(0,0,0,0.4)]">
             <CardHeader className="space-y-3 p-7">
-              <div className="flex items-center gap-2 text-sm font-medium text-[#FFC300]">
+              <div className="flex items-center gap-2 text-sm font-medium text-[#6BD348]">
                 <BadgeCheck className="h-4 w-4" />
                 Recommended Architecture
               </div>
@@ -411,7 +411,7 @@ export default function SiemSizingCalculator() {
 
               <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/60 text-[#FFC300]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/60 text-[#6BD348]">
                     <Network className="h-5 w-5" />
                   </div>
                   <div>
