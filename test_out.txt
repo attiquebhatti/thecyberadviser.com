@@ -1,0 +1,24 @@
+Running ASA...
+Asserting ASA...
+Running FortiGate...
+Asserting FortiGate...
+FortiGate zones: [ 'trust' ]
+FortiGate natRules: 1
+FortiGate summary labels: [
+  'addresses',
+  'addressGroups',
+  'services',
+  'serviceGroups',
+  'policies',
+  'natRules',
+  'interfaces',
+  'zones',
+  'staticRoutes',
+  'schedules',
+  'vpns',
+  'loggingProfiles'
+]
+Running Check Point...
+Asserting Check Point...
+Asserting Rollback...
+UnifiedMigrator tests passed

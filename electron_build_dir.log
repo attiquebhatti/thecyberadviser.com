@@ -1,0 +1,134 @@
+﻿  ΓÇó electron-builder  version=24.13.3 os=10.0.22631
+  ΓÇó loaded configuration  file=package.json ("build" field)
+  ΓÇó description is missed in the package.json  appPackageFile=C:\App Development\TheCyberAdviser\thecyberadviser.com\package.json
+  ΓÇó author is missed in the package.json  appPackageFile=C:\App Development\TheCyberAdviser\thecyberadviser.com\package.json
+  ΓÇó packaging       platform=win32 arch=x64 electron=31.7.7 appOutDir=dist-desktop\win-unpacked
+  ΓÇó default Electron icon is used  reason=application icon is not set
+  ΓÇó downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ΓÇó downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=1.252s
+  Γ¿» cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\559469603.7z
+    --
+    Path = C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\559469603.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\559469603\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\559469603\darwin\10.12\lib\libssl.dylib
+    
+                    command='C:\App Development\TheCyberAdviser\thecyberadviser.com\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\559469603.7z' '-oC:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\559469603'
+                    workingDir=C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign
+  ΓÇó Above command failed, retrying 3 more times
+  ΓÇó downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ΓÇó downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=443ms
+  Γ¿» cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\235599639.7z
+    --
+    Path = C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\235599639.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\235599639\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\235599639\darwin\10.12\lib\libssl.dylib
+    
+                    command='C:\App Development\TheCyberAdviser\thecyberadviser.com\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\235599639.7z' '-oC:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\235599639'
+                    workingDir=C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign
+  ΓÇó Above command failed, retrying 2 more times
+  ΓÇó downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ΓÇó downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=549ms
+  Γ¿» cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\988783899.7z
+    --
+    Path = C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\988783899.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\988783899\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\988783899\darwin\10.12\lib\libssl.dylib
+    
+                    command='C:\App Development\TheCyberAdviser\thecyberadviser.com\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\988783899.7z' '-oC:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\988783899'
+                    workingDir=C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign
+  ΓÇó Above command failed, retrying 1 more times
+  ΓÇó downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  ΓÇó downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=385ms
+  Γ¿» cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+    
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+    
+    Extracting archive: C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\603037307.7z
+    --
+    Path = C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\603037307.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+    
+    
+    Sub items Errors: 2
+    
+    Archives with Errors: 1
+    
+    Sub items Errors: 2
+    
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\603037307\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\603037307\darwin\10.12\lib\libssl.dylib
+    
+                    command='C:\App Development\TheCyberAdviser\thecyberadviser.com\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\603037307.7z' '-oC:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign\603037307'
+                    workingDir=C:\Users\Attique Bhatti\AppData\Local\electron-builder\Cache\winCodeSign
+  ΓÇó Above command failed, retrying 0 more times
