@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { getArticleBySlug } from '@/data/articles';
 import { Metadata } from 'next';
+import Image from 'next/image';
 
 // ==========================================
 // DYNAMIC METADATA
