@@ -9,7 +9,7 @@ const blogs = [
   {
     category: 'XSOAR',
     title: '🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations',
-    description: 'Modern SOCs are overwhelmed by fragmented tools. Explore how Cortex XSOAR acts as the central nervous system to automate investigation, enrichment, and response.',
+    excerpt: 'Modern SOCs are overwhelmed by fragmented tools. Explore how Cortex XSOAR acts as the central nervous system to automate investigation, enrichment, and response.',
     date: '2026-04-15',
     slug: 'cortex-xsoar-transforming-soc-operations',
     image: '/images/blogs/cortex-xsoar/xsoar-diagram-horizontal.png'
@@ -17,7 +17,7 @@ const blogs = [
   {
     category: 'CORTEX XDR',
     title: 'Securing the Agentic Endpoint with Cortex XDR',
-    description: 'Your endpoint just became an AI agent. Autonomous AI agents, self-executing workflows, and AI copilots are running directly on your endpoints — and attackers are evolving to exploit them.',
+    excerpt: 'Your endpoint just became an AI agent. Autonomous AI agents, self-executing workflows, and AI copilots are running directly on your endpoints — and attackers are evolving to exploit them.',
     date: '2026-04-15',
     slug: 'securing-agentic-endpoint-cortex-xdr',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop'
@@ -25,7 +25,7 @@ const blogs = [
   {
     category: 'PRISMA SASE',
     title: '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
-    description: 'Quantum computing is moving from research labs to real-world capability. When it reaches scale, it could break today\'s cryptographic foundations. Are you ready?',
+    excerpt: 'Quantum computing is moving from research labs to real-world capability. When it reaches scale, it could break today\'s cryptographic foundations. Are you ready?',
     date: '2024-04-14',
     slug: 'quantum-computing-cybersecurity-readiness',
     image: '/images/blogs/quantum-computing/quantum-shield.png'
@@ -33,7 +33,7 @@ const blogs = [
   {
     category: 'CORTEX CLOUD',
     title: 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
-    description: 'A practical code-to-cloud-to-SOC guide covering Cortex Cloud architecture, capabilities, use cases, and rollout priorities.',
+    excerpt: 'A practical code-to-cloud-to-SOC guide covering Cortex Cloud architecture, capabilities, use cases, and rollout priorities.',
     date: '2026-04-06',
     slug: 'what-is-palo-alto-networks-cortex-cloud',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop'
@@ -41,7 +41,7 @@ const blogs = [
   { 
     category: 'STRATA', 
     title: 'Strata Next-Gen Firewalls: The Foundation of Zero Trust', 
-    description: 'Explore why Palo Alto Networks Strata is more than just a firewall—it\'s the critical enforcement point for modern security architectures.', 
+    excerpt: 'Explore why Palo Alto Networks Strata is more than just a firewall—it\'s the critical enforcement point for modern security architectures.', 
     date: '2026-03-15', 
     slug: 'strata-next-gen-firewalls',
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=1600&auto=format&fit=crop'
@@ -49,7 +49,7 @@ const blogs = [
   { 
     category: 'PANORAMA', 
     title: 'Centralized Mastery with Panorama: Fleet Management at Scale', 
-    description: 'Learn how to streamline security operations across thousands of firewalls using advanced Panorama templates and device groups.', 
+    excerpt: 'Learn how to streamline security operations across thousands of firewalls using advanced Panorama templates and device groups.', 
     date: '2026-03-10', 
     slug: 'panorama-centralized-mastery',
     image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop'
@@ -57,7 +57,7 @@ const blogs = [
   { 
     category: 'PRISMA ACCESS', 
     title: 'The SASE Revolution: Consolidating Security with Prisma Access', 
-    description: 'A deep dive into how Prisma Access provides consistent security for the hybrid workforce without the latency of traditional VPNs.', 
+    excerpt: 'A deep dive into how Prisma Access provides consistent security for the hybrid workforce without the latency of traditional VPNs.', 
     date: '2026-03-05', 
     slug: 'prisma-access-sase-revolution',
     image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1600&auto=format&fit=crop'
@@ -65,7 +65,7 @@ const blogs = [
   { 
     category: 'CORTEX XDR', 
     title: 'AI-Driven Defense: Mastering Threat Detection with Cortex XDR', 
-    description: 'Moving beyond endpoint security. How Cortex XDR stiches together network, endpoint, and cloud telemetry to stop sophisticated attacks.', 
+    excerpt: 'Moving beyond endpoint security. How Cortex XDR stiches together network, endpoint, and cloud telemetry to stop sophisticated attacks.', 
     date: '2026-02-28', 
     slug: 'cortex-xdr-ai-defense',
     image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1600&auto=format&fit=crop'
@@ -73,7 +73,7 @@ const blogs = [
   { 
     category: 'XSOAR', 
     title: 'Automating the SOC: Building Resilient Playbooks in XSOAR', 
-    description: 'Stop chasing alerts. Learn how to automate incident response workflows and reduce MTTR from hours to minutes with Cortex XSOAR.', 
+    excerpt: 'Stop chasing alerts. Learn how to automate incident response workflows and reduce MTTR from hours to minutes with Cortex XSOAR.', 
     date: '2026-02-20', 
     slug: 'automating-soc-xsoar',
     image: 'https://images.unsplash.com/photo-1510511459019-57e1b7774e76?q=80&w=1600&auto=format&fit=crop'
@@ -81,7 +81,7 @@ const blogs = [
   { 
     category: 'PRISMA SD-WAN', 
     title: 'Cloud-Gen SD-WAN: Beyond Traditional Routing with Prisma', 
-    description: 'How Prisma SD-WAN (formerly CloudGenix) uses application-defined policies to transform branch connectivity and performance.', 
+    excerpt: 'How Prisma SD-WAN (formerly CloudGenix) uses application-defined policies to transform branch connectivity and performance.', 
     date: '2026-02-15', 
     slug: 'prisma-sd-wan-cloud-gen',
     image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=1600&auto=format&fit=crop'
@@ -89,7 +89,7 @@ const blogs = [
   { 
     category: 'XSIAM', 
     title: 'The Future of SecOps: Cortex XSIAM and the Autonomous SOC', 
-    description: 'An architectural look at how Cortex XSIAM is redefining the SIEM category with integrated data science and automation.', 
+    excerpt: 'An architectural look at how Cortex XSIAM is redefining the SIEM category with integrated data science and automation.', 
     date: '2026-02-10', 
     slug: 'future-secops-xsiam',
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=1600&auto=format&fit=crop'
@@ -97,7 +97,7 @@ const blogs = [
   { 
     category: 'PRISMA SASE', 
     title: 'Prisma SASE: The Convergence of Networking and Security', 
-    description: 'Why a unified SASE approach is essential for the modern enterprise, and how Prisma SASE delivers on the promise of the cloud-delivered edge.', 
+    excerpt: 'Why a unified SASE approach is essential for the modern enterprise, and how Prisma SASE delivers on the promise of the cloud-delivered edge.', 
     date: '2026-02-05', 
     slug: 'prisma-sase-convergence',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop'
@@ -105,7 +105,7 @@ const blogs = [
   {
     category: 'ZERO TRUST',
     title: 'From Legacy VPN to ZTNA: A Phased Migration Strategy',
-    description: 'A practical roadmap for transitioning from traditional VPN infrastructure to Zero Trust Network Access without disrupting business operations.',
+    excerpt: 'A practical roadmap for transitioning from traditional VPN infrastructure to Zero Trust Network Access without disrupting business operations.',
     date: '2024-02-15',
     slug: 'legacy-vpn-to-ztna-the-migration-plan',
     image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1600&auto=format&fit=crop'
@@ -113,7 +113,7 @@ const blogs = [
   {
     category: 'CLOUD SECURITY',
     title: 'CSPM Implementation: Building Continuous Cloud Visibility',
-    description: 'Strategies for deploying and operationalizing Cloud Security Posture Management to maintain compliance and reduce risk across multi-cloud environments.',
+    excerpt: 'Strategies for deploying and operationalizing Cloud Security Posture Management to maintain compliance and reduce risk across multi-cloud environments.',
     date: '2024-02-01',
     slug: 'cloud-security-posture-management',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop'
@@ -121,7 +121,7 @@ const blogs = [
   {
     category: 'ARCHITECTURE',
     title: 'Security Architecture Review: A Structured Assessment Methodology',
-    description: 'A comprehensive framework for evaluating enterprise security architectures, identifying gaps, and developing strategic remediation roadmaps.',
+    excerpt: 'A comprehensive framework for evaluating enterprise security architectures, identifying gaps, and developing strategic remediation roadmaps.',
     date: '2024-01-20',
     slug: 'security-architecture-review-methodology',
     image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1600&auto=format&fit=crop'
