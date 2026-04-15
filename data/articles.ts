@@ -285,7 +285,7 @@ And with Cortex XSOAR, your SOC doesn’t just detect threats faster…
     category: 'CORTEX XDR',
     date: '2026-04-15',
     readTime: '10 min read',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop',
     content: `
 # Securing the Agentic Endpoint with Cortex XDR
 ## Your Endpoint Just Became an AI Agent — Are You Securing It?
@@ -548,6 +548,7 @@ The real question is: **Is Your AI Endpoint Secure?**
     category: 'PRISMA SASE',
     date: '2024-04-14',
     readTime: '12 min read',
+    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1600&auto=format&fit=crop',
     content: `
 # ⚛️ Quantum Computing is Coming
 ## ⚠️ Most Security Teams Aren’t Ready
