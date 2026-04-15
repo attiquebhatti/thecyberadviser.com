@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     const payload = contactSchema.parse(await request.json());
 
     const transport = getTransport();
-    const to = process.env.CONTACT_TO_EMAIL || "attique@thecyberadviser.com";
+    const to = process.env.CONTACT_TO_EMAIL || "info@thecyberadviser.com";
     const from = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || to;
     const replyTo = payload.email;
 

@@ -790,7 +790,7 @@ const blogContent: Record<string, React.ReactNode> = {
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-sm text-slate-400">
         <p className="font-semibold text-white mb-1">Attique Bhatti</p>
         <p>Network Security Consultant · Palo Alto Networks Instructor · Cybersecurity Architect</p>
-        <p className="mt-3">📞 +971-56-9383383 · ✉️ <a href="mailto:attique@thecyberadviser.com" className="text-[#6BD348] hover:underline">attique@thecyberadviser.com</a> · 🌐 <a href="https://www.thecyberadviser.com" className="text-[#6BD348] hover:underline">www.TheCyberAdviser.com</a></p>
+        <p className="mt-3">📞 +971-56-9383383 · ✉️ <a href="mailto:info@thecyberadviser.com" className="text-[#6BD348] hover:underline">info@thecyberadviser.com</a> · 🌐 <a href="https://www.thecyberadviser.com" className="text-[#6BD348] hover:underline">www.TheCyberAdviser.com</a></p>
       </div>
     </div>
   )
@@ -878,7 +878,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
             <div className="mt-16 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-sm text-slate-400">
               <p className="font-semibold text-white mb-1">Attique Bhatti</p>
               <p>Network Security Consultant · Palo Alto Networks Instructor · Cybersecurity Architect</p>
-              <p className="mt-3">📞 +971-56-9383383 · ✉️ <a href="mailto:attique@thecyberadviser.com" style={{ color: fallbackAccentColor }} className="hover:underline">attique@thecyberadviser.com</a> · 🌐 <a href="https://www.thecyberadviser.com" style={{ color: fallbackAccentColor }} className="hover:underline">www.TheCyberAdviser.com</a></p>
+              <p className="mt-3">📞 +971-56-9383383 · ✉️ <a href="mailto:info@thecyberadviser.com" style={{ color: fallbackAccentColor }} className="hover:underline">info@thecyberadviser.com</a> · 🌐 <a href="https://www.thecyberadviser.com" style={{ color: fallbackAccentColor }} className="hover:underline">www.TheCyberAdviser.com</a></p>
             </div>
           </article>
         ) : (

@@ -530,7 +530,7 @@ The real question is: **Is Your AI Endpoint Secure?**
 
 *Attique Bhatti — Network Security Consultant, Palo Alto Networks Instructor, Cybersecurity Architect*
 
-*For consultation: [attique@thecyberadviser.com](mailto:attique@thecyberadviser.com) | +971-56-9383383 | [www.TheCyberAdviser.com](https://www.thecyberadviser.com)*
+*For consultation: [info@thecyberadviser.com](mailto:info@thecyberadviser.com) | +971-56-9383383 | [www.TheCyberAdviser.com](https://www.thecyberadviser.com)*
     `,
   },
   {

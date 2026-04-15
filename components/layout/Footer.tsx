@@ -62,7 +62,7 @@ export function Footer() {
                 <Twitter className="w-4 h-4" />
               </a>
               <a
-                href="mailto:attique@thecyberadviser.com"
+                href="mailto:info@thecyberadviser.com"
                 className="w-10 h-10 flex items-center justify-center rounded-lg bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] text-slate-400 hover:text-[#FFC300] hover:border-[#FFC300]/40 transition-all duration-300 shadow-lg"
                 aria-label="Email"
               >
