@@ -17,7 +17,7 @@ export const articles: Article[] = [
     category: 'XSOAR',
     date: '2026-04-15',
     readTime: '10 min read',
-    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1600&auto=format&fit=crop',
     content: `
 # 🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations: Integration, Automation & Orchestration
 

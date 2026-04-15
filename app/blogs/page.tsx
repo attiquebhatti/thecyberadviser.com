@@ -221,7 +221,7 @@ function BlogsContent() {
                     <div className={`absolute inset-0 bg-gradient-to-br ${isCortex ? 'from-[#6BD348]/20' : 'from-[#FFC300]/20'} to-transparent z-10 opacity-60`} />
                     <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950 via-transparent to-transparent z-10 opacity-80" />
                     <img 
-                      src={blog.image || `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop`} 
+                      src={blog.image || `https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop`} 
                       alt={blog.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
