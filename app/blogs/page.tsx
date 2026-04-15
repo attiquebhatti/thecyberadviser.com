@@ -260,7 +260,7 @@ function BlogsContent() {
                     </h2>
                     
                     <p className="text-base text-slate-400 font-light leading-relaxed mb-8 flex-grow">
-                      {blog.excerpt || blog.description}
+                      {blog.excerpt}
                     </p>
 
                     <div className="pt-6 border-t border-white/5 flex justify-between items-center">
