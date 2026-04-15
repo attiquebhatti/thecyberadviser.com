@@ -17,9 +17,11 @@ export const articles: Article[] = [
     category: 'XSOAR',
     date: '2026-04-15',
     readTime: '10 min read',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1600&auto=format&fit=crop',
+    image: '/images/blogs/cortex-xsoar/xsoar-diagram-horizontal.png',
     content: `
 # 🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations: Integration, Automation & Orchestration
+
+![Cortex XSOAR Cloud Security & SOC Detection](/images/blogs/cortex-xsoar/xsoar-diagram-horizontal.png)
 
 ## Introduction 🚀
 
@@ -94,13 +96,11 @@ All of this happens in **seconds, not hours**.
 
 ---
 
-![Cortex XSOAR Orchestration Hub](https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=1600&auto=format&fit=crop)
-
----
-
 ## How Cortex XSOAR Works in a Modern SOC Architecture 🏗️
 
-To understand its impact, we need to look at the SOC architecture in three core layers:
+To understand its impact, we need to look at the SOC architecture in context. The modern SOC requires seamless data flow between detection and response.
+
+![Modern SOC Architecture: Cortex XSOAR + SIEM + XDR](/images/blogs/cortex-xsoar/xsoar-diagram-vertical.png)
 
 ---
 
@@ -126,10 +126,6 @@ XDR expands visibility across endpoints, networks, and cloud:
 - Attack chain analysis  
 - Endpoint telemetry  
 - Cross-domain threat correlation  
-
----
-
-![Detection Pipelines Feeding XSOAR](https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1600&auto=format&fit=crop)
 
 ---
 
@@ -164,10 +160,6 @@ Once an incident is validated, XSOAR can automatically execute response actions:
 - 📢 Notify SOC teams in real time  
 
 This transforms response from **reactive to proactive**.
-
----
-
-![Security Automation Lifecycle](https://images.unsplash.com/photo-1551288049-bbbda5366391?q=80&w=1600&auto=format&fit=crop)
 
 ---
 
