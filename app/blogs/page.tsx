@@ -7,6 +7,20 @@ import { motion } from 'framer-motion';
 
 const blogs = [
   {
+    category: 'XSOAR',
+    title: '🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations',
+    description: 'Modern SOCs are overwhelmed by fragmented tools. Explore how Cortex XSOAR acts as the central nervous system to automate investigation, enrichment, and response.',
+    date: '2026-04-15',
+    slug: 'cortex-xsoar-transforming-soc-operations'
+  },
+  {
+    category: 'CORTEX XDR',
+    title: 'Securing the Agentic Endpoint with Cortex XDR',
+    description: 'Your endpoint just became an AI agent. Autonomous AI agents, self-executing workflows, and AI copilots are running directly on your endpoints — and attackers are evolving to exploit them.',
+    date: '2026-04-15',
+    slug: 'securing-agentic-endpoint-cortex-xdr'
+  },
+  {
     category: 'PRISMA SASE',
     title: '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
     description: 'Quantum computing is moving from research labs to real-world capability. When it reaches scale, it could break today\'s cryptographic foundations. Are you ready?',
@@ -75,7 +89,28 @@ const blogs = [
     description: 'Why a unified SASE approach is essential for the modern enterprise, and how Prisma SASE delivers on the promise of the cloud-delivered edge.', 
     date: '2026-02-05', 
     slug: 'prisma-sase-convergence' 
-  }
+  },
+  {
+    category: 'ZERO TRUST',
+    title: 'From Legacy VPN to ZTNA: A Phased Migration Strategy',
+    description: 'A practical roadmap for transitioning from traditional VPN infrastructure to Zero Trust Network Access without disrupting business operations.',
+    date: '2024-02-15',
+    slug: 'legacy-vpn-to-ztna-the-migration-plan'
+  },
+  {
+    category: 'CLOUD SECURITY',
+    title: 'CSPM Implementation: Building Continuous Cloud Visibility',
+    description: 'Strategies for deploying and operationalizing Cloud Security Posture Management to maintain compliance and reduce risk across multi-cloud environments.',
+    date: '2024-02-01',
+    slug: 'cloud-security-posture-management'
+  },
+  {
+    category: 'ARCHITECTURE',
+    title: 'Security Architecture Review: A Structured Assessment Methodology',
+    description: 'A comprehensive framework for evaluating enterprise security architectures, identifying gaps, and developing strategic remediation roadmaps.',
+    date: '2024-01-20',
+    slug: 'security-architecture-review-methodology'
+  },
 ];
 
 function BlogsContent() {
@@ -85,8 +120,8 @@ function BlogsContent() {
   useEffect(() => {
     const category = searchParams.get('category');
     if (category) {
-      const normalizedCategory = category.toUpperCase().replace('+', ' ');
-      const validTabs = ['ALL BLOGS', 'STRATA', 'PRISMA', 'CORTEX', 'PANORAMA'];
+      const normalizedCategory = category.toUpperCase().replace(/\+/g, ' ').replace(/%20/g, ' ');
+      const validTabs = ['ALL BLOGS', 'STRATA NGFW', 'PRISMA SASE', 'CORTEX PLATFORM', 'PANORAMA'];
       if (validTabs.includes(normalizedCategory)) {
         setActiveTab(normalizedCategory);
       } else {
@@ -97,10 +132,13 @@ function BlogsContent() {
 
   const filteredBlogs = blogs.filter(blog => {
     if (activeTab === 'ALL BLOGS') return true;
-    if (activeTab === 'PRISMA') {
+    if (activeTab === 'STRATA NGFW') {
+      return blog.category === 'STRATA';
+    }
+    if (activeTab === 'PRISMA SASE') {
       return ['PRISMA ACCESS', 'PRISMA SD-WAN', 'PRISMA SASE'].includes(blog.category);
     }
-    if (activeTab === 'CORTEX') {
+    if (activeTab === 'CORTEX PLATFORM') {
       return ['CORTEX CLOUD', 'CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
     }
     return blog.category === activeTab;
@@ -119,8 +157,8 @@ function BlogsContent() {
 
       <nav className="w-full border-y border-white/10 bg-[#001D3D]/30 sticky top-0 z-40 backdrop-blur-md">
         <div className="max-w-[1200px] mx-auto px-8 flex flex-wrap justify-start md:justify-center items-center gap-5 md:gap-10 py-5 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {['ALL BLOGS', 'STRATA', 'PRISMA', 'CORTEX', 'PANORAMA'].map((tab) => {
-            const isCortexTab = tab === 'CORTEX';
+          {['ALL BLOGS', 'STRATA NGFW', 'PRISMA SASE', 'CORTEX PLATFORM', 'PANORAMA'].map((tab) => {
+            const isCortexTab = tab === 'CORTEX PLATFORM';
             const tabColor = isCortexTab ? '#6BD348' : '#FFC300';
             return (
             <button
@@ -157,6 +195,7 @@ function BlogsContent() {
         >
           {filteredBlogs.map((blog, index) => {
             const isCortex = ['CORTEX CLOUD', 'CORTEX XDR', 'XSOAR', 'XSIAM'].includes(blog.category);
+            const isZeroTrust = blog.category === 'ZERO TRUST';
             const accentColor = isCortex ? '#6BD348' : '#FFC300';
             const accentColorHex = isCortex ? 'bg-[#6BD348]' : 'bg-[#FFC300]';
             const accentColorBorder = isCortex ? 'hover:border-[#6BD348]/50' : 'hover:border-[#FFC300]/50';
@@ -165,48 +204,71 @@ function BlogsContent() {
             const accentColorOpacity = isCortex ? 'bg-[#6BD348]/20' : 'bg-[#FFC300]/20';
             
             return (
-            <Link href={`/blogs/${blog.slug}`} key={index}>
-              <motion.div 
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  show: { opacity: 1, y: 0 }
-                }}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                className="bg-obsidian-900/40 backdrop-blur-xl border-t border-l border-white/10 border-b border-r border-black/60 p-7 flex flex-col h-full transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_20px_40px_rgba(0,0,0,0.4)] relative group rounded-2xl overflow-hidden cursor-pointer"
-                style={{
-                  borderColor: `color-mix(in srgb, ${accentColor} 50%, rgba(0,0,0,0.6))`,
-                  boxShadow: `inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px ${accentColor}20`,
-                }}
-              >
-                <div 
-                  className="absolute top-0 left-0 w-full h-1.5 group-hover:opacity-100 opacity-50 transition-all duration-500 rounded-t-2xl"
-                  style={{ backgroundColor: accentColor }}
-                ></div>
-                <span 
-                  className="font-mono text-xs font-black uppercase tracking-widest mb-4 block"
-                  style={{ color: accentColor }}
+              <Link href={`/blogs/${blog.slug}`} key={index}>
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                  className="group relative flex flex-col h-full overflow-hidden rounded-[2rem] border border-white/[0.06] bg-obsidian-900/40 backdrop-blur-xl transition-all duration-500 hover:border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+                  style={{
+                    boxShadow: `inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px ${accentColor}10`,
+                  }}
                 >
-                  {blog.category}
-                </span>
-                <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight transition-colors">
-                  {blog.title}
-                </h2>
-                <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
-                  {blog.description}
-                </p>
-                <div className="pt-6 border-t border-white/5 flex justify-between items-center">
-                  <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
-                    {blog.date}
-                  </span>
-                  <span 
-                    className="font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link transition-colors"
-                    style={{ color: accentColor }}
-                  >
-                    READ ARTICLE <span className="transition-transform group-hover/link:translate-x-1">→</span>
-                  </span>
-                </div>
-              </motion.div>
-            </Link>
+                  {/* Featured Image */}
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${isCortex ? 'from-[#6BD348]/20' : 'from-[#FFC300]/20'} to-transparent z-10 opacity-60`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950 via-transparent to-transparent z-10 opacity-80" />
+                    <img 
+                      src={blog.image || `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop`} 
+                      alt={blog.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    
+                    {/* Floating Category Badge */}
+                    <div className="absolute top-4 left-4 z-20">
+                      <span className="px-3 py-1.5 rounded-full border border-white/10 bg-obsidian-950/80 backdrop-blur-md text-[10px] font-black uppercase tracking-widest" style={{ color: accentColor }}>
+                        {blog.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-7 flex flex-col flex-grow relative">
+                    <div 
+                      className="absolute top-0 left-0 w-full h-1 group-hover:h-1.5 transition-all duration-500"
+                      style={{ backgroundColor: accentColor }}
+                    ></div>
+
+                    <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-white transition-colors mt-2">
+                      {blog.title}
+                    </h2>
+                    
+                    <p className="text-base text-slate-400 font-light leading-relaxed mb-8 flex-grow">
+                      {blog.excerpt || blog.description}
+                    </p>
+
+                    <div className="pt-6 border-t border-white/5 flex justify-between items-center">
+                      <div className="flex flex-col">
+                        <span className="text-slate-500 font-mono text-[10px] uppercase tracking-widest">
+                          {blog.date}
+                        </span>
+                        <span className="text-slate-600 text-[10px] uppercase tracking-widest font-bold mt-1">
+                          {blog.readTime || '5 min read'}
+                        </span>
+                      </div>
+                      
+                      <div 
+                        className="font-bold uppercase tracking-widest text-[11px] flex items-center gap-2 transition-all duration-300"
+                        style={{ color: accentColor }}
+                      >
+                        READ <span className="hidden sm:inline">FULL</span> ARTICLE 
+                        <span className="transition-transform group-hover:translate-x-1">→</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
             );
           })}
         </motion.div>

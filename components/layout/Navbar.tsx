@@ -16,23 +16,29 @@ const navItems = [
     label: 'Knowledge Base',
     activePaths: ['/knowledge-base', '/portfolio'],
     children: [
-      { href: '/knowledge-base?category=PALO+ALTO', label: 'Palo Alto Networks', description: 'Prisma, Cortex, and Strata' },
+      { 
+        href: '/knowledge-base?category=PALO+ALTO', 
+        label: 'Palo Alto Networks', 
+        description: 'Prisma, Cortex, and Strata',
+        subItems: [
+          { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access' },
+          { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN' },
+          { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations' },
+          { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security' },
+        ]
+      },
       { href: '/knowledge-base?category=CHECK+POINT', label: 'Check Point', description: 'Infinity and Quantum solutions' },
       { href: '/knowledge-base?category=FORTINET', label: 'Fortinet', description: 'Security Fabric and FortiGate' },
       { href: '/knowledge-base?category=ARCHITECTURE', label: 'Architecture', description: 'Zero Trust and SASE patterns' },
-      { href: '/portfolio?filter=Prisma+Access', label: 'Prisma Access', description: 'Cloud-delivered security delivery highlights' },
-      { href: '/portfolio?filter=Prisma+SD-WAN', label: 'Prisma SD-WAN', description: 'Branch transformation delivery highlights' },
-      { href: '/portfolio?filter=Cortex+XSOAR', label: 'Cortex Operations', description: 'Automation and XDR implementation highlights' },
-      { href: '/portfolio?filter=Palo+Alto+NGFW', label: 'Network Security', description: 'NGFW and segmentation implementation highlights' },
     ]
   },
   { 
     href: '/blogs', 
     label: 'Blogs',
     children: [
-      { href: '/blogs?category=STRATA', label: 'Strata Security', description: 'NGFW and network resilience' },
-      { href: '/blogs?category=PRISMA', label: 'Prisma SASE', description: 'Coud-delivered network security' },
-      { href: '/blogs?category=CORTEX', label: 'Cortex Operations', description: 'AI-driven detection and response' },
+      { href: '/blogs?category=STRATA+NGFW', label: 'Strata Security', description: 'NGFW and network resilience' },
+      { href: '/blogs?category=PRISMA+SASE', label: 'Prisma SASE', description: 'Cloud-delivered network security' },
+      { href: '/blogs?category=CORTEX+PLATFORM', label: 'Cortex Platform', description: 'AI-driven detection and response' },
       { href: '/blogs?category=PANORAMA', label: 'Network Management', description: 'Centralized policy orchestration' },
     ]
   },
@@ -157,26 +163,42 @@ export function Navbar() {
                       <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
                         <div className="w-80 bg-obsidian-900/80 backdrop-blur-3xl border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2.5 overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-br from-[#FFC300]/5 to-transparent pointer-events-none" />
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              className="relative flex flex-col gap-0.5 px-4 py-3.5 rounded-xl hover:bg-white/[0.05] transition-all group/item"
-                            >
-                              <span className={cn(
-                                "text-sm font-bold transition-colors",
-                                child.label === 'Cortex Operations' 
-                                  ? "text-[#6BD348] group-hover/item:text-[#6BD348]/80" 
-                                  : "text-slate-200 group-hover/item:text-[#FFC300]"
-                              )}>
-                                {child.label}
-                              </span>
-                              {child.description && (
-                                <span className="text-[11px] text-slate-500 group-hover/item:text-slate-400 transition-colors leading-tight">
-                                  {child.description}
+                          {item.children.map((child: any) => (
+                            <div key={child.href} className="flex flex-col">
+                              <Link
+                                href={child.href}
+                                className="relative flex flex-col gap-0.5 px-4 py-3 rounded-xl hover:bg-white/[0.05] transition-all group/item"
+                              >
+                                <span className={cn(
+                                  "text-sm font-bold transition-colors",
+                                  child.label === 'Cortex Operations' 
+                                    ? "text-[#6BD348] group-hover/item:text-[#6BD348]/80" 
+                                    : "text-slate-200 group-hover/item:text-[#FFC300]"
+                                )}>
+                                  {child.label}
                                 </span>
+                                {child.description && (
+                                  <span className="text-[11px] text-slate-500 group-hover/item:text-slate-400 transition-colors leading-tight">
+                                    {child.description}
+                                  </span>
+                                )}
+                              </Link>
+
+                              {child.subItems && (
+                                <div className="ml-8 mt-1 mb-2 border-l border-white/[0.08] flex flex-col gap-1">
+                                  {child.subItems.map((sub: any) => (
+                                    <Link
+                                      key={sub.href}
+                                      href={sub.href}
+                                      className="group/sub relative py-1.5 pl-4 pr-3 text-[13px] font-medium text-slate-400 transition-all hover:text-[#FFC300] hover:pl-5 flex items-center gap-2"
+                                    >
+                                      <div className="absolute left-0 top-1/2 -translate-y-1/2 h-px w-2.5 bg-white/[0.1] group-hover/sub:w-3.5 group-hover/sub:bg-[#FFC300]/30 transition-all" />
+                                      {sub.label}
+                                    </Link>
+                                  ))}
+                                </div>
                               )}
-                            </Link>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -282,23 +304,39 @@ export function Navbar() {
                         expandedItem === item.label ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"
                       )}>
                         <div className="overflow-hidden flex flex-col gap-1">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              onClick={() => setIsOpen(false)}
-                              className={cn(
-                                'px-4 py-3 text-sm font-medium rounded-lg transition-all flex flex-col gap-0.5',
-                                pathname === child.href
-                                  ? (child.label === 'Cortex Operations' ? 'text-[#6BD348] bg-[#6BD348]/10' : 'text-[#FFC300] bg-[#FFC300]/10')
-                                  : (child.label === 'Cortex Operations' ? 'text-[#6BD348]/80 hover:text-[#6BD348] hover:bg-white/5' : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5')
+                          {item.children.map((child: any) => (
+                            <div key={child.href} className="flex flex-col">
+                              <Link
+                                href={child.href}
+                                onClick={() => setIsOpen(false)}
+                                className={cn(
+                                  'px-4 py-3 text-sm font-medium rounded-lg transition-all flex flex-col gap-0.5',
+                                  pathname === child.href
+                                    ? (child.label === 'Cortex Operations' ? 'text-[#6BD348] bg-[#6BD348]/10' : 'text-[#FFC300] bg-[#FFC300]/10')
+                                    : (child.label === 'Cortex Operations' ? 'text-[#6BD348]/80 hover:text-[#6BD348] hover:bg-white/5' : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5')
+                                )}
+                              >
+                                <span>{child.label}</span>
+                                {child.description && (
+                                  <span className="text-[10px] opacity-60 font-normal">{child.description}</span>
+                                )}
+                              </Link>
+
+                              {child.subItems && (
+                                <div className="flex flex-col gap-0.5 ml-4 mb-2 border-l border-white/[0.05]">
+                                  {child.subItems.map((sub: any) => (
+                                    <Link
+                                      key={sub.href}
+                                      href={sub.href}
+                                      onClick={() => setIsOpen(false)}
+                                      className="px-6 py-2.5 text-[13px] font-medium text-slate-500 hover:text-[#FFC300] transition-colors"
+                                    >
+                                      {sub.label}
+                                    </Link>
+                                  ))}
+                                </div>
                               )}
-                            >
-                              <span>{child.label}</span>
-                              {child.description && (
-                                <span className="text-[10px] opacity-60 font-normal">{child.description}</span>
-                              )}
-                            </Link>
+                            </div>
                           ))}
                         </div>
                       </div>

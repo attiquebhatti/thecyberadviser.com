@@ -1,6 +1,79 @@
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
+import { getArticleBySlug } from '@/data/articles';
+
+// ==========================================
+// MARKDOWN RENDERER (fallback for articles.ts content)
+// ==========================================
+function MarkdownRenderer({ content, accentColor = '#FFC300' }: { content: string; accentColor?: string }) {
+  const parseInline = (text: string) => {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, `<strong style="color:white">$1</strong>`)
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\[(.+?)\]\((.+?)\)/g, `<a href="$2" style="color:${accentColor}" class="hover:underline">$1</a>`);
+  };
+
+  const lines = content.trim().split(/\r?\n/);
+  const elements: React.ReactNode[] = [];
+  let listBuffer: string[] = [];
+  let keyIdx = 0;
+
+  const flushList = () => {
+    if (listBuffer.length === 0) return;
+    elements.push(
+      <ul key={`ul-${keyIdx++}`} className="space-y-4 list-disc pl-6 text-slate-400 my-6">
+        {listBuffer.map((item, j) => (
+          <li key={j} dangerouslySetInnerHTML={{ __html: parseInline(item) }} />
+        ))}
+      </ul>
+    );
+    listBuffer = [];
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.startsWith('# ')) {
+      flushList();
+      elements.push(<h2 key={keyIdx++} style={{ color: accentColor }} className="text-3xl md:text-5xl font-bold mt-16 mb-8 tracking-tighter leading-tight border-b border-white/5 pb-4">{line.slice(2)}</h2>);
+    } else if (line.startsWith('## ')) {
+      flushList();
+      elements.push(<h3 key={keyIdx++} className="text-2xl md:text-3xl font-bold text-white mt-12 mb-6 tracking-tight">{line.slice(3)}</h3>);
+    } else if (line.startsWith('### ')) {
+      flushList();
+      elements.push(<h4 key={keyIdx++} style={{ color: accentColor }} className="text-xl md:text-2xl font-semibold mt-8 mb-4">{line.slice(4)}</h4>);
+    } else if (line.startsWith('#### ')) {
+      flushList();
+      elements.push(<h5 key={keyIdx++} className="text-lg font-semibold text-white mt-6 mb-3">{line.slice(5)}</h5>);
+    } else if (line.startsWith('- ') || line.startsWith('* ')) {
+      listBuffer.push(line.slice(2));
+    } else if (line.startsWith('---')) {
+      flushList();
+      elements.push(<hr key={keyIdx++} className="border-white/10 my-12" />);
+    } else if (line.match(/^!\[.+?\]\(.+?\)$/)) {
+      flushList();
+      const m = line.match(/^!\[(.+?)\]\((.+?)\)$/);
+      if (m) elements.push(
+        <div key={keyIdx++} className="group relative rounded-[2rem] overflow-hidden border border-white/10 my-10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] bg-obsidian-900/50">
+          <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/40 to-transparent pointer-events-none" />
+          <img 
+            src={m[2]} 
+            alt={m[1]} 
+            className="w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+          />
+          {m[1] && <div className="absolute bottom-0 left-0 right-0 p-4 bg-obsidian-950/60 backdrop-blur-md border-t border-white/5 text-xs text-slate-400 font-mono tracking-wider">{m[1]}</div>}
+        </div>
+      );
+    } else if (line === '') {
+      flushList();
+    } else if (line) {
+      flushList();
+      elements.push(<p key={keyIdx++} className="text-lg text-slate-300 leading-relaxed my-5 font-light" dangerouslySetInnerHTML={{ __html: parseInline(line) }} />);
+    }
+  }
+  flushList();
+  return <div className="space-y-1">{elements}</div>;
+}
 
 // ==========================================
 // BLOG CONTENT DICTIONARY
@@ -509,6 +582,176 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Reduced Operational Complexity:</strong> Manage your entire network and security infrastructure from one console.</li>
       </ul>
     </div>
+  ),
+
+  'securing-agentic-endpoint-cortex-xdr': (
+    <div className="space-y-10 text-lg text-slate-300 font-light leading-relaxed">
+      <h2 className="text-4xl font-bold text-[#6BD348] tracking-tight leading-tight">Your Endpoint Just Became an AI Agent — Are You Securing It?</h2>
+
+      <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop" alt="Agentic Endpoint Security" className="w-full object-cover" />
+      </div>
+
+      <section className="space-y-4">
+        <p>We are entering a <strong>new era of cybersecurity</strong> — the <strong>Agentic Endpoint Era</strong>.</p>
+        <p>Endpoints are no longer just laptops, servers, or workstations. They are becoming <strong>AI-powered decision makers</strong>.</p>
+        <p>Autonomous AI agents. Self-executing workflows. AI copilots. Automated scripts — all running <strong>directly on your endpoints</strong>.</p>
+        <p>This is <strong>transformational</strong> for productivity. But also <strong>dangerous</strong> for security.</p>
+        <p>Because if attackers compromise an endpoint today… they don&apos;t just gain access. They gain <strong>autonomous execution</strong>.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">The Rise of the Agentic Endpoint</h3>
+        <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="AI Endpoint Architecture" className="w-full object-cover" />
+        </div>
+        <p>Modern endpoints are evolving rapidly:</p>
+        <ul className="space-y-2 list-disc pl-6 text-slate-400">
+          <li>AI copilots embedded into operating systems</li>
+          <li>Autonomous patching and configuration</li>
+          <li>AI-driven automation workflows</li>
+          <li>Self-healing endpoint environments</li>
+          <li>Intelligent security assistants</li>
+        </ul>
+        <p>These <strong>Agentic Endpoints</strong> can make decisions, execute workflows, access enterprise systems, and trigger automation — without human intervention.</p>
+        <p>This dramatically increases productivity. But it also <strong>expands the attack surface</strong>.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">The Agentic Endpoint Risk</h3>
+        <div className="rounded-2xl border border-[#6BD348]/20 bg-[#6BD348]/[0.04] p-6">
+          <p className="mb-4">Imagine this scenario: An AI agent running on an endpoint gets compromised. Suddenly:</p>
+          <ul className="space-y-3 text-slate-300">
+            <li>📤 Sensitive data starts leaving quietly</li>
+            <li>⚡ AI executes malicious commands automatically</li>
+            <li>🔑 Credentials get harvested silently</li>
+            <li>🔄 Lateral movement becomes autonomous</li>
+            <li>🧠 Security controls get bypassed intelligently</li>
+          </ul>
+          <p className="mt-4 font-semibold">This is no longer theoretical. This is already beginning to happen.</p>
+        </div>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">Autonomous Attacks Have Arrived</h3>
+        <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop" alt="Autonomous Cyber Attack" className="w-full object-cover" />
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <h4 className="text-lg font-semibold text-white mb-3">Traditional Attacks Required</h4>
+            <ul className="space-y-2 list-disc pl-4 text-slate-400 text-base">
+              <li>Manual attacker control</li>
+              <li>Slow lateral movement</li>
+              <li>Human decision making</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-[#6BD348]/20 bg-[#6BD348]/[0.04] p-6">
+            <h4 className="text-lg font-semibold text-[#6BD348] mb-3">Attackers Now Use</h4>
+            <ul className="space-y-2 list-disc pl-4 text-slate-300 text-base">
+              <li>AI-driven malware</li>
+              <li>Autonomous scripts</li>
+              <li>Self-propagating threats</li>
+              <li>Intelligent credential harvesting</li>
+            </ul>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-[#001D3D]/30 p-6 text-center">
+          <p className="text-xl font-bold text-white">Autonomous vs Autonomous Security</p>
+          <p className="text-slate-400 mt-2">Attackers are using AI. Your endpoints are running AI. Your security must <strong className="text-[#6BD348]">think faster</strong>.</p>
+        </div>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">Why Traditional EDR Falls Short</h3>
+        <div className="grid gap-5 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <h4 className="text-lg font-semibold text-white mb-3">Built For</h4>
+            <ul className="space-y-2 list-disc pl-4 text-slate-400 text-base">
+              <li>User-based activity</li>
+              <li>Known malware detection</li>
+              <li>Signature-based analysis</li>
+              <li>Manual threat hunting</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-[#6BD348]/20 bg-[#6BD348]/[0.04] p-6">
+            <h4 className="text-lg font-semibold text-[#6BD348] mb-3">Agentic Endpoints Introduce</h4>
+            <ul className="space-y-2 list-disc pl-4 text-slate-300 text-base">
+              <li>AI-generated behavior</li>
+              <li>Autonomous execution</li>
+              <li>Dynamic workflows</li>
+              <li>Unknown patterns</li>
+            </ul>
+          </div>
+        </div>
+        <p className="text-center text-xl font-semibold text-white">This requires <span className="text-[#6BD348]">AI-native security</span>.</p>
+      </section>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#6BD348]">How Cortex XDR Secures the Agentic Endpoint</h3>
+        <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+          <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1600&auto=format&fit=crop" alt="Cortex XDR Platform" className="w-full object-cover" />
+        </div>
+        <p>Cortex XDR was designed for <strong>modern AI-driven environments</strong>.</p>
+        <div className="space-y-5">
+          {[
+            { num: '1', title: 'Behavioral AI Threat Detection', items: ['AI-driven anomalies', 'Autonomous behavior changes', 'Suspicious automation workflows', 'Unknown threat patterns'], outcome: 'Enables early detection of AI-powered threats.' },
+            { num: '2', title: 'Full Endpoint Visibility', items: ['Process-level telemetry', 'AI agent monitoring', 'Endpoint behavioral analysis', 'Real-time threat visibility'], outcome: 'Gives security teams complete visibility.' },
+            { num: '3', title: 'Cross-Domain Correlation', items: ['Endpoint data', 'Network telemetry', 'Cloud workloads', 'User behavior'], outcome: 'Allows detection of complex autonomous attacks.' },
+            { num: '4', title: 'Autonomous Threat Response', items: ['Endpoint isolation', 'Process termination', 'Credential protection', 'Automated containment'], outcome: 'Because autonomous threats require autonomous response.' },
+            { num: '5', title: 'Machine Learning Analytics', items: ['Behavioral ML models', 'Threat intelligence', 'Anomaly detection', 'Risk scoring'], outcome: 'Enables predictive security.' },
+          ].map((cap) => (
+            <div key={cap.num} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+              <h4 className="text-xl font-semibold text-[#6BD348] mb-3">{cap.num}. {cap.title}</h4>
+              <ul className="space-y-1 list-disc pl-5 text-slate-400 text-base mb-3">
+                {cap.items.map(i => <li key={i}>{i}</li>)}
+              </ul>
+              <p className="text-slate-300 text-sm font-medium">{cap.outcome}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">What Security Teams Should Do Now</h3>
+        <div className="space-y-4">
+          {[
+            { step: 'Step 1', title: 'Identify AI-Powered Endpoints', desc: 'Discover where AI agents are running.' },
+            { step: 'Step 2', title: 'Monitor Autonomous Behavior', desc: 'Track AI-driven workflows and automation.' },
+            { step: 'Step 3', title: 'Implement AI Threat Detection', desc: 'Deploy AI-native security controls.' },
+            { step: 'Step 4', title: 'Adopt XDR Architecture', desc: 'Move beyond traditional EDR.' },
+            { step: 'Step 5', title: 'Secure AI-Driven Workflows', desc: 'Protect automation pipelines.' },
+          ].map((s, i) => (
+            <div key={i} className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+              <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-lg bg-[#6BD348]/10 font-bold text-[#6BD348] text-sm">{i + 1}</div>
+              <div>
+                <p className="font-semibold text-white">{s.title}</p>
+                <p className="text-slate-400 text-sm mt-1">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">The Future of Endpoint Security</h3>
+        <p>The future endpoint is autonomous, intelligent, AI-powered, and self-executing. Security must evolve accordingly.</p>
+        <p>Because the future attack is not manual. It&apos;s <strong>Autonomous vs Autonomous</strong>.</p>
+      </section>
+
+      <section id="final-take" className="space-y-5 rounded-2xl border border-[#6BD348]/20 bg-[#6BD348]/[0.04] p-8">
+        <h3 className="text-3xl font-bold text-[#6BD348]">Final Thoughts</h3>
+        <p>The Agentic Endpoint Era is here. Organizations that adapt early will reduce risk, improve detection, enable secure AI adoption, and lead the next generation of cybersecurity.</p>
+        <p>The question is no longer: <strong>Are you using AI?</strong></p>
+        <p className="text-2xl font-bold text-white">The real question is: Is Your AI Endpoint Secure?</p>
+      </section>
+
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-sm text-slate-400">
+        <p className="font-semibold text-white mb-1">Attique Bhatti</p>
+        <p>Network Security Consultant · Palo Alto Networks Instructor · Cybersecurity Architect</p>
+        <p className="mt-3">📞 +971-56-9383383 · ✉️ <a href="mailto:attique@thecyberadviser.com" className="text-[#6BD348] hover:underline">attique@thecyberadviser.com</a> · 🌐 <a href="https://www.thecyberadviser.com" className="text-[#6BD348] hover:underline">www.TheCyberAdviser.com</a></p>
+      </div>
+    </div>
   )
 };
 
@@ -517,6 +760,8 @@ const blogContent: Record<string, React.ReactNode> = {
 // ==========================================
 export async function generateStaticParams() {
   return [
+    { slug: 'cortex-xsoar-transforming-soc-operations' },
+    { slug: 'securing-agentic-endpoint-cortex-xdr' },
     { slug: 'quantum-computing-cybersecurity-readiness' },
     { slug: 'what-is-palo-alto-networks-cortex-cloud' },
     { slug: 'strata-next-gen-firewalls' },
@@ -526,14 +771,20 @@ export async function generateStaticParams() {
     { slug: 'panorama-centralized-mastery' },
     { slug: 'prisma-sd-wan-cloud-gen' },
     { slug: 'future-secops-xsiam' },
-    { slug: 'prisma-sase-convergence' }
+    { slug: 'prisma-sase-convergence' },
+    { slug: 'hybrid-cloud-connectivity' },
+    { slug: 'prisma-split-tunneling' },
+    { slug: 'phishing-triage-playbook' },
+    { slug: 'legacy-vpn-to-ztna-the-migration-plan' },
+    { slug: 'cloud-security-posture-management' },
+    { slug: 'security-architecture-review-methodology' },
   ];
 }
 
 // ==========================================
 // PAGE COMPONENT
 // ==========================================
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
+export default async function BlogDetailPage({ params }: { params: { slug: string } }) {
   
   const currentSlug = params.slug;
   const blogTitles: Record<string, string> = {
@@ -543,19 +794,34 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const formattedTitle = blogTitles[currentSlug] ?? currentSlug.replace(/-/g, ' ').toUpperCase();
   
   const hasContent = blogContent[currentSlug] !== undefined;
+  const article = !hasContent ? getArticleBySlug(currentSlug) : null;
+
+  const isCortexFallback = article ? ['CORTEX XDR', 'CORTEX CLOUD', 'XSOAR', 'XSIAM'].includes(article.category) : false;
+  const fallbackAccentColor = isCortexFallback ? '#6BD348' : '#FFC300';
+  const headerGradient = isCortexFallback
+    ? 'from-emerald-500/5 via-[#000814] to-[#000814]'
+    : 'from-amber-500/5 via-[#000814] to-[#000814]';
 
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
       
       {/* BLOG HEADER */}
-      <section className="w-full pt-40 pb-20 px-8 text-center border-b border-white/5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/5 via-[#000814] to-[#000814]">
+      <section className={`w-full pt-40 pb-20 px-8 text-center border-b border-white/5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${hasContent ? 'from-amber-500/5' : headerGradient.split(' ')[0]} via-[#000814] to-[#000814]`}>
         <div className="max-w-[1000px] mx-auto">
           <Link href="/blogs" className="text-[#FFC300] font-mono text-xs font-bold uppercase tracking-widest mb-8 inline-block hover:text-white transition-colors">
             ← Back to Blog
           </Link>
+          {article && (
+            <p className="font-mono text-xs font-black uppercase tracking-[0.3em] mb-4" style={{ color: fallbackAccentColor }}>
+              {article.category} · {article.readTime}
+            </p>
+          )}
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tighter mb-8 leading-tight">
-            {formattedTitle}
+            {article ? article.title : formattedTitle}
           </h1>
+          {article && (
+            <p className="text-slate-500 font-mono text-sm">{article.date}</p>
+          )}
         </div>
       </section>
 
@@ -564,6 +830,15 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
         {hasContent ? (
           <article className="prose prose-invert prose-lg max-w-none">
             {blogContent[currentSlug]}
+          </article>
+        ) : article ? (
+          <article className="prose prose-invert prose-lg max-w-none">
+            <MarkdownRenderer content={article.content} accentColor={fallbackAccentColor} />
+            <div className="mt-16 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-sm text-slate-400">
+              <p className="font-semibold text-white mb-1">Attique Bhatti</p>
+              <p>Network Security Consultant · Palo Alto Networks Instructor · Cybersecurity Architect</p>
+              <p className="mt-3">📞 +971-56-9383383 · ✉️ <a href="mailto:attique@thecyberadviser.com" style={{ color: fallbackAccentColor }} className="hover:underline">attique@thecyberadviser.com</a> · 🌐 <a href="https://www.thecyberadviser.com" style={{ color: fallbackAccentColor }} className="hover:underline">www.TheCyberAdviser.com</a></p>
+            </div>
           </article>
         ) : (
           <div className="bg-[#001D3D]/30 border border-white/10 p-12 md:p-20 text-center rounded-2xl backdrop-blur-xl">

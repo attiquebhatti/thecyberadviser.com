@@ -174,39 +174,67 @@ function KnowledgeBaseContent() {
             const accentColor = isCortex ? '#6BD348' : '#FFC300';
 
             return (
-            <motion.div 
-              key={index}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                show: { opacity: 1, y: 0 }
-              }}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] p-7 flex flex-col h-full transition-all duration-500 shadow-2xl relative group rounded-2xl overflow-hidden"
-              style={{
-                borderColor: `${accentColor}40`,
-              } as React.CSSProperties}
-            >
-              <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-2xl transition-all duration-500 group-hover:opacity-100" style={{ backgroundColor: accentColor, opacity: 0.2 }}></div>
-              <span className="font-mono text-xs font-black uppercase tracking-widest mb-4 block" style={{ color: accentColor }}>
-                {article.category}
-              </span>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight hover:text-[#FFD60A] transition-colors">
-                {article.title}
-              </h2>
-              <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
-                {article.description}
-              </p>
-              <div className="pt-6 border-t border-white/5 flex justify-between items-center">
-                <span className="text-slate-500 font-mono text-xs uppercase tracking-widest">
-                  {article.date}
+            <Link href={`/knowledge-base/${article.slug}`} key={index} className="block h-full">
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  show: { opacity: 1, y: 0 }
+                }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className="bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] p-7 flex flex-col h-full transition-all duration-500 relative group rounded-3xl overflow-hidden cursor-pointer"
+                style={{
+                  borderColor: `${accentColor}30`,
+                  boxShadow: `inset 0 1px 1px rgba(255,255,255,0.07), 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px ${accentColor}12`,
+                } as React.CSSProperties}
+              >
+                {/* Gradient top accent bar */}
+                <div 
+                  className="absolute top-0 left-0 w-full h-1 rounded-t-3xl transition-all duration-500 group-hover:opacity-100"
+                  style={{ background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)`, opacity: 0.35 }}
+                />
+                {/* Subtle corner glow on hover */}
+                <div
+                  className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 blur-2xl pointer-events-none"
+                  style={{ backgroundColor: `${accentColor}20` }}
+                />
+
+                {/* Category pill */}
+                <span 
+                  className="inline-flex w-fit items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-5 border"
+                  style={{ color: accentColor, borderColor: `${accentColor}30`, backgroundColor: `${accentColor}10` }}
+                >
+                  {article.category}
                 </span>
-                <Link href={`/knowledge-base/${article.slug}`} className="font-bold uppercase tracking-widest text-xs flex items-center gap-2 group/link hover:text-[#FFD60A] transition-colors" style={{ color: accentColor }}>
-                  READ <span className="transition-transform group-hover/link:translate-x-1">→</span>
-                </Link>
-              </div>
-            </motion.div>
+
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight leading-tight group-hover:text-[#FFD60A] transition-colors">
+                  {article.title}
+                </h2>
+                <p className="text-base text-slate-400 font-light leading-relaxed mb-6 flex-grow">
+                  {article.description}
+                </p>
+
+                <div className="pt-5 border-t border-white/5 flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="w-1.5 h-1.5 rounded-full animate-pulse"
+                      style={{ backgroundColor: accentColor }}
+                    />
+                    <span className="text-slate-500 font-mono text-[10px] uppercase tracking-widest">
+                      {article.date}
+                    </span>
+                  </div>
+                  <span 
+                    className="font-bold uppercase tracking-widest text-xs flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-300"
+                    style={{ color: accentColor }}
+                  >
+                    Read Guide <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </span>
+                </div>
+              </motion.div>
+            </Link>
             );
           })}
+
         </motion.div>
 
         {filteredArticles.length === 0 && (
