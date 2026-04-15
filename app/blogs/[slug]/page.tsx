@@ -1,7 +1,47 @@
 import Link from 'next/link';
 import React from 'react';
-import Image from 'next/image';
 import { getArticleBySlug } from '@/data/articles';
+import { Metadata } from 'next';
+
+// ==========================================
+// DYNAMIC METADATA
+// ==========================================
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const currentSlug = params.slug;
+  const article = getArticleBySlug(currentSlug);
+  
+  const siteUrl = 'https://thecyberadviser.com';
+  const title = article ? `${article.title} | The Cyber Adviser` : 'Article | The Cyber Adviser';
+  const description = article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.';
+  const imageUrl = article?.image ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`) : `${siteUrl}/images/og-default.png`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/blogs/${currentSlug}`,
+      siteName: 'The Cyber Adviser',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      type: 'article',
+      publishedTime: article?.date,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 // ==========================================
 // MARKDOWN RENDERER (fallback for articles.ts content)
