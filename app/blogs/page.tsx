@@ -7,6 +7,24 @@ import { motion } from 'framer-motion';
 
 const blogs = [
   {
+    category: 'CORTEX XDR',
+    title: 'Identity Is the New Security Perimeter: Why ITDR and Identity Analytics Are Becoming Essential for Modern SOCs 🔐',
+    excerpt: 'Modern attackers don\'t break in — they log in. Discover why Identity Threat Detection and Response (ITDR) and Identity Analytics are becoming critical components of modern cybersecurity architecture.',
+    date: '2026-04-18',
+    readTime: '12 min read',
+    slug: 'identity-is-the-new-security-perimeter-itdr',
+    image: '/images/blogs/itdr/itdr-attack-vs-detection.png'
+  },
+  {
+    category: 'PRISMA SASE',
+    title: '🚀 Cloud Native Application Platform: Securing Applications from Code to Cloud',
+    excerpt: 'Traditional security models were built for static infrastructure. Enter the Cloud Native Application Platform (CNAPP) — a unified approach designed to secure modern applications from code to cloud.',
+    date: '2026-04-17',
+    readTime: '10 min read',
+    slug: 'cloud-native-application-platform-securing-from-code-to-cloud',
+    image: '/images/blogs/cnapp/cnapp-code-to-cloud.png'
+  },
+  {
     category: 'XSOAR',
     title: '🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations',
     excerpt: 'Modern SOCs are overwhelmed by fragmented tools. Explore how Cortex XSOAR acts as the central nervous system to automate investigation, enrichment, and response.',

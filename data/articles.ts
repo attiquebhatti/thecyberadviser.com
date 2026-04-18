@@ -11,6 +11,604 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    slug: 'identity-is-the-new-security-perimeter-itdr',
+    title: 'Identity Is the New Security Perimeter: Why ITDR and Identity Analytics Are Becoming Essential for Modern SOCs 🔐',
+    excerpt: 'Modern attackers don\'t break in — they log in. Discover why Identity Threat Detection and Response (ITDR) and Identity Analytics are becoming critical components of modern cybersecurity architecture.',
+    category: 'CORTEX XDR',
+    date: '2026-04-18',
+    readTime: '12 min read',
+    image: '/images/blogs/itdr/itdr-attack-vs-detection.png',
+    content: `
+# Identity Is the New Security Perimeter  
+## Why ITDR and Identity Analytics Are Becoming Essential for Modern SOCs 🔐
+
+Cybersecurity has evolved dramatically over the past decade.
+
+There was a time when security teams focused primarily on:
+
+- Firewalls
+- Network segmentation
+- Endpoint protection
+- Perimeter defenses
+
+But today, the perimeter has changed.
+
+Modern attackers are no longer trying to break into networks using loud, obvious methods.  
+Instead, they're using **valid credentials** to quietly log in and move across environments undetected.
+
+This shift has fundamentally changed how organizations must think about security.
+
+**Identity is now the new security perimeter.**
+
+And this is exactly where **Identity Threat Detection and Response (ITDR)** and **Identity Analytics** become critical components of modern cybersecurity architecture.
+
+---
+
+# The Shift: From Network Security to Identity Security
+
+Traditional security models were built around protecting networks and endpoints. But modern infrastructures have become:
+
+- Cloud-first
+- Remote workforce enabled
+- SaaS-driven
+- API-connected
+- AI-integrated
+
+This transformation has dramatically expanded the **identity attack surface**.
+
+Today, organizations must protect not just users, but also:
+
+👤 Human identities  
+☁️ Cloud identities  
+🔑 Privileged accounts  
+🤖 AI agents and automation  
+⚙️ Service accounts  
+🔗 API tokens and integrations  
+
+These identities often have **more access and privileges** than traditional endpoints — making them highly valuable targets for attackers.
+
+---
+
+# Modern Attacks: Attackers Don't Break In — They Log In
+
+Modern cyberattacks often follow a predictable identity-based attack chain:
+
+Credential Theft  
+⬇️  
+Suspicious Login  
+⬇️  
+Privilege Escalation  
+⬇️  
+Lateral Movement  
+⬇️  
+Sensitive Data Access  
+
+Because attackers use **legitimate credentials**, many traditional security tools fail to detect these activities.
+
+This is what makes identity-based attacks particularly dangerous:
+
+- They look like normal user behavior
+- They bypass traditional defenses
+- They operate silently
+- They can persist for weeks or months
+
+Without identity visibility, organizations remain blind to these threats.
+
+---
+
+# What Is ITDR (Identity Threat Detection & Response)?
+
+**ITDR (Identity Threat Detection and Response)** is a modern security capability focused on detecting and responding to identity-based threats in real-time.
+
+ITDR platforms analyze identity behavior across environments and detect anomalies such as:
+
+- Unusual login locations
+- Abnormal access patterns
+- Privilege escalation attempts
+- Lateral movement behavior
+- Suspicious service account activity
+- Token abuse and misuse
+
+Unlike traditional tools, ITDR focuses on **who is accessing what — and why**.
+
+---
+
+![Deep Dive into ITDR & Identity Analytics](/images/blogs/itdr/itdr-infographic.png)
+
+---
+
+# Core Capabilities of Modern Identity Analytics
+
+Modern identity analytics platforms provide deep visibility into identity behavior through:
+
+### 🧠 Identity Behavior Analytics
+Detects abnormal login patterns and risky behavior using machine learning and behavioral analysis.
+
+### 🔍 Privileged Access Monitoring
+Tracks usage of high-risk privileged accounts and detects suspicious privilege changes.
+
+### 🔗 Lateral Movement Detection
+Identifies attackers moving across systems using compromised credentials.
+
+### ⚙️ Service Account Monitoring
+Detects unusual automation or service account activity.
+
+### 📊 Risk-Based Identity Scoring
+Assigns risk scores based on behavior, access patterns, and anomalies.
+
+### 🤖 Automated Response
+Triggers immediate actions when suspicious behavior is detected.
+
+---
+
+# Real-World Attack Scenario: How ITDR Stops an Attack
+
+Consider the following real-world scenario:
+
+An attacker successfully steals employee credentials through phishing.
+
+The attacker then:
+
+1. Logs in from an unusual location
+2. Attempts to access privileged resources
+3. Moves laterally across systems
+4. Tries to access sensitive data
+
+Without ITDR, this activity may appear normal.
+
+But with ITDR:
+
+- Suspicious login detected  
+- Risk score increased  
+- Privilege escalation flagged  
+- Lateral movement identified  
+- Automated response triggered  
+
+Attack stopped — before data is compromised.
+
+---
+
+![Identity Attack Chain & ITDR Detection Workflow](/images/blogs/itdr/itdr-attack-chain-workflow.png)
+
+---
+
+# Automated Response: Stopping Threats in Seconds ⚡
+
+One of the most powerful features of ITDR is automated response.
+
+When suspicious activity is detected, modern ITDR platforms can:
+
+🔐 Force multi-factor authentication (MFA)  
+🔒 Lock compromised accounts  
+🎟️ Revoke access tokens  
+🚫 Terminate suspicious sessions  
+🚨 Alert SOC teams automatically  
+
+This dramatically reduces:
+
+- Mean Time to Detect (MTTD)
+- Mean Time to Respond (MTTR)
+- Overall attack impact
+
+Automation ensures that threats are stopped **before damage occurs**.
+
+---
+
+# Why Identity Security Matters More Than Ever
+
+Several trends are accelerating identity-based risks:
+
+- Rapid SaaS adoption  
+- Remote and hybrid workforce  
+- Increasing cloud environments  
+- Growth of AI agents and automation  
+- Expanding privileged access  
+- Sophisticated attackers  
+
+As identities grow, so does the attack surface.
+
+Organizations that ignore identity security risk leaving their most critical assets exposed.
+
+---
+
+![Identity Attack Chain vs ITDR Detection](/images/blogs/itdr/itdr-attack-vs-detection.png)
+
+---
+
+# Identity-Driven SOC: The Future of Cybersecurity
+
+Modern Security Operations Centers (SOCs) are evolving toward **Identity-Driven Security Models**.
+
+In this model:
+
+- XDR protects endpoints
+- SIEM correlates events
+- SOAR automates response
+- **ITDR protects identities**
+
+Together, they create a comprehensive security architecture capable of detecting advanced threats.
+
+This identity-driven approach enables:
+
+✅ Faster threat detection  
+✅ Reduced attack surface  
+✅ Automated response  
+✅ Zero Trust enforcement  
+✅ Stronger cloud security posture  
+
+---
+
+# Key Takeaways
+
+- Identity is the new security perimeter  
+- Attackers increasingly target identities instead of endpoints  
+- Traditional security tools lack identity visibility  
+- ITDR provides detection and response for identity-based threats  
+- Automated response reduces detection and response time  
+- Identity-driven SOC is becoming the new cybersecurity standard  
+
+---
+
+# Conclusion
+
+Cybersecurity is no longer just about protecting networks or endpoints.
+
+It's about protecting identities.
+
+As organizations continue adopting cloud, SaaS, and AI-driven environments, identity risks will only grow.
+
+ITDR and Identity Analytics provide the visibility, detection, and response capabilities required to secure modern environments.
+
+Organizations that adopt identity-first security today will be better prepared for tomorrow's threats.
+
+Because in modern cybersecurity…
+
+**Your firewall protects your network**  
+**Your XDR protects your endpoints**  
+**But ITDR protects your identities**  
+
+And today — that matters the most.
+
+---
+
+# Hashtags
+
+#CyberSecurity #ITDR #IdentitySecurity #ZeroTrust #SOC #CloudSecurity #ThreatDetection
+`,
+  },
+  {
+    slug: 'cloud-native-application-platform-securing-from-code-to-cloud',
+    title: '🚀 Cloud Native Application Platform: Securing Applications from Code to Cloud',
+    excerpt: 'Traditional security models were built for static infrastructure. Enter the Cloud Native Application Platform (CNAPP) — a unified approach designed to secure modern applications from code to cloud.',
+    category: 'PRISMA SASE',
+    date: '2026-04-17',
+    readTime: '10 min read',
+    image: '/images/blogs/cnapp/cnapp-code-to-cloud.png',
+    content: `
+# 🚀 Cloud Native Application Platform: Securing Applications from Code to Cloud
+
+Cloud security is undergoing a major transformation.
+
+Traditional security models were built for static infrastructure, predictable deployments, and clearly defined perimeters. But modern applications no longer follow those rules.
+
+Today’s applications are:
+
+- ☁️ Cloud-native  
+- 📦 Containerized  
+- 🔄 Continuously deployed  
+- 🌍 Running across multi-cloud environments  
+- ⚙️ Built using microservices architectures  
+
+This shift has fundamentally changed how organizations must approach security.
+
+Enter the **Cloud Native Application Platform (CNAPP)** — a unified approach designed to **secure modern applications from code to cloud**.
+
+---
+
+# ☁️ The Rise of Cloud-Native Applications
+
+Modern application development has evolved dramatically over the last decade. Organizations are rapidly adopting:
+
+- Containers  
+- Kubernetes  
+- Microservices  
+- DevOps pipelines  
+- Multi-cloud deployments  
+
+While these technologies accelerate innovation, they also **introduce new security risks across the entire lifecycle**.
+
+Unlike traditional applications, cloud-native workloads move fast — sometimes **hundreds of deployments per day**.
+
+Security can no longer operate as a **final checkpoint**.  
+It must be **embedded into every stage of the lifecycle**.
+
+---
+
+![Cloud Native Application Platform Overview](/images/blogs/cnapp/cnapp-infographic.png)
+
+---
+
+# 🚨 The New Reality: Code-to-Cloud Risk
+
+Security is no longer limited to infrastructure. Risk now exists across the entire development and deployment pipeline.
+
+## Modern Cloud Risk Exists Across:
+
+### 👨‍💻 Code & Development Stage
+- Vulnerable libraries
+- Hardcoded secrets
+- Misconfigured dependencies
+- Open-source vulnerabilities
+
+### 🔄 CI/CD Pipelines
+- Pipeline misconfigurations
+- Privileged pipeline execution
+- Unauthorized access to build systems
+- Supply chain attacks
+
+### 📦 Containers
+- Vulnerable base images
+- Unpatched container images
+- Insecure container configurations
+
+### ☸️ Kubernetes
+- Misconfigured RBAC policies
+- Exposed APIs
+- Insecure cluster configurations
+
+### ☁️ Cloud Workloads
+- Excessive permissions
+- Misconfigured storage buckets
+- Open cloud services
+
+### ⚙️ Runtime Environments
+- Lateral movement attacks
+- Suspicious behavior
+- Zero-day threats
+
+If security protects only one layer — attackers simply move to another.
+
+This is why **point solutions are no longer enough**.
+
+---
+
+# 🧠 What is Cloud Native Application Platform (CNAPP)?
+
+A **Cloud Native Application Platform** delivers **unified security across the entire cloud-native lifecycle** — from development to runtime.
+
+Instead of deploying multiple disconnected security tools, CNAPP integrates everything into **one unified platform**.
+
+## Core Capabilities of CNAPP
+
+A modern CNAPP delivers:
+
+✅ Code-to-Cloud Visibility  
+✅ AI-Driven Threat Detection  
+✅ Container & Kubernetes Security  
+✅ Runtime Protection  
+✅ Cloud Security Posture Management  
+✅ Automated Incident Response  
+
+This unified approach helps organizations **detect threats earlier** and **respond faster**.
+
+---
+
+![CNAPP: Unified Code-to-Cloud Security Architecture](/images/blogs/cnapp/cnapp-code-to-cloud.png)
+
+---
+
+# 🔐 Key Security Capabilities of Cloud Native Application Platform
+
+## 1. Code Security
+
+Security starts at development.
+
+Modern CNAPP solutions scan:
+
+- Source code
+- Dependencies
+- Secrets
+- Vulnerabilities
+
+Benefits:
+
+- Identify risks early
+- Reduce remediation costs
+- Improve developer productivity
+
+---
+
+## 2. Container & Kubernetes Security
+
+Containers and Kubernetes power modern applications — but they introduce new attack surfaces.
+
+CNAPP helps:
+
+- Scan container images
+- Monitor Kubernetes clusters
+- Detect misconfigurations
+- Enforce security policies
+
+This ensures secure containerized deployments.
+
+---
+
+## 3. Runtime Protection
+
+Runtime protection detects threats while applications are running.
+
+This includes:
+
+- Behavioral analytics
+- Process monitoring
+- Anomaly detection
+- Threat prevention
+
+This helps stop:
+
+- Lateral movement
+- Privilege escalation
+- Zero-day attacks
+
+---
+
+## 4. Cloud Security Posture Management
+
+Misconfigurations remain one of the **top causes of cloud breaches**.
+
+CNAPP provides:
+
+- Continuous cloud monitoring
+- Risk identification
+- Compliance tracking
+- Configuration enforcement
+
+This reduces exposure across cloud environments.
+
+---
+
+# 🌍 Real-World Use Cases
+
+## 🔥 Use Case 1: Vulnerable Container Deployment
+
+Scenario:
+
+A developer pushes a container image with vulnerable libraries.
+
+Without CNAPP:
+- Vulnerability goes unnoticed
+- Application deployed to production
+- Exploit occurs later
+
+With CNAPP:
+- Image scanned automatically
+- Vulnerability detected
+- Deployment blocked
+
+Result: Threat prevented before production.
+
+---
+
+## ⚠️ Use Case 2: Kubernetes Misconfiguration
+
+Scenario:
+
+A Kubernetes cluster is exposed to the internet.
+
+Without CNAPP:
+- Attackers discover exposed API
+- Gain unauthorized access
+
+With CNAPP:
+- Misconfiguration detected
+- Security policy enforced
+- Access restricted automatically
+
+Result: Exposure eliminated.
+
+---
+
+## ☁️ Use Case 3: Multi-Cloud Security Visibility
+
+Scenario:
+
+Organization running workloads across AWS, Azure, and GCP.
+
+Without CNAPP:
+- Fragmented visibility
+- Multiple dashboards
+
+With CNAPP:
+- Unified multi-cloud visibility
+- Centralized risk management
+
+Result: Simplified cloud security operations.
+
+---
+
+![CNAPP: Centralized Multi-Cloud Security Visibility](/images/blogs/cnapp/cnapp-multi-cloud.png)
+
+---
+
+# 🔥 Why Unified Cloud-Native Security Matters
+
+Cloud-native environments are:
+
+- Dynamic  
+- Distributed  
+- Continuously changing  
+
+Traditional security tools struggle to keep up.
+
+Organizations still relying on legacy security models face:
+
+⚠️ Visibility gaps  
+⚠️ Configuration risks  
+⚠️ Runtime threats  
+⚠️ Multi-cloud complexity  
+
+CNAPP solves these challenges with **continuous, unified protection**.
+
+---
+
+# 🔄 The Security Shift Is Already Happening
+
+Cloud security is evolving rapidly:
+
+From → To
+
+Infrastructure Security → Application-Driven Security  
+Point Tools → Unified Platforms  
+Reactive Detection → AI-Driven Protection  
+Manual Operations → Automated Security  
+
+Cloud-native security is no longer optional.
+
+It is becoming **foundational to modern cybersecurity strategy**.
+
+---
+
+# 🎯 Key Takeaways
+
+- Cloud-native applications introduce new security challenges  
+- Risk exists across the entire code-to-cloud lifecycle  
+- Point solutions create visibility gaps  
+- Cloud Native Application Platform provides unified security  
+- AI-driven detection improves threat visibility  
+- Runtime protection helps stop active attacks  
+- Multi-cloud environments require centralized security
+
+---
+
+# 🚀 Conclusion
+
+Modern applications move faster than ever.
+
+Security must move even faster.
+
+The **Cloud Native Application Platform** represents the future of cloud security — delivering **code-to-cloud visibility, AI-driven protection, and unified risk management**.
+
+Organizations adopting CNAPP gain:
+
+- Better visibility  
+- Faster detection  
+- Reduced risk  
+- Stronger cloud security posture  
+
+As cloud-native adoption continues to grow, unified security platforms will become **essential for protecting modern applications**.
+
+The shift has already started.
+
+The question is — **Is your cloud security ready?**
+
+---
+
+# Hashtags
+
+#CloudSecurity #CNAPP #CloudNative #Kubernetes #ContainerSecurity #DevSecOps #CyberSecurity
+`,
+  },
+  {
     slug: 'cortex-xsoar-transforming-soc-operations',
     title: '🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations: Integration, Automation & Orchestration',
     excerpt: 'Modern SOCs are overwhelmed by 10 to 50+ fragmented tools. Explore how Cortex XSOAR acts as the central nervous system to automate investigation, enrichment, and response end-to-end.',
