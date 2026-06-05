@@ -1,0 +1,94 @@
+﻿
+> unified-migrator@1.0.0 test:unified-migrator
+> sucrase-node test/unified-migrator.test.ts
+
+node.exe : node:interna
+l/assert/utils:77
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (node:internal   
+ /assert/utils:77:S    
+tring) [], RemoteE    
+xception
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+    throw err;
+    ^
+
+AssertionError 
+[ERR_ASSERTION]: The 
+expression evaluated 
+to a falsy value:
+
+  ok(forti.parseResult.
+ir.natRules.length >= 
+1)
+
+    at 
+Object.<anonymous> 
+(C:\App Development\The
+CyberAdviser\thecyberad
+viser.com\test\unified-
+migrator.test.ts:55:18)
+    at Module._compile 
+(node:internal/modules/
+cjs/loader:1812:14)
+    at Module._compile 
+(C:\App Development\The
+CyberAdviser\thecyberad
+viser.com\node_modules\
+pirates\lib\index.js:11
+7:24)
+    at node:internal/mo
+dules/cjs/loader:1943:1
+0
+    at newLoader 
+(C:\App Development\The
+CyberAdviser\thecyberad
+viser.com\node_modules\
+pirates\lib\index.js:12
+1:7)
+    at 
+Object.newLoader [as 
+.ts] (C:\App Developmen
+t\TheCyberAdviser\thecy
+beradviser.com\node_mod
+ules\pirates\lib\index.
+js:121:7)
+    at Module.load (nod
+e:internal/modules/cjs/
+loader:1533:32)
+    at Module._load (no
+de:internal/modules/cjs
+/loader:1335:12)
+    at wrapModuleLoad (
+node:internal/modules/c
+js/loader:255:19)
+    at Module.executeUs
+erEntryPoint [as 
+runMain] (node:internal
+/modules/run_main:154:5
+) {
+  generatedMessage: 
+true,
+  code: 
+'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.14.0

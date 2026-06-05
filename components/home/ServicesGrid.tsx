@@ -1,7 +1,10 @@
+'use client';
+
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
-import { Shield, Network, Cloud, Users, Workflow, ArrowRight } from 'lucide-react';
+import { Shield, Network, Cloud, Users, Workflow } from 'lucide-react';
 import Link from 'next/link';
 import { VendorIcon } from '@/components/shared/VendorLogos';
 
@@ -9,47 +12,62 @@ const services = [
   {
     icon: Shield,
     title: 'Zero Trust',
-    subtitle: 'Architecture',
+    category: 'Architecture',
     description:
       'Comprehensive Zero Trust architecture design and implementation roadmaps tailored to enterprise environments.',
     href: '/services',
-    vendors: ['Palo Alto Networks', 'Zscaler']
+    vendors: ['Palo Alto Networks', 'Zscaler'],
+    accent: 'from-[#FFC300]/18 via-[#FFC300]/8 to-transparent',
+    border: 'hover:border-[#FFC300]/35',
+    glow: 'group-hover:shadow-[0_20px_50px_rgba(255,195,0,0.18)]',
   },
   {
     icon: Network,
     title: 'SASE',
-    subtitle: 'Transformation',
+    category: 'Transformation',
     description:
       'Strategic guidance on Secure Access Service Edge adoption, including Prisma Access and Netskope deployment.',
     href: '/services',
-    vendors: ['Palo Alto Networks', 'Netskope']
+    vendors: ['Palo Alto Networks', 'Netskope'],
+    accent: 'from-[#00AEEF]/18 via-[#00AEEF]/8 to-transparent',
+    border: 'hover:border-[#00AEEF]/35',
+    glow: 'group-hover:shadow-[0_20px_50px_rgba(0,174,239,0.16)]',
   },
   {
     icon: Cloud,
-    title: 'Cloud',
-    subtitle: 'Security',
+    title: 'Cloud Security',
+    category: 'Multi-Cloud',
     description:
       'Multi-cloud security posture management, workload protection, and cloud-native security architecture.',
     href: '/services',
-    vendors: ['Microsoft Azure', 'Amazon Web Services', 'Google Cloud']
+    vendors: ['Microsoft Azure', 'Amazon Web Services', 'Google Cloud'],
+    accent: 'from-[#0078D4]/18 via-[#50E6FF]/10 to-transparent',
+    border: 'hover:border-[#50E6FF]/35',
+    glow: 'group-hover:shadow-[0_20px_50px_rgba(80,230,255,0.16)]',
   },
   {
     icon: Users,
-    title: 'Executive',
-    subtitle: 'Advisory',
+    title: 'Executive Advisory',
+    category: 'Strategic',
     description:
       'Board-level security strategy, risk communication, and alignment of security investments with business objectives.',
     href: '/services',
-    vendors: ['Check Point', 'CrowdStrike']
+    vendors: ['Check Point', 'CrowdStrike'],
+    accent: 'from-[#E01F3D]/18 via-[#E01F3D]/8 to-transparent',
+    border: 'hover:border-[#E01F3D]/35',
+    glow: 'group-hover:shadow-[0_20px_50px_rgba(224,31,61,0.16)]',
   },
   {
     icon: Workflow,
     title: 'Security Automation',
-    subtitle: 'Cortex XSOAR & XSIAM',
+    category: 'Cortex XSOAR & XSIAM',
     description:
       'Security orchestration, automation, and response (SOAR) implementation with Cortex XSOAR and XSIAM.',
     href: '/services',
-    vendors: ['Palo Alto Networks', 'Fortigate']
+    vendors: ['Palo Alto Networks', 'Fortigate'],
+    accent: 'from-[#6BD348]/18 via-[#6BD348]/8 to-transparent',
+    border: 'hover:border-[#6BD348]/35',
+    glow: 'group-hover:shadow-[0_20px_50px_rgba(107,211,72,0.16)]',
   },
 ];
 
@@ -116,44 +134,62 @@ export function ServicesGrid() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-4">
-          {services.map((service, index) => (
-            <Link
+        <motion.div
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.05
+              }
+            }
+          }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {services.map((service) => (
+            <motion.div
               key={service.title}
-              href={service.href}
-              className="group relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.01] hover:shadow-[#FFC300]/10"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0 }
+              }}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
             >
-              <div className="absolute inset-0 bg-white/[0.02] group-hover:bg-[#FFC300]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 border border-white/[0.04] group-hover:border-[#FFC300]/30 transition-colors duration-500" />
-              
-              {/* interactive top highlight */}
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 rounded-t-2xl"></div>
+              <Link
+                href={service.href}
+                className={`group relative block overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] p-7 backdrop-blur-xl transition-all duration-500 ${service.border} ${service.glow}`}
+              >
+                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${service.accent} opacity-80`} />
+                <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
 
-              <div className="relative p-8 md:p-10 flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-14 h-14 rounded-xl bg-[#FFC300]/10 flex items-center justify-center group-hover:bg-[#FFC300]/20 transition-colors duration-300">
-                    <service.icon className="w-7 h-7 text-[#FFC300]" />
-                  </div>
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-white group-hover:text-[#FFC300] transition-colors duration-300">
-                        {service.title}
-                      </h3>
-                      <div className="text-sm text-slate-500 mt-1">{service.subtitle}</div>
+                <div className="relative flex h-full flex-col">
+                  {/* Icon + Category badge */}
+                  <div className="mb-8 flex items-start justify-between gap-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-obsidian-950/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                      <service.icon className="h-7 w-7 text-[#FFC300]" />
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-[#FFC300] group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 mt-1" />
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                      {service.category}
+                    </span>
                   </div>
-                  <p className="mt-3 text-slate-400 leading-relaxed">
-                    {service.description}
-                  </p>
+
+                  {/* Title + Description */}
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-semibold text-white">
+                      {service.title}
+                    </h3>
+                    <p className="max-w-[28ch] text-sm leading-6 text-slate-400">
+                      {service.description}
+                    </p>
+                  </div>
 
                   {/* Vendor Logos */}
-                  <div className="mt-6 flex items-center gap-4 border-t border-white/5 pt-6">
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-600">Powered By</span>
-                    <div className="flex items-center gap-3">
+                  <div className="mt-6 flex items-center gap-3 border-t border-white/[0.06] pt-5">
+                    <span className="text-[10px] uppercase font-bold tracking-[0.22em] text-slate-600">Powered By</span>
+                    <div className="flex items-center gap-2">
                       {service.vendors.map((vendor) => (
                         <div key={vendor} className="w-5 h-5 text-slate-500 group-hover:text-slate-300 transition-colors" title={vendor}>
                           <VendorIcon name={vendor} className="w-full h-full" />
@@ -161,11 +197,19 @@ export function ServicesGrid() {
                       ))}
                     </div>
                   </div>
+
+                  {/* Footer status */}
+                  <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-5">
+                    <span className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                      In Active Practice
+                    </span>
+                    <div className="h-2 w-2 rounded-full bg-[#FFC300]/70 shadow-[0_0_18px_rgba(255,195,0,0.45)] transition-all duration-500 group-hover:scale-125" />
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="mt-16 flex justify-center">
           <CTAButton href="/services" variant="secondary" showArrow>
@@ -176,3 +220,4 @@ export function ServicesGrid() {
     </Section>
   );
 }
+

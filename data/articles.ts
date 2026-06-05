@@ -6,9 +6,1199 @@ export interface Article {
   date: string;
   readTime: string;
   content: string;
+  image?: string;
 }
 
 export const articles: Article[] = [
+  {
+    slug: 'identity-is-the-new-security-perimeter-itdr',
+    title: 'Identity Is the New Security Perimeter: Why ITDR and Identity Analytics Are Becoming Essential for Modern SOCs 🔐',
+    excerpt: 'Modern attackers don\'t break in — they log in. Discover why Identity Threat Detection and Response (ITDR) and Identity Analytics are becoming critical components of modern cybersecurity architecture.',
+    category: 'CORTEX XDR',
+    date: '2026-04-18',
+    readTime: '12 min read',
+    image: '/images/blogs/itdr/itdr-attack-vs-detection.png',
+    content: `
+# Identity Is the New Security Perimeter  
+## Why ITDR and Identity Analytics Are Becoming Essential for Modern SOCs 🔐
+
+Cybersecurity has evolved dramatically over the past decade.
+
+There was a time when security teams focused primarily on:
+
+- Firewalls
+- Network segmentation
+- Endpoint protection
+- Perimeter defenses
+
+But today, the perimeter has changed.
+
+Modern attackers are no longer trying to break into networks using loud, obvious methods.  
+Instead, they're using **valid credentials** to quietly log in and move across environments undetected.
+
+This shift has fundamentally changed how organizations must think about security.
+
+**Identity is now the new security perimeter.**
+
+And this is exactly where **Identity Threat Detection and Response (ITDR)** and **Identity Analytics** become critical components of modern cybersecurity architecture.
+
+---
+
+# The Shift: From Network Security to Identity Security
+
+Traditional security models were built around protecting networks and endpoints. But modern infrastructures have become:
+
+- Cloud-first
+- Remote workforce enabled
+- SaaS-driven
+- API-connected
+- AI-integrated
+
+This transformation has dramatically expanded the **identity attack surface**.
+
+Today, organizations must protect not just users, but also:
+
+👤 Human identities  
+☁️ Cloud identities  
+🔑 Privileged accounts  
+🤖 AI agents and automation  
+⚙️ Service accounts  
+🔗 API tokens and integrations  
+
+These identities often have **more access and privileges** than traditional endpoints — making them highly valuable targets for attackers.
+
+---
+
+# Modern Attacks: Attackers Don't Break In — They Log In
+
+Modern cyberattacks often follow a predictable identity-based attack chain:
+
+Credential Theft  
+⬇️  
+Suspicious Login  
+⬇️  
+Privilege Escalation  
+⬇️  
+Lateral Movement  
+⬇️  
+Sensitive Data Access  
+
+Because attackers use **legitimate credentials**, many traditional security tools fail to detect these activities.
+
+This is what makes identity-based attacks particularly dangerous:
+
+- They look like normal user behavior
+- They bypass traditional defenses
+- They operate silently
+- They can persist for weeks or months
+
+Without identity visibility, organizations remain blind to these threats.
+
+---
+
+# What Is ITDR (Identity Threat Detection & Response)?
+
+**ITDR (Identity Threat Detection and Response)** is a modern security capability focused on detecting and responding to identity-based threats in real-time.
+
+ITDR platforms analyze identity behavior across environments and detect anomalies such as:
+
+- Unusual login locations
+- Abnormal access patterns
+- Privilege escalation attempts
+- Lateral movement behavior
+- Suspicious service account activity
+- Token abuse and misuse
+
+Unlike traditional tools, ITDR focuses on **who is accessing what — and why**.
+
+---
+
+![Deep Dive into ITDR & Identity Analytics](/images/blogs/itdr/itdr-infographic.png)
+
+---
+
+# Core Capabilities of Modern Identity Analytics
+
+Modern identity analytics platforms provide deep visibility into identity behavior through:
+
+### 🧠 Identity Behavior Analytics
+Detects abnormal login patterns and risky behavior using machine learning and behavioral analysis.
+
+### 🔍 Privileged Access Monitoring
+Tracks usage of high-risk privileged accounts and detects suspicious privilege changes.
+
+### 🔗 Lateral Movement Detection
+Identifies attackers moving across systems using compromised credentials.
+
+### ⚙️ Service Account Monitoring
+Detects unusual automation or service account activity.
+
+### 📊 Risk-Based Identity Scoring
+Assigns risk scores based on behavior, access patterns, and anomalies.
+
+### 🤖 Automated Response
+Triggers immediate actions when suspicious behavior is detected.
+
+---
+
+# Real-World Attack Scenario: How ITDR Stops an Attack
+
+Consider the following real-world scenario:
+
+An attacker successfully steals employee credentials through phishing.
+
+The attacker then:
+
+1. Logs in from an unusual location
+2. Attempts to access privileged resources
+3. Moves laterally across systems
+4. Tries to access sensitive data
+
+Without ITDR, this activity may appear normal.
+
+But with ITDR:
+
+- Suspicious login detected  
+- Risk score increased  
+- Privilege escalation flagged  
+- Lateral movement identified  
+- Automated response triggered  
+
+Attack stopped — before data is compromised.
+
+---
+
+![Identity Attack Chain & ITDR Detection Workflow](/images/blogs/itdr/itdr-attack-chain-workflow.png)
+
+---
+
+# Automated Response: Stopping Threats in Seconds ⚡
+
+One of the most powerful features of ITDR is automated response.
+
+When suspicious activity is detected, modern ITDR platforms can:
+
+🔐 Force multi-factor authentication (MFA)  
+🔒 Lock compromised accounts  
+🎟️ Revoke access tokens  
+🚫 Terminate suspicious sessions  
+🚨 Alert SOC teams automatically  
+
+This dramatically reduces:
+
+- Mean Time to Detect (MTTD)
+- Mean Time to Respond (MTTR)
+- Overall attack impact
+
+Automation ensures that threats are stopped **before damage occurs**.
+
+---
+
+# Why Identity Security Matters More Than Ever
+
+Several trends are accelerating identity-based risks:
+
+- Rapid SaaS adoption  
+- Remote and hybrid workforce  
+- Increasing cloud environments  
+- Growth of AI agents and automation  
+- Expanding privileged access  
+- Sophisticated attackers  
+
+As identities grow, so does the attack surface.
+
+Organizations that ignore identity security risk leaving their most critical assets exposed.
+
+---
+
+![Identity Attack Chain vs ITDR Detection](/images/blogs/itdr/itdr-attack-vs-detection.png)
+
+---
+
+# Identity-Driven SOC: The Future of Cybersecurity
+
+Modern Security Operations Centers (SOCs) are evolving toward **Identity-Driven Security Models**.
+
+In this model:
+
+- XDR protects endpoints
+- SIEM correlates events
+- SOAR automates response
+- **ITDR protects identities**
+
+Together, they create a comprehensive security architecture capable of detecting advanced threats.
+
+This identity-driven approach enables:
+
+✅ Faster threat detection  
+✅ Reduced attack surface  
+✅ Automated response  
+✅ Zero Trust enforcement  
+✅ Stronger cloud security posture  
+
+---
+
+# Key Takeaways
+
+- Identity is the new security perimeter  
+- Attackers increasingly target identities instead of endpoints  
+- Traditional security tools lack identity visibility  
+- ITDR provides detection and response for identity-based threats  
+- Automated response reduces detection and response time  
+- Identity-driven SOC is becoming the new cybersecurity standard  
+
+---
+
+# Conclusion
+
+Cybersecurity is no longer just about protecting networks or endpoints.
+
+It's about protecting identities.
+
+As organizations continue adopting cloud, SaaS, and AI-driven environments, identity risks will only grow.
+
+ITDR and Identity Analytics provide the visibility, detection, and response capabilities required to secure modern environments.
+
+Organizations that adopt identity-first security today will be better prepared for tomorrow's threats.
+
+Because in modern cybersecurity…
+
+**Your firewall protects your network**  
+**Your XDR protects your endpoints**  
+**But ITDR protects your identities**  
+
+And today — that matters the most.
+
+---
+
+# Hashtags
+
+#CyberSecurity #ITDR #IdentitySecurity #ZeroTrust #SOC #CloudSecurity #ThreatDetection
+`,
+  },
+  {
+    slug: 'cloud-native-application-platform-securing-from-code-to-cloud',
+    title: '🚀 Cloud Native Application Platform: Securing Applications from Code to Cloud',
+    excerpt: 'Traditional security models were built for static infrastructure. Enter the Cloud Native Application Platform (CNAPP) — a unified approach designed to secure modern applications from code to cloud.',
+    category: 'PRISMA SASE',
+    date: '2026-04-17',
+    readTime: '10 min read',
+    image: '/images/blogs/cnapp/cnapp-code-to-cloud.png',
+    content: `
+# 🚀 Cloud Native Application Platform: Securing Applications from Code to Cloud
+
+Cloud security is undergoing a major transformation.
+
+Traditional security models were built for static infrastructure, predictable deployments, and clearly defined perimeters. But modern applications no longer follow those rules.
+
+Today’s applications are:
+
+- ☁️ Cloud-native  
+- 📦 Containerized  
+- 🔄 Continuously deployed  
+- 🌍 Running across multi-cloud environments  
+- ⚙️ Built using microservices architectures  
+
+This shift has fundamentally changed how organizations must approach security.
+
+Enter the **Cloud Native Application Platform (CNAPP)** — a unified approach designed to **secure modern applications from code to cloud**.
+
+---
+
+# ☁️ The Rise of Cloud-Native Applications
+
+Modern application development has evolved dramatically over the last decade. Organizations are rapidly adopting:
+
+- Containers  
+- Kubernetes  
+- Microservices  
+- DevOps pipelines  
+- Multi-cloud deployments  
+
+While these technologies accelerate innovation, they also **introduce new security risks across the entire lifecycle**.
+
+Unlike traditional applications, cloud-native workloads move fast — sometimes **hundreds of deployments per day**.
+
+Security can no longer operate as a **final checkpoint**.  
+It must be **embedded into every stage of the lifecycle**.
+
+---
+
+![Cloud Native Application Platform Overview](/images/blogs/cnapp/cnapp-infographic.png)
+
+---
+
+# 🚨 The New Reality: Code-to-Cloud Risk
+
+Security is no longer limited to infrastructure. Risk now exists across the entire development and deployment pipeline.
+
+## Modern Cloud Risk Exists Across:
+
+### 👨‍💻 Code & Development Stage
+- Vulnerable libraries
+- Hardcoded secrets
+- Misconfigured dependencies
+- Open-source vulnerabilities
+
+### 🔄 CI/CD Pipelines
+- Pipeline misconfigurations
+- Privileged pipeline execution
+- Unauthorized access to build systems
+- Supply chain attacks
+
+### 📦 Containers
+- Vulnerable base images
+- Unpatched container images
+- Insecure container configurations
+
+### ☸️ Kubernetes
+- Misconfigured RBAC policies
+- Exposed APIs
+- Insecure cluster configurations
+
+### ☁️ Cloud Workloads
+- Excessive permissions
+- Misconfigured storage buckets
+- Open cloud services
+
+### ⚙️ Runtime Environments
+- Lateral movement attacks
+- Suspicious behavior
+- Zero-day threats
+
+If security protects only one layer — attackers simply move to another.
+
+This is why **point solutions are no longer enough**.
+
+---
+
+# 🧠 What is Cloud Native Application Platform (CNAPP)?
+
+A **Cloud Native Application Platform** delivers **unified security across the entire cloud-native lifecycle** — from development to runtime.
+
+Instead of deploying multiple disconnected security tools, CNAPP integrates everything into **one unified platform**.
+
+## Core Capabilities of CNAPP
+
+A modern CNAPP delivers:
+
+✅ Code-to-Cloud Visibility  
+✅ AI-Driven Threat Detection  
+✅ Container & Kubernetes Security  
+✅ Runtime Protection  
+✅ Cloud Security Posture Management  
+✅ Automated Incident Response  
+
+This unified approach helps organizations **detect threats earlier** and **respond faster**.
+
+---
+
+![CNAPP: Unified Code-to-Cloud Security Architecture](/images/blogs/cnapp/cnapp-code-to-cloud.png)
+
+---
+
+# 🔐 Key Security Capabilities of Cloud Native Application Platform
+
+## 1. Code Security
+
+Security starts at development.
+
+Modern CNAPP solutions scan:
+
+- Source code
+- Dependencies
+- Secrets
+- Vulnerabilities
+
+Benefits:
+
+- Identify risks early
+- Reduce remediation costs
+- Improve developer productivity
+
+---
+
+## 2. Container & Kubernetes Security
+
+Containers and Kubernetes power modern applications — but they introduce new attack surfaces.
+
+CNAPP helps:
+
+- Scan container images
+- Monitor Kubernetes clusters
+- Detect misconfigurations
+- Enforce security policies
+
+This ensures secure containerized deployments.
+
+---
+
+## 3. Runtime Protection
+
+Runtime protection detects threats while applications are running.
+
+This includes:
+
+- Behavioral analytics
+- Process monitoring
+- Anomaly detection
+- Threat prevention
+
+This helps stop:
+
+- Lateral movement
+- Privilege escalation
+- Zero-day attacks
+
+---
+
+## 4. Cloud Security Posture Management
+
+Misconfigurations remain one of the **top causes of cloud breaches**.
+
+CNAPP provides:
+
+- Continuous cloud monitoring
+- Risk identification
+- Compliance tracking
+- Configuration enforcement
+
+This reduces exposure across cloud environments.
+
+---
+
+# 🌍 Real-World Use Cases
+
+## 🔥 Use Case 1: Vulnerable Container Deployment
+
+Scenario:
+
+A developer pushes a container image with vulnerable libraries.
+
+Without CNAPP:
+- Vulnerability goes unnoticed
+- Application deployed to production
+- Exploit occurs later
+
+With CNAPP:
+- Image scanned automatically
+- Vulnerability detected
+- Deployment blocked
+
+Result: Threat prevented before production.
+
+---
+
+## ⚠️ Use Case 2: Kubernetes Misconfiguration
+
+Scenario:
+
+A Kubernetes cluster is exposed to the internet.
+
+Without CNAPP:
+- Attackers discover exposed API
+- Gain unauthorized access
+
+With CNAPP:
+- Misconfiguration detected
+- Security policy enforced
+- Access restricted automatically
+
+Result: Exposure eliminated.
+
+---
+
+## ☁️ Use Case 3: Multi-Cloud Security Visibility
+
+Scenario:
+
+Organization running workloads across AWS, Azure, and GCP.
+
+Without CNAPP:
+- Fragmented visibility
+- Multiple dashboards
+
+With CNAPP:
+- Unified multi-cloud visibility
+- Centralized risk management
+
+Result: Simplified cloud security operations.
+
+---
+
+![CNAPP: Centralized Multi-Cloud Security Visibility](/images/blogs/cnapp/cnapp-multi-cloud.png)
+
+---
+
+# 🔥 Why Unified Cloud-Native Security Matters
+
+Cloud-native environments are:
+
+- Dynamic  
+- Distributed  
+- Continuously changing  
+
+Traditional security tools struggle to keep up.
+
+Organizations still relying on legacy security models face:
+
+⚠️ Visibility gaps  
+⚠️ Configuration risks  
+⚠️ Runtime threats  
+⚠️ Multi-cloud complexity  
+
+CNAPP solves these challenges with **continuous, unified protection**.
+
+---
+
+# 🔄 The Security Shift Is Already Happening
+
+Cloud security is evolving rapidly:
+
+From → To
+
+Infrastructure Security → Application-Driven Security  
+Point Tools → Unified Platforms  
+Reactive Detection → AI-Driven Protection  
+Manual Operations → Automated Security  
+
+Cloud-native security is no longer optional.
+
+It is becoming **foundational to modern cybersecurity strategy**.
+
+---
+
+# 🎯 Key Takeaways
+
+- Cloud-native applications introduce new security challenges  
+- Risk exists across the entire code-to-cloud lifecycle  
+- Point solutions create visibility gaps  
+- Cloud Native Application Platform provides unified security  
+- AI-driven detection improves threat visibility  
+- Runtime protection helps stop active attacks  
+- Multi-cloud environments require centralized security
+
+---
+
+# 🚀 Conclusion
+
+Modern applications move faster than ever.
+
+Security must move even faster.
+
+The **Cloud Native Application Platform** represents the future of cloud security — delivering **code-to-cloud visibility, AI-driven protection, and unified risk management**.
+
+Organizations adopting CNAPP gain:
+
+- Better visibility  
+- Faster detection  
+- Reduced risk  
+- Stronger cloud security posture  
+
+As cloud-native adoption continues to grow, unified security platforms will become **essential for protecting modern applications**.
+
+The shift has already started.
+
+The question is — **Is your cloud security ready?**
+
+---
+
+# Hashtags
+
+#CloudSecurity #CNAPP #CloudNative #Kubernetes #ContainerSecurity #DevSecOps #CyberSecurity
+`,
+  },
+  {
+    slug: 'cortex-xsoar-transforming-soc-operations',
+    title: '🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations: Integration, Automation & Orchestration',
+    excerpt: 'Modern SOCs are overwhelmed by 10 to 50+ fragmented tools. Explore how Cortex XSOAR acts as the central nervous system to automate investigation, enrichment, and response end-to-end.',
+    category: 'XSOAR',
+    date: '2026-04-15',
+    readTime: '10 min read',
+    image: '/images/blogs/cortex-xsoar/xsoar-diagram-horizontal.png',
+    content: `
+# 🔐 Why Cortex XSOAR Is Transforming Modern SOC Operations: Integration, Automation & Orchestration
+
+![Cortex XSOAR Cloud Security & SOC Detection](/images/blogs/cortex-xsoar/xsoar-diagram-horizontal.png)
+
+## Introduction 🚀
+
+Modern Security Operations Centers (SOCs) are more complex than ever before. Organizations are deploying **10 to 50+ security tools** across their environments to defend against increasingly sophisticated cyber threats.
+
+From SIEM and EDR to cloud security and threat intelligence platforms, the security stack is powerful—but fragmented.
+
+The result?
+
+👉 Security teams are overwhelmed  
+👉 Alerts are increasing faster than response capacity  
+👉 Investigations take hours instead of minutes  
+
+This is not a technology problem alone—it is a **coordination problem**.
+
+This is exactly where **Cortex XSOAR (Security Orchestration, Automation, and Response)** changes the game.
+
+---
+
+## The Modern SOC Challenge: Too Many Tools, Too Little Integration 🧩
+
+Today’s SOC environments typically include:
+
+- SIEM (Security Information and Event Management)
+- EDR (Endpoint Detection and Response)
+- Firewalls and Network Security Controls
+- Email Security Gateways
+- Threat Intelligence Platforms
+- Cloud Security Tools
+- Ticketing and ITSM Systems
+
+While each tool is powerful individually, the real challenge lies in **integration and operational flow**.
+
+### The Hidden Problem
+
+Security analysts often follow a repetitive and inefficient process:
+
+- Copy data from one tool  
+- Paste into another  
+- Correlate alerts manually  
+- Investigate across multiple dashboards  
+- Create tickets manually  
+
+This leads to:
+
+- ⏱️ Delayed incident response  
+- 😓 Analyst fatigue and burnout  
+- ⚠️ Missed attack correlations  
+- 📉 Reduced SOC efficiency  
+
+---
+
+## Enter Cortex XSOAR: The Security Orchestration Engine ⚙️
+
+Cortex XSOAR is designed to eliminate fragmentation by acting as the **central nervous system of the SOC**.
+
+Instead of analysts manually connecting tools, **XSOAR automates the entire workflow end-to-end**.
+
+### What Cortex XSOAR Does in Real Time
+
+When a security alert is triggered, XSOAR can automatically:
+
+- ⚡ Pull context from SIEM logs  
+- ⚡ Query EDR for endpoint behavior  
+- ⚡ Enrich indicators using threat intelligence feeds  
+- ⚡ Analyze email artifacts and attachments  
+- ⚡ Investigate IPs, URLs, and file hashes  
+- ⚡ Create or update incident tickets  
+- ⚡ Trigger automated response actions  
+
+All of this happens in **seconds, not hours**.
+
+---
+
+## How Cortex XSOAR Works in a Modern SOC Architecture 🏗️
+
+To understand its impact, we need to look at the SOC architecture in context. The modern SOC requires seamless data flow between detection and response.
+
+![Modern SOC Architecture: Cortex XSOAR + SIEM + XDR](/images/blogs/cortex-xsoar/xsoar-diagram-vertical.png)
+
+---
+
+### 🟦 Layer 1: Detection Layer (SIEM + XDR)
+
+#### SIEM — The Log Intelligence Layer
+SIEM platforms aggregate and correlate logs from across the environment:
+
+- Network devices  
+- Applications  
+- Cloud platforms  
+- Identity systems  
+
+They provide:
+- Event correlation  
+- Log analysis  
+- Compliance visibility  
+
+#### XDR — The Threat Detection Layer
+XDR expands visibility across endpoints, networks, and cloud:
+
+- Behavioral detection  
+- Attack chain analysis  
+- Endpoint telemetry  
+- Cross-domain threat correlation  
+
+---
+
+### 🟨 Layer 2: Orchestration Layer (Cortex XSOAR)
+
+This is the **brain of the SOC architecture**.
+
+Cortex XSOAR receives alerts from SIEM and XDR and performs:
+
+#### 🔄 Automation & Orchestration Functions
+
+- Incident enrichment  
+- Threat intelligence lookup  
+- Alert correlation across sources  
+- Automated investigation playbooks  
+- Workflow execution  
+- Ticket creation and updates  
+
+Instead of analysts manually switching tools, XSOAR acts as a **fully automated decision engine**.
+
+---
+
+### 🟥 Layer 3: Response Layer (Automated Security Actions)
+
+Once an incident is validated, XSOAR can automatically execute response actions:
+
+- 🚫 Block malicious IPs at the firewall  
+- 🔐 Isolate compromised endpoints  
+- 👤 Disable suspicious user accounts  
+- 📧 Quarantine phishing emails  
+- 🧾 Create ITSM tickets  
+- 📢 Notify SOC teams in real time  
+
+This transforms response from **reactive to proactive**.
+
+---
+
+## Real-World Use Cases of Cortex XSOAR in Action 🌍
+
+### 🔥 Use Case 1: Phishing Attack Response
+
+1. Email security tool detects suspicious email  
+2. XSOAR automatically extracts URLs and attachments  
+3. Threat intelligence checks reputation  
+4. Endpoint scanning is triggered  
+5. Malicious email is quarantined  
+6. Incident ticket is created automatically  
+
+👉 Result: Response time reduced from hours to minutes
+
+---
+
+### 🛑 Use Case 2: Compromised Endpoint Detection
+
+1. XDR detects unusual process behavior  
+2. SIEM correlates login anomalies  
+3. XSOAR enriches threat indicators  
+4. Endpoint is automatically isolated  
+5. SOC is notified with full incident context  
+
+👉 Result: Attack containment before lateral movement
+
+---
+
+### ☁️ Use Case 3: Cloud Misconfiguration Exploit
+
+1. Cloud security tool flags suspicious activity  
+2. XSOAR correlates IAM logs and access patterns  
+3. Threat intelligence confirms malicious behavior  
+4. Access is revoked automatically  
+5. Incident is escalated to SOC team  
+
+👉 Result: Prevents privilege escalation attacks
+
+---
+
+## Real SOC Impact: Before vs After Cortex XSOAR 📊
+
+### Before XSOAR:
+- Manual investigation workflows  
+- Multiple dashboards to monitor  
+- High alert fatigue  
+- Slow response cycles  
+- Heavy analyst workload  
+
+### After XSOAR:
+- Fully automated workflows  
+- Unified incident view  
+- Faster detection-to-response time  
+- Reduced analyst burnout  
+- Smarter, more strategic SOC teams  
+
+---
+
+## The Real Value of Cortex XSOAR 💡
+
+Cortex XSOAR does not replace your security tools.
+
+👉 It **unifies and amplifies them**
+
+The real transformation happens when:
+
+- Tools stop operating in silos  
+- Data flows automatically across systems  
+- Analysts focus on decisions, not manual work  
+- Security becomes orchestrated, not reactive  
+
+---
+
+## Conclusion 🎯
+
+Modern cybersecurity is no longer about having the most tools.
+
+It is about making those tools **work together intelligently**.
+
+Cortex XSOAR enables organizations to evolve from:
+
+> ❌ Alert collection → Manual investigation  
+> ✅ Automated orchestration → Rapid threat response  
+
+In today’s threat landscape, speed is not optional—it is survival.
+
+And with Cortex XSOAR, your SOC doesn’t just detect threats faster…
+
+👉 It responds before the attacker succeeds.
+
+---
+
+## Key Takeaways 📌
+
+- SOC environments are highly fragmented across multiple tools  
+- Manual investigation slows down incident response significantly  
+- Cortex XSOAR automates and orchestrates security workflows  
+- SIEM + XDR provide detection, XSOAR provides action  
+- Automation reduces fatigue and increases SOC efficiency  
+- Modern SOC success depends on integration, not tool quantity  
+
+---
+
+## Hashtags 🔖
+
+#CyberSecurity #SOC #CortexXSOAR #SOAR #SecurityAutomation #ThreatDetection #PaloAltoNetworks
+`,
+  },
+  {
+    slug: 'securing-agentic-endpoint-cortex-xdr',
+    title: 'Securing the Agentic Endpoint with Cortex XDR',
+    excerpt: 'Your endpoint just became an AI agent. Autonomous AI agents, self-executing workflows, and AI copilots are running directly on your endpoints — and attackers are evolving to exploit them. Here\'s how Cortex XDR secures the Agentic Endpoint Era.',
+    category: 'CORTEX XDR',
+    date: '2026-04-15',
+    readTime: '10 min read',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop',
+    content: `
+# Securing the Agentic Endpoint with Cortex XDR
+## Your Endpoint Just Became an AI Agent — Are You Securing It?
+
+![Agentic Endpoint Security](https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop)
+
+We are entering a **new era of cybersecurity** — the **Agentic Endpoint Era**.
+
+Endpoints are no longer just:
+
+- Laptops
+- Servers
+- Workstations
+
+They are becoming **AI-powered decision makers**.
+
+Autonomous AI agents. Self-executing workflows. AI copilots. Automated scripts.
+
+All running **directly on your endpoints**.
+
+This is **transformational** for productivity.
+
+But also **dangerous** for security.
+
+Because if attackers compromise an endpoint today…
+
+They don't just gain access.
+
+They gain **autonomous execution**.
+
+---
+
+# The Rise of the Agentic Endpoint
+
+![AI Endpoint Architecture](https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop)
+
+Modern endpoints are evolving rapidly:
+
+- AI copilots embedded into operating systems
+- Autonomous patching and configuration
+- AI-driven automation workflows
+- Self-healing endpoint environments
+- Intelligent security assistants
+
+These **Agentic Endpoints** can:
+
+- Make decisions
+- Execute workflows
+- Access enterprise systems
+- Trigger automation
+
+Without human intervention.
+
+This dramatically increases productivity.
+
+But it also **expands the attack surface**.
+
+---
+
+# The Agentic Endpoint Risk
+
+Imagine this scenario:
+
+An AI agent running on an endpoint gets compromised.
+
+Suddenly:
+
+- Sensitive data starts leaving quietly
+- AI executes malicious commands automatically
+- Credentials get harvested silently
+- Lateral movement becomes autonomous
+- Security controls get bypassed intelligently
+
+This is no longer theoretical.
+
+This is already beginning to happen.
+
+---
+
+# Autonomous Attacks Have Arrived
+
+![Autonomous Cyber Attack](https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop)
+
+Traditional attacks required:
+
+- Manual attacker control
+- Slow lateral movement
+- Human decision making
+
+Now attackers are using:
+
+- AI-driven malware
+- Autonomous scripts
+- Self-propagating threats
+- Intelligent credential harvesting
+
+This creates: **Autonomous vs Autonomous Security**
+
+Attackers are using AI. Your endpoints are running AI. Your security must **think faster**.
+
+---
+
+# Why Traditional EDR Falls Short
+
+Traditional EDR solutions were built for:
+
+- User-based activity
+- Known malware detection
+- Signature-based analysis
+- Manual threat hunting
+
+But Agentic Endpoints introduce:
+
+- AI-generated behavior
+- Autonomous execution
+- Dynamic workflows
+- Unknown patterns
+
+This requires **AI-native security**.
+
+---
+
+# How Cortex XDR Secures the Agentic Endpoint
+
+![Cortex XDR Platform](https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1600&auto=format&fit=crop)
+
+Cortex XDR was designed for **modern AI-driven environments**.
+
+## 1. Behavioral AI Threat Detection
+
+Cortex XDR detects:
+
+- AI-driven anomalies
+- Autonomous behavior changes
+- Suspicious automation workflows
+- Unknown threat patterns
+
+This enables **early detection** of AI-powered threats.
+
+---
+
+## 2. Full Endpoint Visibility
+
+Cortex XDR provides:
+
+- Process-level telemetry
+- AI agent monitoring
+- Endpoint behavioral analysis
+- Real-time threat visibility
+
+This gives security teams **complete visibility**.
+
+---
+
+## 3. Cross-Domain Correlation
+
+Cortex XDR correlates:
+
+- Endpoint data
+- Network telemetry
+- Cloud workloads
+- User behavior
+
+This allows detection of **complex autonomous attacks**.
+
+---
+
+## 4. Autonomous Threat Response
+
+When threats are detected:
+
+- Endpoint isolation
+- Process termination
+- Credential protection
+- Automated containment
+
+All performed **automatically**.
+
+Because **autonomous threats require autonomous response**.
+
+---
+
+## 5. Machine Learning Analytics
+
+Cortex XDR leverages:
+
+- Behavioral ML models
+- Threat intelligence
+- Anomaly detection
+- Risk scoring
+
+This enables **predictive security**.
+
+---
+
+# What Security Teams Should Do Now
+
+Security leaders must prepare for Agentic Endpoints:
+
+### Step 1: Identify AI-Powered Endpoints
+Discover where AI agents are running.
+
+### Step 2: Monitor Autonomous Behavior
+Track AI-driven workflows and automation.
+
+### Step 3: Implement AI Threat Detection
+Deploy AI-native security controls.
+
+### Step 4: Adopt XDR Architecture
+Move beyond traditional EDR.
+
+### Step 5: Secure AI-Driven Workflows
+Protect automation pipelines.
+
+---
+
+# The Future of Endpoint Security
+
+The future endpoint is:
+
+- Autonomous
+- Intelligent
+- AI-powered
+- Self-executing
+
+Security must evolve accordingly.
+
+Because the future attack is not manual.
+
+It's **Autonomous vs Autonomous**.
+
+---
+
+# Final Thoughts
+
+The Agentic Endpoint Era is here.
+
+Organizations that adapt early will:
+
+- Reduce risk
+- Improve detection
+- Enable secure AI adoption
+- Lead the next generation of cybersecurity
+
+The question is no longer: **Are you using AI?**
+
+The real question is: **Is Your AI Endpoint Secure?**
+
+---
+
+*Attique Bhatti — Network Security Consultant, Palo Alto Networks Instructor, Cybersecurity Architect*
+
+*For consultation: [info@thecyberadviser.com](mailto:info@thecyberadviser.com) | +971-56-9383383 | [www.TheCyberAdviser.com](https://www.thecyberadviser.com)*
+    `,
+  },
+  {
+    slug: 'quantum-computing-cybersecurity-readiness',
+    title: '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
+    excerpt: 'Quantum computing is moving from research labs to real-world capability. When it reaches scale, it could break the cryptographic foundations of today’s digital world. Is your organization prepared for the post-quantum era?',
+    category: 'PRISMA SASE',
+    date: '2024-04-14',
+    readTime: '12 min read',
+    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1600&auto=format&fit=crop',
+    content: `
+# ⚛️ Quantum Computing is Coming
+## ⚠️ Most Security Teams Aren’t Ready
+### 🔥 The Next Cybersecurity Disruption Has Already Started
+
+For decades, cybersecurity relied on one core belief: **Modern encryption is practically unbreakable.**
+
+That belief is now fading.
+
+Quantum computing is moving from research labs to real-world capability — and when it reaches scale, it could break the cryptographic foundations of today’s digital world.
+
+RSA. ECC. Diffie-Hellman. These algorithms protect:
+- VPNs
+- Banking systems
+- Cloud infrastructure
+- Digital identity
+- Secure communications
+
+And they were never designed for quantum adversaries.
+
+⚠️ **Most security teams aren’t ready for this shift.**
+
+![Quantum Cryptography Shield](/images/blogs/quantum-computing/quantum-shield.png)
+
+## 🧠 Why Quantum Computing Changes Everything
+
+Classical computers use bits (0 or 1). Quantum computers use qubits (0 and 1 simultaneously), powered by:
+- **Superposition**: Processing vast amounts of data at once.
+- **Entanglement**: Linking qubits for exponential power.
+
+This allows quantum computers to solve complex mathematical problems — specifically those that form the basis of our current encryption — in minutes, rather than millennia.
+
+## 🛑 The "Harvest Now, Decrypt Later" Threat
+
+You might think, *"We don't have quantum computers yet, so we have time."*
+
+**Wrong.**
+
+Threat actors are already engaging in **Harvest Now, Decrypt Later (HNDL)** attacks. They are stealing encrypted data today, knowing they can decrypt it in a few years when quantum power becomes available.
+
+If your data needs to remain secret for 5, 10, or 20 years, it is already at risk.
+
+![Quantum Readiness Infographic](/images/blogs/quantum-computing/quantum-readiness.png)
+
+## 🛠️ How to Prepare: Post-Quantum Cryptography (PQC)
+
+The transition to quantum-resistant security isn't just a software update; it's a fundamental architectural shift.
+
+1. **Inventory Your Encryption**: Know where RSA and ECC are used in your environment.
+2. **Prioritize Long-Life Data**: Focus on data that must remain confidential for a decade or more.
+3. **Adopt Crypto-Agility**: Build systems that can swap out cryptographic algorithms without rebuilding the entire stack.
+4. **Transition to NIST-Approved Algorithms**: Start testing Kyber (now ML-KEM) and other quantum-resistant standards.
+
+## 🏁 Bottom Line
+
+Quantum computing isn't just a "future problem." The cryptographic transition is a multi-year journey that needs to start **now**.
+
+Is your security roadmap quantum-ready? ⚛️
+    `,
+  },
   {
     slug: 'hybrid-cloud-connectivity',
     title: 'Architecting Hybrid Cloud Connectivity for Enterprise Resilience',
