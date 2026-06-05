@@ -29,6 +29,8 @@ export default function MigratorClient() {
   const [fileName, setFileName] = useState('');
   const [sourceVendor, setSourceVendor] = useState<SourceVendor | 'auto'>('auto');
   const [targetVendor, setTargetVendor] = useState<TargetVendor>('pan-os');
+  const [newMgmtIp, setNewMgmtIp] = useState('');
+  const [deduplicate, setDeduplicate] = useState(true);
   const [role, setRole] = useState<AppRole>('admin');
   const [recentProjects, setRecentProjects] = useState<ProjectListItem[]>([]);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -87,6 +89,8 @@ export default function MigratorClient() {
             content,
             selectedVendor: sourceVendor === 'auto' ? undefined : sourceVendor,
             targetVendor,
+            newMgmtIp: newMgmtIp.trim() || undefined,
+            deduplicate,
           },
           targetVendor
         );
@@ -116,7 +120,7 @@ export default function MigratorClient() {
         setState('error');
       }
     },
-    [sourceVendor, targetVendor, role, refreshProjects]
+    [sourceVendor, targetVendor, newMgmtIp, deduplicate, role, refreshProjects]
   );
 
   const downloadArtifact = useCallback(
@@ -256,6 +260,32 @@ export default function MigratorClient() {
               </select>
             </div>
 
+            {/* Management IP (Optional) */}
+            <div className="flex-1 min-w-[180px]">
+              <label className="block text-xs text-white/40 mb-1.5 uppercase tracking-wider">New Mgmt IP / Mask</label>
+              <input
+                id="new-mgmt-ip-input"
+                type="text"
+                placeholder="e.g. 10.0.0.1/24 (Optional)"
+                value={newMgmtIp}
+                onChange={(e) => setNewMgmtIp(e.target.value)}
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              />
+            </div>
+
+            {/* Deduplicate Checkbox */}
+            <div className="flex-1 min-w-[150px] flex items-end pb-2">
+              <label className="flex items-center gap-2 cursor-pointer text-white/80 text-sm hover:text-white transition-colors">
+                <input
+                  type="checkbox"
+                  checked={deduplicate}
+                  onChange={(e) => setDeduplicate(e.target.checked)}
+                  className="rounded border-white/[0.12] bg-white/[0.04] text-blue-500 focus:ring-blue-500/50 focus:ring-offset-0"
+                />
+                Clean up duplicates
+              </label>
+            </div>
+
             {/* Upload Button */}
             <div className="flex-1 min-w-[180px]">
               <label className="block text-xs text-white/40 mb-1.5 uppercase tracking-wider">Config File</label>
@@ -274,6 +304,7 @@ export default function MigratorClient() {
                 type="file"
                 accept=".txt,.conf,.cfg,.xml,.json"
                 className="hidden"
+                onClick={(e) => { (e.target as HTMLInputElement).value = ''; }}
                 onChange={onFileSelect}
               />
             </div>

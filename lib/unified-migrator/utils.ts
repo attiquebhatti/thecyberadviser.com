@@ -454,3 +454,88 @@ export function allEntities(ir: MigrationIR) {
     ...ir.loggingProfiles,
   ];
 }
+
+// ── Deduplication ──────────────────────────────────────────────
+
+export function deduplicateIr(ir: MigrationIR) {
+  // Deduplicate Addresses
+  const addressByValue = new Map<string, string>();
+  const addressDuplicates = new Map<string, string>();
+
+  const uniqueAddresses = ir.addresses.filter((addr) => {
+    // Only deduplicate exact value matches (e.g., 10.0.0.1/32)
+    const key = `${addr.type}:${addr.value}`;
+    if (addressByValue.has(key)) {
+      addressDuplicates.set(addr.name, addressByValue.get(key)!);
+      addressDuplicates.set(addr.canonicalName, canonicalName(addressByValue.get(key)!));
+      return false;
+    }
+    addressByValue.set(key, addr.name);
+    return true;
+  });
+
+  // Deduplicate Services
+  const serviceByValue = new Map<string, string>();
+  const serviceDuplicates = new Map<string, string>();
+
+  const uniqueServices = ir.services.filter((svc) => {
+    // Exact match on protocol and port
+    const key = `${svc.protocol}:${svc.port}:${svc.sourcePort || 'any'}`;
+    if (serviceByValue.has(key)) {
+      serviceDuplicates.set(svc.name, serviceByValue.get(key)!);
+      serviceDuplicates.set(svc.canonicalName, canonicalName(serviceByValue.get(key)!));
+      return false;
+    }
+    serviceByValue.set(key, svc.name);
+    return true;
+  });
+
+  // Helper to remap references
+  const remapReferences = (refs: ReferenceMember[], duplicatesMap: Map<string, string>) => {
+    refs.forEach((ref) => {
+      if (duplicatesMap.has(ref.originalName)) {
+        ref.originalName = duplicatesMap.get(ref.originalName)!;
+        ref.ref = canonicalName(ref.originalName);
+      } else if (duplicatesMap.has(ref.ref)) {
+        ref.ref = duplicatesMap.get(ref.ref)!;
+      }
+    });
+  };
+
+  const remapMemberSet = (set: { refs: ReferenceMember[]; includesAny: boolean }, duplicatesMap: Map<string, string>) => {
+    remapReferences(set.refs, duplicatesMap);
+  };
+
+  // Update Address References
+  if (addressDuplicates.size > 0) {
+    ir.addresses = uniqueAddresses;
+    ir.addressGroups.forEach((g) => remapReferences(g.members, addressDuplicates));
+    ir.policies.forEach((p) => {
+      remapMemberSet(p.source, addressDuplicates);
+      remapMemberSet(p.destination, addressDuplicates);
+    });
+    ir.natRules.forEach((n) => {
+      if (n.originalPacket.srcAddress && addressDuplicates.has(n.originalPacket.srcAddress)) {
+        n.originalPacket.srcAddress = addressDuplicates.get(n.originalPacket.srcAddress)!;
+      }
+      if (n.originalPacket.dstAddress && addressDuplicates.has(n.originalPacket.dstAddress)) {
+        n.originalPacket.dstAddress = addressDuplicates.get(n.originalPacket.dstAddress)!;
+      }
+      if (n.translatedPacket.srcAddress && addressDuplicates.has(n.translatedPacket.srcAddress)) {
+        n.translatedPacket.srcAddress = addressDuplicates.get(n.translatedPacket.srcAddress)!;
+      }
+      if (n.translatedPacket.dstAddress && addressDuplicates.has(n.translatedPacket.dstAddress)) {
+        n.translatedPacket.dstAddress = addressDuplicates.get(n.translatedPacket.dstAddress)!;
+      }
+    });
+  }
+
+  // Update Service References
+  if (serviceDuplicates.size > 0) {
+    ir.services = uniqueServices;
+    ir.serviceGroups.forEach((g) => remapReferences(g.members, serviceDuplicates));
+    ir.policies.forEach((p) => {
+      remapMemberSet(p.service, serviceDuplicates);
+    });
+  }
+}

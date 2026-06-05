@@ -15,6 +15,7 @@ import { detectVendor, detectVersion } from '@/lib/unified-migrator/ingestion/de
 import { lintInput } from '@/lib/unified-migrator/ingestion/lint';
 import {
   createVersionProfile,
+  deduplicateIr,
   normalizeIr,
   parseVersionInfo,
   scrubSensitiveContent,
@@ -59,12 +60,15 @@ export function runMigration(
   parseResult.detectedVersion = detectedVersionRaw;
   parseResult.versionProfile = profile;
 
-  // 3. Normalize IR
+  // 3. Normalize & Deduplicate IR
+  if (input.deduplicate) {
+    deduplicateIr(parseResult.ir);
+  }
   normalizeIr(parseResult.ir);
 
   // 4. Translate — generate target config
   const generator = getGenerator(targetVendor);
-  const generatorOptions = { targetVendor, targetVersion: '10.1' };
+  const generatorOptions = { targetVendor, targetVersion: '10.1', newMgmtIp: input.newMgmtIp };
   const generatedArtifacts = generator.generate(parseResult.ir, generatorOptions);
 
   // 5. Validate — post-generation checks
@@ -74,6 +78,15 @@ export function runMigration(
     generatedArtifacts,
     parseResult
   );
+
+  if (!input.newMgmtIp) {
+    validationReport.findings.unshift({
+      severity: 'high',
+      category: 'semantic',
+      title: 'Management IP Missing',
+      detail: 'No Management IP was provided. After committing this configuration, you will lose remote access to the firewall unless configured via console or out-of-band management interface.',
+    });
+  }
 
   // 6. Report — build report & rollback artifacts
   const reportArtifact: GeneratedArtifact = {

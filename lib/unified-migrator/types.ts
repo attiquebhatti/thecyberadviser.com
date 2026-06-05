@@ -298,6 +298,8 @@ export interface ParseInput {
   content: string;
   selectedVendor?: SourceVendor;
   targetVendor?: TargetVendor;
+  newMgmtIp?: string;
+  deduplicate?: boolean;
 }
 
 export interface ParseResult {
@@ -314,6 +316,7 @@ export interface ParseResult {
 export interface GeneratorOptions {
   targetVendor: TargetVendor;
   targetVersion: string;
+  newMgmtIp?: string;
 }
 
 export interface GeneratedArtifact {
