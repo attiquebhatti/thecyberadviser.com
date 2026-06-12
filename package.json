@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "node server.js",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:unified-migrator": "sucrase-node test/unified-migrator.test.ts",
