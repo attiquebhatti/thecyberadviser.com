@@ -28,6 +28,7 @@ function AuthContent() {
     const oauthError = params.get('oauthError');
     if (oauthToken) {
       localStorage.setItem('qa_token', oauthToken);
+      window.dispatchEvent(new Event('cq-auth-change'));
       cqApi.getMe().then(me => { setUser(me); router.replace(`${BASE}/dashboard`); }).catch(() => setError('OAuth login failed'));
     } else if (oauthError) {
       const code = decodeURIComponent(oauthError);
@@ -54,6 +55,7 @@ function AuthContent() {
         res = await cqApi.signup(email, password, displayName || email.split('@')[0]);
       }
       localStorage.setItem('qa_token', res.token);
+      window.dispatchEvent(new Event('cq-auth-change'));
       setUser(res.user);
       router.push(`${BASE}/dashboard`);
     } catch (err: unknown) {

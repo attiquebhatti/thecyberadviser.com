@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, ChevronDown, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
+import { useLocalUser } from '@/lib/useLocalUser';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -68,9 +68,7 @@ export function Navbar() {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const { user, initialize, signOut } = useAuthStore();
-
-  useEffect(() => { initialize(); }, [initialize]);
+  const { user, signOut } = useLocalUser();
 
   const isItemActive = (item: (typeof navItems)[number]) => {
     const paths = item.activePaths ?? [item.href];
@@ -258,13 +256,9 @@ export function Navbar() {
                     className="flex items-center gap-2 rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none"
                     aria-label="User menu"
                   >
-                    {user.avatarUrl ? (
-                      <img src={user.avatarUrl} alt={user.displayName} className="h-9 w-9 rounded-full object-cover ring-2 ring-[#FFC300]/40" />
-                    ) : (
-                      <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#FFC300] to-[#FF8C00] flex items-center justify-center text-xs font-bold text-obsidian-950 ring-2 ring-[#FFC300]/40">
-                        {getInitials(user.displayName || user.email)}
-                      </div>
-                    )}
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#FFC300] to-[#FF8C00] flex items-center justify-center text-xs font-bold text-obsidian-950 ring-2 ring-[#FFC300]/40">
+                      {getInitials(user.displayName || user.email)}
+                    </div>
                   </button>
                   {userMenuOpen && (
                     <div className="absolute right-0 top-full mt-3 w-56 bg-obsidian-900/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
@@ -343,13 +337,9 @@ export function Navbar() {
               </p>
               {user && (
                 <div className="flex items-center gap-2">
-                  {user.avatarUrl ? (
-                    <img src={user.avatarUrl} alt={user.displayName} className="h-7 w-7 rounded-full object-cover ring-1 ring-[#FFC300]/40" />
-                  ) : (
-                    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#FFC300] to-[#FF8C00] flex items-center justify-center text-[10px] font-bold text-obsidian-950">
-                      {getInitials(user.displayName || user.email)}
-                    </div>
-                  )}
+                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#FFC300] to-[#FF8C00] flex items-center justify-center text-[10px] font-bold text-obsidian-950">
+                    {getInitials(user.displayName || user.email)}
+                  </div>
                   <div className="flex flex-col">
                     <span className="text-[11px] font-semibold text-slate-200 leading-none">{user.displayName}</span>
                     <button onClick={handleSignOut} className="text-[10px] text-slate-500 hover:text-red-400 transition-colors text-left mt-0.5">
