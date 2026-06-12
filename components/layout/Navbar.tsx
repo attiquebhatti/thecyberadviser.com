@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Menu, X, ChevronDown, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -55,11 +56,21 @@ const navItems = [
   { href: '/contact', label: 'Contact' },
 ];
 
+function getInitials(name: string) {
+  return name.trim().split(/\s+/).map(w => w[0] ?? '').join('').toUpperCase().slice(0, 2) || '?';
+}
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, initialize, signOut } = useAuthStore();
+
+  useEffect(() => { initialize(); }, [initialize]);
 
   const isItemActive = (item: (typeof navItems)[number]) => {
     const paths = item.activePaths ?? [item.href];
@@ -71,13 +82,25 @@ export function Navbar() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node))
+        setUserMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSignOut = () => {
+    signOut();
+    setUserMenuOpen(false);
+    if (pathname?.startsWith('/tools/cyberquiz')) router.push('/tools/cyberquiz/auth?tab=login');
+  };
 
   useEffect(() => {
     setIsOpen(false);
@@ -227,7 +250,48 @@ export function Navbar() {
               ))}
             </div>
 
-            <div className="hidden lg:flex shrink-0 pl-6 xl:pl-8">
+            <div className="hidden lg:flex shrink-0 items-center gap-3 pl-6 xl:pl-8">
+              {user && (
+                <div ref={userMenuRef} className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(v => !v)}
+                    className="flex items-center gap-2 rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none"
+                    aria-label="User menu"
+                  >
+                    {user.avatarUrl ? (
+                      <img src={user.avatarUrl} alt={user.displayName} className="h-9 w-9 rounded-full object-cover ring-2 ring-[#FFC300]/40" />
+                    ) : (
+                      <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#FFC300] to-[#FF8C00] flex items-center justify-center text-xs font-bold text-obsidian-950 ring-2 ring-[#FFC300]/40">
+                        {getInitials(user.displayName || user.email)}
+                      </div>
+                    )}
+                  </button>
+                  {userMenuOpen && (
+                    <div className="absolute right-0 top-full mt-3 w-56 bg-obsidian-900/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
+                      <div className="px-4 py-3 border-b border-white/[0.08]">
+                        <p className="text-sm font-semibold text-slate-200 truncate">{user.displayName}</p>
+                        <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                      </div>
+                      <div className="p-2">
+                        <Link
+                          href="/tools/cyberquiz"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-[#FFC300] hover:bg-white/[0.05] rounded-xl transition-all"
+                        >
+                          CyberQuiz Dashboard
+                        </Link>
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/[0.07] rounded-xl transition-all"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Sign out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
               <Link
                 href="/contact"
                 className="group relative inline-flex items-center whitespace-nowrap overflow-hidden rounded-2xl px-8 py-3 text-[0.96rem] font-semibold text-obsidian-950 transition-all duration-300 shadow-[0_0_20px_rgba(255,195,0,0.15)] hover:shadow-[0_0_30px_rgba(255,195,0,0.25)]"
@@ -273,10 +337,27 @@ export function Navbar() {
           )}
         >
           <div className="px-4 pb-8 pt-4">
-            <div className="pb-4 border-b border-white/[0.05] mb-4">
+            <div className="pb-4 border-b border-white/[0.05] mb-4 flex items-center justify-between">
               <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#FFC300]">
                 Expert Security Advisory
               </p>
+              {user && (
+                <div className="flex items-center gap-2">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.displayName} className="h-7 w-7 rounded-full object-cover ring-1 ring-[#FFC300]/40" />
+                  ) : (
+                    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#FFC300] to-[#FF8C00] flex items-center justify-center text-[10px] font-bold text-obsidian-950">
+                      {getInitials(user.displayName || user.email)}
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <span className="text-[11px] font-semibold text-slate-200 leading-none">{user.displayName}</span>
+                    <button onClick={handleSignOut} className="text-[10px] text-slate-500 hover:text-red-400 transition-colors text-left mt-0.5">
+                      Sign out
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5">
