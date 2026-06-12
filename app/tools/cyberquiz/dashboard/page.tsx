@@ -29,7 +29,7 @@ export default function DashboardPage() {
   const [launchQuiz, setLaunchQuiz]       = useState<Quiz | null>(null);
   const [deleteTarget, setDeleteTarget]   = useState<Quiz | null>(null);
   const [deleting, setDeleting]           = useState(false);
-  const [activeTab, setActiveTab]         = useState<'quizzes' | 'sessions' | 'panw'>('quizzes');
+  const [activeTab, setActiveTab]         = useState<'panw' | 'quizzes' | 'sessions'>('panw');
 
   useEffect(() => {
     if (!user) return;
@@ -129,10 +129,10 @@ export default function DashboardPage() {
 
         {/* Tabs */}
         <div className="flex gap-1 bg-[#1a1a2e] border border-[#2d2d44] rounded-xl p-1 w-fit">
-          {(['quizzes', 'sessions', 'panw'] as const).map(t => (
+          {(['panw', 'quizzes', 'sessions'] as const).map(t => (
             <button key={t} onClick={() => setActiveTab(t)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${activeTab === t ? 'bg-[#7c3aed] text-white' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
-              {t === 'panw' ? 'PANW Banks' : t.charAt(0).toUpperCase() + t.slice(1)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === t ? 'bg-[#7c3aed] text-white' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
+              {t === 'panw' ? 'Palo Alto Networks Quiz' : t === 'quizzes' ? 'Custom Quizzes' : 'Sessions'}
             </button>
           ))}
         </div>
