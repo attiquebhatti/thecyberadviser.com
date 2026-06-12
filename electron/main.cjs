@@ -177,8 +177,6 @@ ipcMain.handle('dialog:open-file', async (_event, options) => {
     content,
     filePath,
   };
-});
-
 ipcMain.handle('dialog:save-file', async (_event, options) => {
   const result = await dialog.showSaveDialog({
     title: 'Export Audit Evidence',

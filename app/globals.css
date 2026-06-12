@@ -193,6 +193,84 @@
   }
 }
 
+/* ── CyberQuiz glassmorphism system ────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.glass-sm {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.glass-dark {
+  background: rgba(10, 10, 20, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.glass-hover {
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.cq-gradient-text {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.font-display { font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif; }
+
+.answer-a { background: #ef4444; }
+.answer-b { background: #3b82f6; }
+.answer-c { background: #f59e0b; }
+.answer-d { background: #10b981; }
+
+.answer-a-soft { background: rgba(239,68,68,0.15); border-color: #ef4444; }
+.answer-b-soft { background: rgba(59,130,246,0.15); border-color: #3b82f6; }
+.answer-c-soft { background: rgba(245,158,11,0.15); border-color: #f59e0b; }
+.answer-d-soft { background: rgba(16,185,129,0.15); border-color: #10b981; }
+
+@keyframes cq-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+@keyframes cq-float2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(-5deg); }
+}
+@keyframes cq-pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+@keyframes cq-countdown {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 283; }
+}
+@keyframes cq-skeleton-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.float-1 { animation: cq-float 6s ease-in-out infinite; }
+.float-2 { animation: cq-float2 8s ease-in-out infinite; }
+.float-3 { animation: cq-float 10s ease-in-out infinite 2s; }
+
 @layer components {
   .section-spacing {
     @apply py-16 md:py-20 lg:py-24;

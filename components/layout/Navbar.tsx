@@ -48,7 +48,8 @@ const navItems = [
     children: [
       { href: '/tools/unified-migration', label: 'Unified Migration', description: 'Firewall config converter' },
       { href: '/tools/prisma-access-sizing', label: 'Prisma Access Sizing Calculator', description: 'Interactive Prisma Access estimator' },
-      { href: '/tools/siem-sizing', label: 'SIEM Sizing Calculator', description: 'Estimate storage, compute, and architecture' }
+      { href: '/tools/siem-sizing', label: 'SIEM Sizing Calculator', description: 'Estimate storage, compute, and architecture' },
+      { href: '/tools/cyberquiz', label: 'CyberQuiz', description: 'Real-time multiplayer cybersecurity quiz platform' },
     ]
   },
   { href: '/contact', label: 'Contact' },

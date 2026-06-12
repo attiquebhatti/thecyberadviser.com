@@ -8,8 +8,8 @@ import { escapeXml } from '@/lib/unified-migrator/utils';
 
 export class PanosGenerator implements GeneratorAdapter {
   generate(ir: MigrationIR, options: GeneratorOptions): GeneratedArtifact[] {
-    const xml = this.buildXml(ir, options);
-    const cli = this.buildCli(ir, options);
+    const xml = this.buildXml(ir);
+    const cli = this.buildCli(ir);
 
     return [
       {
@@ -29,22 +29,8 @@ export class PanosGenerator implements GeneratorAdapter {
     ];
   }
 
-  private buildXml(ir: MigrationIR, options: GeneratorOptions): string {
+  private buildXml(ir: MigrationIR): string {
     const parts: string[] = ['<?xml version="1.0"?>', '<config version="10.1.0" urldb="paloaltonetworks">'];
-
-    if (options.newMgmtIp) {
-      let ip = options.newMgmtIp;
-      let mask = '';
-      if (ip.includes('/')) {
-        const split = ip.split('/');
-        ip = split[0];
-        mask = split[1];
-      }
-      parts.push('  <deviceconfig><system>');
-      parts.push(`    <ip-address>${escapeXml(ip)}</ip-address>`);
-      if (mask) parts.push(`    <netmask>${escapeXml(mask)}</netmask>`);
-      parts.push('  </system></deviceconfig>');
-    }
 
     // ── Addresses ──
     if (ir.addresses.length) {
@@ -112,40 +98,22 @@ export class PanosGenerator implements GeneratorAdapter {
       parts.push('  </shared>');
     }
 
-    // ── Interfaces ──
-    if (ir.interfaces.length) {
-      parts.push('  <devices><entry name="localhost.localdomain"><network><interface><ethernet>');
-      ir.interfaces.forEach((iface) => {
-        parts.push(`    <entry name="${escapeXml(iface.name)}">`);
-        parts.push(`      <layer3>`);
-        if (iface.ip) {
-          parts.push(`        <ip><entry name="${escapeXml(iface.ip)}"/></ip>`);
-        }
-        parts.push(`      </layer3>`);
-        parts.push(`    </entry>`);
-      });
-      parts.push('  </ethernet></interface></network></entry></devices>');
-    }
-
-    // ── Zones, Policies, and NAT Rules ──
-    if (ir.zones.length || ir.policies.length || ir.natRules.length) {
+    // ── Zones ──
+    if (ir.zones.length) {
       parts.push('  <devices><entry name="localhost.localdomain"><vsys><entry name="vsys1">');
-      
-      if (ir.zones.length) {
-        parts.push('    <zone>');
-        ir.zones.forEach((zone) => {
-          parts.push(`      <entry name="${escapeXml(zone.name)}">`);
-          parts.push('        <network>');
-          parts.push(`          <${zone.type}>`);
-          zone.interfaces.forEach((iface) => {
-            parts.push(`            <member>${escapeXml(iface.originalName)}</member>`);
-          });
-          parts.push(`          </${zone.type}>`);
-          parts.push('        </network>');
-          parts.push('      </entry>');
+      parts.push('    <zone>');
+      ir.zones.forEach((zone) => {
+        parts.push(`      <entry name="${escapeXml(zone.name)}">`);
+        parts.push('        <network>');
+        parts.push(`          <${zone.type}>`);
+        zone.interfaces.forEach((iface) => {
+          parts.push(`            <member>${escapeXml(iface.originalName)}</member>`);
         });
-        parts.push('    </zone>');
-      }
+        parts.push(`          </${zone.type}>`);
+        parts.push('        </network>');
+        parts.push('      </entry>');
+      });
+      parts.push('    </zone>');
 
       // ── Security Policies ──
       if (ir.policies.length) {
@@ -212,27 +180,8 @@ export class PanosGenerator implements GeneratorAdapter {
     return parts.filter(Boolean).join('\n');
   }
 
-  private buildCli(ir: MigrationIR, options: GeneratorOptions): string {
+  private buildCli(ir: MigrationIR): string {
     const cmds: string[] = [];
-
-    if (options.newMgmtIp) {
-      let ip = options.newMgmtIp;
-      let mask = '';
-      if (ip.includes('/')) {
-        const split = ip.split('/');
-        ip = split[0];
-        mask = split[1];
-      }
-      cmds.push(`set deviceconfig system ip-address ${ip}`);
-      if (mask) cmds.push(`set deviceconfig system netmask ${mask}`);
-    }
-
-    ir.interfaces.forEach((iface) => {
-      cmds.push(`set network interface ethernet "${iface.name}" layer3`);
-      if (iface.ip) {
-        cmds.push(`set network interface ethernet "${iface.name}" layer3 ip "${iface.ip}"`);
-      }
-    });
 
     ir.addresses.forEach((addr) => {
       cmds.push(`set address "${addr.name}" ${addr.type} ${addr.value}`);

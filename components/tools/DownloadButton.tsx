@@ -11,8 +11,11 @@ interface DownloadButtonProps {
 export default function DownloadButton({ className, id, children }: DownloadButtonProps) {
   return (
     <a
-      href="/downloads/UnifiedMigrator-Setup.exe"
-      download="UnifiedMigrator-Setup.exe"
+      href="#"
+      onClick={(e) => {
+        e.preventDefault();
+        alert('You are running in Development Mode.\n\nTo generate the Windows .exe installer, open your terminal and run:\nnpm run desktop:build');
+      }}
       className={className}
       id={id}
     >

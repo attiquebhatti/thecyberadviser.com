@@ -42,3 +42,14 @@ test_err.txt
 test_errors.txt
 test_out.txt
 unified_utils_tmp_old.ts
+
+# CyberLearn — work in progress, never commit
+app/tools/cyberlearn/
+
+# Large seed data files — seeded directly to DB, not tracked in git
+lib/cyberquiz/seeds/*.json
+
+# Large binary downloads — served from hosting, not tracked in git
+public/downloads/*.exe
+public/downloads/*.dmg
+public/downloads/*.zip

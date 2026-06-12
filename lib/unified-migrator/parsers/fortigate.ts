@@ -306,12 +306,7 @@ export class FortigateParser extends BaseParser {
 
   private parseInterface(block: Map<string, string>, startLine: number) {
     const name = this.uniqueName(block.get('__name__') || 'unknown');
-    const ipStr = block.get('ip');
-    let ip;
-    if (ipStr) {
-      const [addr, mask] = splitQuotedValues(ipStr);
-      ip = addr && mask ? `${addr}/${maskToCidr(mask)}` : addr;
-    }
+    const ip = block.get('ip') || undefined;
     const zone = block.get('zone') || undefined;
 
     this.pushInterface({

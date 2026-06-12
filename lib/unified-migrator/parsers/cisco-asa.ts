@@ -20,7 +20,10 @@ export class CiscoAsaParser extends BaseParser {
       const line = this.lines[index].trim();
 
       if (line.startsWith('interface ')) {
-        index = this.parseInterface(index);
+        const interfaceName = line.slice('interface '.length).trim();
+        this.pendingInterfaces.set(interfaceName, index + 1);
+      } else if (line.startsWith('nameif ')) {
+        this.parseNameif(line, index + 1);
       } else if (line.startsWith('object network ')) {
         index = this.parseObjectNetwork(index);
       } else if (line.startsWith('object-group network ')) {
@@ -58,54 +61,25 @@ export class CiscoAsaParser extends BaseParser {
     return this.buildResult();
   }
 
-  private parseInterface(startIndex: number) {
-    const header = this.lines[startIndex].trim();
-    const interfaceName = header.slice('interface '.length).trim();
-    let zoneName = '';
-    let ip = '';
-    const exceptions: any[] = [];
-    let index = startIndex + 1;
+  private parseNameif(line: string, lineNumber: number) {
+    const zoneName = line.slice('nameif '.length).trim();
+    const [interfaceName] = [...this.pendingInterfaces.entries()].pop() ?? [zoneName, lineNumber];
 
-    while (index < this.lines.length) {
-      const line = this.lines[index];
-      const trimmed = line.trim();
+    this.pushInterface({
+      ...this.entityBase(interfaceName, lineNumber),
+      type: 'layer3',
+      zone: zoneName,
+      exceptions: [],
+      fingerprint: fingerprint([interfaceName, zoneName]),
+    });
 
-      if (!trimmed || trimmed === '!' || (/^[a-z]/i.test(trimmed) && !line.startsWith(' '))) {
-        break;
-      }
-
-      if (trimmed.startsWith('nameif ')) {
-        zoneName = trimmed.slice('nameif '.length).trim();
-      } else if (trimmed.startsWith('ip address ') && !trimmed.includes('dhcp')) {
-        const parts = trimmed.split(/\s+/);
-        if (parts.length >= 4) {
-           ip = `${parts[2]}/${cidrFromMask(parts[3])}`;
-        }
-      }
-
-      index += 1;
-    }
-
-    if (zoneName) {
-      this.pushInterface({
-        ...this.entityBase(interfaceName, startIndex + 1, index, exceptions),
-        type: 'layer3',
-        ip,
-        zone: zoneName,
-        exceptions,
-        fingerprint: fingerprint([interfaceName, zoneName, ip]),
-      });
-
-      this.pushZone({
-        ...this.entityBase(zoneName, startIndex + 1, index, exceptions),
-        type: 'layer3',
-        interfaces: [this.reference('interface', interfaceName)],
-        exceptions: [],
-        fingerprint: fingerprint([zoneName, interfaceName]),
-      });
-    }
-
-    return index - 1;
+    this.pushZone({
+      ...this.entityBase(zoneName, lineNumber),
+      type: 'layer3',
+      interfaces: [this.reference('interface', interfaceName)],
+      exceptions: [],
+      fingerprint: fingerprint([zoneName, interfaceName]),
+    });
   }
 
   private parseObjectNetwork(startIndex: number) {

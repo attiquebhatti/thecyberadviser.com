@@ -81,6 +81,28 @@ export default function ToolsPage() {
               </div>
             </CardContent>
           </Card>
+
+          <Card className="card-premium rounded-3xl border border-white/10">
+            <CardContent className="p-8">
+              <p className="eyebrow">Quiz Platform</p>
+              <h3 className="text-white">CyberQuiz</h3>
+              <p className="mt-4 body-default">
+                Real-time multiplayer quiz platform with AI generation, 8 game modes, and curated PANW question banks — built for cybersecurity professionals.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button asChild className="bg-[#7c3aed] text-white hover:bg-[#6d28d9]">
+                  <Link href="/tools/cyberquiz">
+                    Open CyberQuiz
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="border-white/15 bg-transparent text-white hover:bg-white/5">
+                  <Link href="/tools/cyberquiz/join">
+                    Join a Session
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </Section>
     </>
