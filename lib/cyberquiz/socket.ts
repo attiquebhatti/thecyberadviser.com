@@ -1,13 +1,15 @@
 'use client';
-import { io, Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client';
 
-// Singleton Socket.io client — shared by host and player views.
-// Connects to the same origin (our custom Next.js + Socket.io server).
-let socket: Socket;
+let _socket: Socket | null = null;
 
 export function getSocket(): Socket {
-  if (!socket) {
-    socket = io('/', {
+  if (typeof window === 'undefined') throw new Error('getSocket() is client-only');
+  if (!_socket) {
+    // Lazy require avoids socket.io-client accessing `location` during SSR module init
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { io } = require('socket.io-client') as typeof import('socket.io-client');
+    _socket = io('/', {
       autoConnect: false,
       transports: ['websocket', 'polling'],
       reconnection: true,
@@ -15,5 +17,5 @@ export function getSocket(): Socket {
       reconnectionDelay: 1000,
     });
   }
-  return socket;
+  return _socket;
 }
