@@ -14,8 +14,7 @@
     "test:siem-sizing": "sucrase-node test/siem-sizing.test.ts",
     "desktop:dev": "cross-env UNIFIED_MIGRATOR_DESKTOP_URL=http://localhost:3000 electron .",
     "desktop:build": "next build && electron-builder --win",
-    "desktop:build-all": "next build && electron-builder --win --mac --linux",
-    "postinstall": "next build"
+    "desktop:build-all": "next build && electron-builder --win --mac --linux"
   },
   "build": {
     "appId": "com.thecyberadviser.unified-migrator",
