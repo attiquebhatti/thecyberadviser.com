@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { X, Shuffle, BookOpen, ChevronRight, Loader2 } from 'lucide-react';
+import { X, Shuffle, BookOpen, ChevronRight, Loader2, Lock } from 'lucide-react';
 import { cqApi } from '@/lib/cyberquiz/api';
 import { CQButton } from './ui/Button';
 
@@ -16,20 +16,21 @@ interface CourseBank {
   color: string;
 }
 
-interface Props { bank: CourseBank; onClose: () => void; }
+interface Props { bank: CourseBank; onClose: () => void; isFree?: boolean; }
 
 const DIFFICULTY_OPTIONS = ['All', 'Foundational', 'Intermediate', 'Advanced'];
 const COUNT_PRESETS = [10, 20, 30, 50];
+const FREE_LIMIT = 5;
 
-export function CQGenerateQuizModal({ bank, onClose }: Props) {
+export function CQGenerateQuizModal({ bank, onClose, isFree = false }: Props) {
   const router = useRouter();
-  const [count, setCount]           = useState(20);
+  const [count, setCount]           = useState(isFree ? FREE_LIMIT : 20);
   const [difficulty, setDifficulty] = useState('All');
   const [generating, setGenerating] = useState(false);
   const [error, setError]           = useState('');
 
   const available    = difficulty === 'All' ? bank.total_questions : (bank.by_difficulty[difficulty as keyof typeof bank.by_difficulty] ?? 0);
-  const effectiveCount = Math.min(count, available);
+  const effectiveCount = isFree ? FREE_LIMIT : Math.min(count, available);
 
   const handleGenerate = async () => {
     if (available === 0) { setError('No questions available for that filter'); return; }
@@ -84,27 +85,37 @@ export function CQGenerateQuizModal({ bank, onClose }: Props) {
             </div>
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-[#94a3b8] mb-2 block">
-              Number of Questions <span className="ml-2 text-[#4a4a6a] font-normal">({available} available)</span>
-            </label>
-            <div className="flex gap-2 mb-3">
-              {COUNT_PRESETS.map(n => (
-                <button key={n} onClick={() => setCount(Math.min(n, available))} disabled={n > available}
-                  className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all border ${count === n ? 'text-white border-transparent' : 'text-[#94a3b8] border-[#2d2d44] disabled:opacity-30 disabled:cursor-not-allowed'}`}
-                  style={count === n ? { background: bank.color, borderColor: bank.color } : {}}>
-                  {n}
-                </button>
-              ))}
+          {isFree ? (
+            <div className="rounded-xl border border-[#FFC300]/30 bg-[#FFC300]/[0.06] p-4 text-center">
+              <Lock className="w-5 h-5 text-[#FFC300] mx-auto mb-2" />
+              <p className="text-sm font-bold text-[#FFC300] mb-1">Free Preview — 5 Questions</p>
+              <p className="text-xs text-[#94a3b8] leading-relaxed">
+                Upgrade to Pro to generate up to 50 questions from the full bank.
+              </p>
             </div>
-            <input type="range" min={5} max={available || 5} step={1} value={Math.min(count, available)}
-              onChange={e => setCount(parseInt(e.target.value))} className="w-full" style={{ accentColor: bank.color }} />
-            <div className="flex justify-between text-xs text-[#4a4a6a] mt-1">
-              <span>5</span>
-              <span className="font-bold" style={{ color: bank.color }}>{effectiveCount} questions</span>
-              <span>{available}</span>
+          ) : (
+            <div>
+              <label className="text-sm font-medium text-[#94a3b8] mb-2 block">
+                Number of Questions <span className="ml-2 text-[#4a4a6a] font-normal">({available} available)</span>
+              </label>
+              <div className="flex gap-2 mb-3">
+                {COUNT_PRESETS.map(n => (
+                  <button key={n} onClick={() => setCount(Math.min(n, available))} disabled={n > available}
+                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all border ${count === n ? 'text-white border-transparent' : 'text-[#94a3b8] border-[#2d2d44] disabled:opacity-30 disabled:cursor-not-allowed'}`}
+                    style={count === n ? { background: bank.color, borderColor: bank.color } : {}}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <input type="range" min={5} max={available || 5} step={1} value={Math.min(count, available)}
+                onChange={e => setCount(parseInt(e.target.value))} className="w-full" style={{ accentColor: bank.color }} />
+              <div className="flex justify-between text-xs text-[#4a4a6a] mt-1">
+                <span>5</span>
+                <span className="font-bold" style={{ color: bank.color }}>{effectiveCount} questions</span>
+                <span>{available}</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {error && <p className="text-sm text-[#ef4444]">{error}</p>}
 

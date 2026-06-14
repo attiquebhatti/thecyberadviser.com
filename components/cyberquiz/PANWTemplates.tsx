@@ -4,10 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Shield, Flame, Wrench, Cloud, Network, Cpu, Eye, Bot, Zap, Search,
   ChevronRight, BookOpen, ArrowLeft, Layers, GraduationCap,
-  Users, UserCheck, Loader2,
+  Users, UserCheck, Loader2, Lock, CheckCircle2,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cqApi } from '@/lib/cyberquiz/api';
+import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 import { CQGenerateQuizModal } from './GenerateQuizModal';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
@@ -198,13 +199,61 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
   );
 }
 
+function UpgradeModal({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <motion.div className="relative w-full max-w-sm glass rounded-2xl p-7 shadow-2xl text-center"
+        initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}>
+
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFC300] to-[#FF8C00] mx-auto mb-5 flex items-center justify-center shadow-lg shadow-[#FFC300]/30">
+          <Lock className="w-8 h-8 text-[#0f0f1a]" />
+        </div>
+
+        <h2 className="text-xl font-black text-[#f1f5f9] mb-2">Upgrade to Pro</h2>
+        <p className="text-sm text-[#94a3b8] mb-6 leading-relaxed">
+          Unlock all modules and full course practice to accelerate your certification prep.
+        </p>
+
+        <div className="text-left space-y-2.5 mb-7 bg-white/[0.03] rounded-xl p-4 border border-white/[0.06]">
+          {[
+            'All course modules unlocked',
+            'Full course practice — unlimited questions',
+            'Host live quiz sessions for your team',
+            'Progress tracking & analytics',
+          ].map(f => (
+            <div key={f} className="flex items-center gap-2.5 text-sm text-[#cbd5e1]">
+              <CheckCircle2 className="w-4 h-4 text-[#22c55e] shrink-0" />
+              {f}
+            </div>
+          ))}
+        </div>
+
+        <a href="/contact" onClick={onClose}
+          className="w-full py-3.5 rounded-xl font-bold text-[#0f0f1a] mb-3 transition-all hover:opacity-90 flex items-center justify-center"
+          style={{ background: 'linear-gradient(135deg, #FFC300, #FF8C00)' }}>
+          Upgrade Now
+        </a>
+        <button onClick={onClose} className="w-full py-2.5 text-sm text-[#64748b] hover:text-[#94a3b8] transition-colors">
+          Maybe Later
+        </button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export function CQPANWTemplates() {
+  const { user } = useAuthStore();
+  const isFree   = !user || user.tier === 'free';
+
   const [banks, setBanks]               = useState<CourseBank[]>([]);
   const [loading, setLoading]           = useState(true);
   const [activeGroup, setActiveGroup]   = useState<GroupConfig | null>(null);
   const [activeCourse, setActiveCourse] = useState<CourseBank | null>(null);
   const [fullCourseModal, setFullCourseModal] = useState<CourseBank | null>(null);
   const [moduleModal, setModuleModal]   = useState<{ module: string; idx: number; course: CourseBank } | null>(null);
+  const [showUpgrade, setShowUpgrade]   = useState(false);
 
   useEffect(() => {
     cqApi.getQuestionBanks().then(data => setBanks(data as CourseBank[])).catch(console.error).finally(() => setLoading(false));
@@ -328,11 +377,18 @@ export function CQPANWTemplates() {
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: `${activeCourse.color}18`, boxShadow: `0 4px 16px ${activeCourse.color}30` }}>
                     <Layers className="w-6 h-6" style={{ color: activeCourse.color }} />
                   </div>
-                  <div>
-                    <p className="font-bold text-[#f1f5f9] text-base">{activeCourse.label}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-bold text-[#f1f5f9] text-base">{activeCourse.label}</p>
+                      {isFree && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFC300]/20 text-[#FFC300] border border-[#FFC300]/30 shrink-0">
+                          5 Q Free
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-[#94a3b8]">{activeCourse.total_questions} questions · Random mix from full bank</p>
                   </div>
-                  <span className="ml-auto flex items-center gap-1 text-sm font-semibold opacity-60 group-hover:opacity-100 transition-opacity" style={{ color: activeCourse.color }}>Generate <ChevronRight className="w-4 h-4" /></span>
+                  <span className="ml-auto flex items-center gap-1 text-sm font-semibold opacity-60 group-hover:opacity-100 transition-opacity shrink-0" style={{ color: activeCourse.color }}>Generate <ChevronRight className="w-4 h-4" /></span>
                 </div>
               </motion.button>
             </div>
@@ -341,22 +397,38 @@ export function CQPANWTemplates() {
               <div>
                 <p className="text-xs font-semibold text-[#64748b] uppercase tracking-widest mb-3 flex items-center gap-2"><BookOpen className="w-3.5 h-3.5" /> Module-by-Module Practice</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {modulesForCourse.map((mod, idx) => (
+                  {modulesForCourse.map((mod, idx) => {
+                    const isLocked = isFree && idx > 0;
+                    return (
                     <motion.button key={idx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
-                      whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => setModuleModal({ module: mod, idx, course: activeCourse })}
-                      className="text-left p-4 rounded-xl glass glass-hover relative overflow-hidden group">
-                      <div className="flex items-start gap-3">
+                      whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}
+                      onClick={() => isLocked ? setShowUpgrade(true) : setModuleModal({ module: mod, idx, course: activeCourse })}
+                      className="text-left p-4 rounded-xl glass relative overflow-hidden group cursor-pointer">
+
+                      {/* Lock overlay for Pro modules */}
+                      {isLocked && (
+                        <div className="absolute inset-0 rounded-xl z-10 flex flex-col items-center justify-center gap-1"
+                          style={{ background: 'rgba(15,15,26,0.65)', backdropFilter: 'blur(2px)' }}>
+                          <Lock className="w-5 h-5 text-[#FFC300]" />
+                          <span className="text-[10px] font-black text-[#FFC300] uppercase tracking-widest">Pro</span>
+                        </div>
+                      )}
+
+                      <div className={`flex items-start gap-3 ${isLocked ? 'opacity-30' : ''}`}>
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-black text-sm" style={{ background: `${activeCourse.color}18`, color: activeCourse.color }}>{idx+1}</div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-[#f1f5f9] leading-snug line-clamp-2">{mod}</p>
-                          <div className="flex items-center gap-1 mt-2 text-[11px] text-[#64748b] opacity-0 group-hover:opacity-100 transition-opacity">
-                            <BookOpen className="w-3 h-3" style={{ color: activeCourse.color }} />
-                            <span style={{ color: activeCourse.color }}>Practice or host quiz</span>
+                          <div className={`flex items-center gap-1 mt-2 text-[11px] text-[#64748b] transition-opacity ${isLocked ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                            {isLocked
+                              ? <><Lock className="w-3 h-3 text-[#64748b]" /><span>Pro only</span></>
+                              : <><BookOpen className="w-3 h-3" style={{ color: activeCourse.color }} /><span style={{ color: activeCourse.color }}>Practice or host quiz</span></>
+                            }
                           </div>
                         </div>
                       </div>
                     </motion.button>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -368,7 +440,8 @@ export function CQPANWTemplates() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {fullCourseModal && <CQGenerateQuizModal bank={fullCourseModal} onClose={() => setFullCourseModal(null)} />}
+        {fullCourseModal && <CQGenerateQuizModal bank={fullCourseModal} onClose={() => setFullCourseModal(null)} isFree={isFree} />}
+        {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
       </AnimatePresence>
       <AnimatePresence>
         {moduleModal && <ModuleChoiceModal module={moduleModal.module} moduleIndex={moduleModal.idx} course={moduleModal.course} onClose={() => setModuleModal(null)} />}

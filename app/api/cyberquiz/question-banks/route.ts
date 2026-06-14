@@ -26,7 +26,14 @@ export async function GET() {
        ORDER BY FIELD(course_code,'EDU210','EDU220','EDU330','PRISMA-ACCESS','PRISMA-SDWAN','XDR-ENGINEER','XDR-ANALYST','XSOAR','XSIAM-ENGINEER','XSIAM-ANALYST')`
     ) as any[];
 
-    return NextResponse.json(rows.map((r: any) => ({
+    // Deduplicate by course_code — keep the entry with the most questions
+    const best = new Map<string, any>();
+    for (const r of rows as any[]) {
+      const prev = best.get(r.course_code);
+      if (!prev || r.total_questions > prev.total_questions) best.set(r.course_code, r);
+    }
+
+    return NextResponse.json([...best.values()].map((r: any) => ({
       course_code: r.course_code, course_name: r.course_name, total_questions: r.total_questions,
       by_difficulty: { Foundational: r.foundational || 0, Intermediate: r.intermediate || 0, Advanced: r.advanced || 0 },
       ...(COURSE_META[r.course_code] || {}),
