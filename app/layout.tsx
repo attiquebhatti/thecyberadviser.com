@@ -25,6 +25,28 @@ export const metadata: Metadata = {
     description:
       'Strategic cybersecurity advisory for enterprises navigating Zero Trust adoption, SASE transformation, and security architecture modernization.',
   },
+  keywords: [
+    'cybersecurity consulting',
+    'zero trust architecture',
+    'SASE implementation',
+    'Palo Alto Networks consultant',
+    'enterprise security advisor',
+    'Prisma Access',
+    'Cortex XDR',
+    'network security',
+    'cloud security',
+    'Attique Bhatti',
+  ],
+  authors: [{ name: 'Attique Bhatti', url: 'https://www.thecyberadviser.com/about' }],
+  creator: 'Attique Bhatti',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large', 'max-video-preview': -1 },
+  },
+  alternates: {
+    canonical: 'https://www.thecyberadviser.com',
+  },
 };
 
 export default function RootLayout({
