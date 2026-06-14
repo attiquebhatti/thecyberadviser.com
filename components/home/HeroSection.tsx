@@ -212,19 +212,22 @@ export function HeroSection() {
                   </div>
 
                   <div className="flex gap-2 items-center ml-4">
-                    <button onClick={prevSlide} className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
+                    <button onClick={prevSlide} aria-label="Previous slide" className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <div className="flex gap-1.5 px-1">
-                      {slides.map((_, i) => (
-                        <button 
-                          key={i} 
+                    <div className="flex gap-1.5 px-1" role="tablist" aria-label="Slide navigation">
+                      {slides.map((slide, i) => (
+                        <button
+                          key={i}
+                          role="tab"
+                          aria-label={`Slide ${i + 1}: ${slide.title}`}
+                          aria-selected={i === currentSlide}
                           onClick={() => setCurrentSlide(i)}
-                          className={`h-1 rounded-full transition-all duration-500 ${i === currentSlide ? 'w-5 bg-[#FFC300]' : 'w-1 bg-[#FFC300]/20'}`}
+                          className={`h-2 rounded-full transition-all duration-500 ${i === currentSlide ? 'w-5 bg-[#FFC300]' : 'w-2 bg-[#FFC300]/20'}`}
                         />
                       ))}
                     </div>
-                    <button onClick={nextSlide} className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
+                    <button onClick={nextSlide} aria-label="Next slide" className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -246,6 +249,7 @@ export function HeroSection() {
                           alt={slides[currentSlide].title}
                           fill
                           priority
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
                         />
                       </div>
@@ -264,15 +268,15 @@ export function HeroSection() {
                       className="contents"
                     >
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Focus</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b38a00]">Focus</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].focus}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Platforms</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b38a00]">Platforms</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].platforms}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Strategy</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b38a00]">Strategy</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].strategy}</p>
                       </div>
                     </motion.div>

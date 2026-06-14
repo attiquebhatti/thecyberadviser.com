@@ -134,11 +134,12 @@ export function Navbar() {
               className="group hidden lg:flex shrink-0 items-center pr-6 xl:pr-8 text-white transition-all duration-300 hover:opacity-90"
             >
               <div className="flex items-center py-1">
-                <Image 
-                  src="/images/header-logo.png" 
-                  alt="The Cyber Adviser" 
-                  width={430} 
-                  height={465} 
+                <Image
+                  src="/images/header-logo.png"
+                  alt="The Cyber Adviser"
+                  width={430}
+                  height={465}
+                  sizes="220px"
                   className="h-[4.75rem] xl:h-[5.1rem] w-auto shrink-0 object-contain drop-shadow-2xl"
                   priority
                 />
@@ -149,11 +150,12 @@ export function Navbar() {
               href="/"
               className="group lg:hidden flex min-w-0 items-center gap-3 text-white transition-all duration-300 hover:opacity-90"
             >
-              <Image 
-                src="/images/header-logo.png" 
-                alt="The Cyber Adviser" 
-                width={430} 
-                height={465} 
+              <Image
+                src="/images/header-logo.png"
+                alt="The Cyber Adviser"
+                width={430}
+                height={465}
+                sizes="160px"
                 className="h-14 w-auto object-contain drop-shadow-2xl"
                 priority
               />

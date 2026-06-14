@@ -97,10 +97,12 @@ function MarkdownRenderer({ content, accentColor = '#FFC300' }: { content: strin
       if (m) elements.push(
         <div key={keyIdx++} className="group relative rounded-[2rem] overflow-hidden border border-white/10 my-10 shadow-[0_30px_70px_rgba(0,0,0,0.5)] bg-obsidian-900/50">
           <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/40 to-transparent pointer-events-none" />
-          <img 
-            src={m[2]} 
-            alt={m[1]} 
-            className="w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+          <img
+            src={m[2]}
+            alt={m[1]}
+            loading="lazy"
+            decoding="async"
+            className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           {m[1] && <div className="absolute bottom-0 left-0 right-0 p-4 bg-obsidian-950/60 backdrop-blur-md border-t border-white/5 text-xs text-slate-400 font-mono tracking-wider">{m[1]}</div>}
         </div>
@@ -630,7 +632,7 @@ const blogContent: Record<string, React.ReactNode> = {
       <h2 className="text-4xl font-bold text-[#6BD348] tracking-tight leading-tight">Your Endpoint Just Became an AI Agent — Are You Securing It?</h2>
 
       <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
-        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop" alt="Agentic Endpoint Security" className="w-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop" alt="Agentic Endpoint Security" loading="lazy" decoding="async" className="w-full object-cover" />
       </div>
 
       <section className="space-y-4">
@@ -644,7 +646,7 @@ const blogContent: Record<string, React.ReactNode> = {
       <section className="space-y-5">
         <h3 className="text-3xl font-bold text-[#6BD348]">The Rise of the Agentic Endpoint</h3>
         <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
-          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="AI Endpoint Architecture" className="w-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="AI Endpoint Architecture" loading="lazy" decoding="async" className="w-full object-cover" />
         </div>
         <p>Modern endpoints are evolving rapidly:</p>
         <ul className="space-y-2 list-disc pl-6 text-slate-400">
@@ -676,7 +678,7 @@ const blogContent: Record<string, React.ReactNode> = {
       <section className="space-y-5">
         <h3 className="text-3xl font-bold text-[#6BD348]">Autonomous Attacks Have Arrived</h3>
         <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
-          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop" alt="Autonomous Cyber Attack" className="w-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop" alt="Autonomous Cyber Attack" loading="lazy" decoding="async" className="w-full object-cover" />
         </div>
         <div className="grid gap-5 md:grid-cols-2">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
@@ -731,7 +733,7 @@ const blogContent: Record<string, React.ReactNode> = {
       <section className="space-y-6">
         <h3 className="text-3xl font-bold text-[#6BD348]">How Cortex XDR Secures the Agentic Endpoint</h3>
         <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
-          <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1600&auto=format&fit=crop" alt="Cortex XDR Platform" className="w-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1600&auto=format&fit=crop" alt="Cortex XDR Platform" loading="lazy" decoding="async" className="w-full object-cover" />
         </div>
         <p>Cortex XDR was designed for <strong>modern AI-driven environments</strong>.</p>
         <div className="space-y-5">
