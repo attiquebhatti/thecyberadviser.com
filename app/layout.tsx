@@ -50,6 +50,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.thecyberadviser.com',
   },
+  verification: {
+    google: 'EPo_TvNOAQjUTQwoww1V9ndaICBnWOPO0QXVexIq8dw',
+  },
 };
 
 export default function RootLayout({
