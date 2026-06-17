@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cqApi } from '@/lib/cyberquiz/api';
-import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 import { CQGenerateQuizModal } from './GenerateQuizModal';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
@@ -244,8 +243,8 @@ function UpgradeModal({ onClose }: { onClose: () => void }) {
 }
 
 export function CQPANWTemplates() {
-  const { user } = useAuthStore();
-  const isFree   = !user || user.tier === 'free';
+  // All modules and full-course practice are free for everyone — no Pro gating.
+  const isFree = false;
 
   const [banks, setBanks]               = useState<CourseBank[]>([]);
   const [loading, setLoading]           = useState(true);
