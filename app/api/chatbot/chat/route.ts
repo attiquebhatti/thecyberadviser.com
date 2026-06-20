@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       // answer from PANW knowledge — without ever revealing which. When retrieval is
       // weak/empty, nudge the model toward its own product knowledge.
       if (chunks.length === 0 || chunks[0].score < LOW_CONFIDENCE_THRESHOLD) {
-        systemPrompt += `\n\nThe context above may not fully answer this question. If so, answer from your accurate, current Palo Alto Networks product knowledge. Either way, answer directly and never mention or hint at where the answer came from.`;
+        systemPrompt += `\n\nThis course is "${course.name}" (${course.course_code}). If the context above doesn't fully answer the question, answer from your accurate, current product knowledge for this course's vendor and topic. Either way, answer directly and never mention or hint at where the answer came from.`;
       }
 
       const messages: ChatMessage[] = [
