@@ -9,6 +9,24 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 import { atcApi, streamChat, sendFeedback, ChatSource } from '@/lib/chatbot/api';
+import { courseLogo } from '@/lib/chatbot/courseLogos';
+
+// Explicit markdown styling (Tailwind's reset strips list markers, and the
+// typography plugin isn't installed — so we style each element directly).
+const MD = {
+  h1: (p: any) => <h3 className="text-base font-bold text-white mt-3 mb-1.5" {...p} />,
+  h2: (p: any) => <h3 className="text-base font-bold text-white mt-3 mb-1.5" {...p} />,
+  h3: (p: any) => <h4 className="text-[15px] font-bold text-white mt-3 mb-1.5" {...p} />,
+  p:  (p: any) => <p className="my-2" {...p} />,
+  ul: (p: any) => <ul className="list-disc pl-5 my-2 space-y-1 marker:text-[#FFC300]" {...p} />,
+  ol: (p: any) => <ol className="list-decimal pl-5 my-2 space-y-1 marker:text-[#FFC300] marker:font-semibold" {...p} />,
+  li: (p: any) => <li className="pl-1 leading-relaxed" {...p} />,
+  strong: (p: any) => <strong className="font-bold text-white" {...p} />,
+  em: (p: any) => <em className="italic text-slate-300" {...p} />,
+  code: (p: any) => <code className="px-1.5 py-0.5 rounded bg-black/40 text-[#FFC300] text-[13px] font-mono" {...p} />,
+  a: (p: any) => <a className="text-[#FFC300] underline hover:opacity-80" target="_blank" rel="noopener noreferrer" {...p} />,
+  blockquote: (p: any) => <blockquote className="border-l-2 border-[#FFC300]/40 pl-3 italic text-slate-400 my-2" {...p} />,
+};
 
 interface Msg {
   role: 'user' | 'assistant';
@@ -26,6 +44,7 @@ export default function ChatPage() {
   const cohortId = parseInt(params.cohortId, 10);
 
   const [courseName, setCourseName] = useState('');
+  const [courseCode, setCourseCode] = useState('');
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -42,7 +61,7 @@ export default function ChatPage() {
     atcApi.courses()
       .then((cs) => {
         const c = cs.find((x) => x.id === cohortId);
-        if (c) setCourseName(`${c.course_code} — ${c.name}`);
+        if (c) { setCourseName(`${c.course_code} — ${c.name}`); setCourseCode(c.course_code); }
         else {
           // Could be a hidden course the admin is viewing; fall back to a generic label.
           atcApi.me().then((me) => { if (!me.isAdmin) setAccessError('This course is not available.'); });
@@ -116,6 +135,9 @@ export default function ChatPage() {
         <Link href="/tools/ai-chatbot" className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all">
           <ArrowLeft className="w-4 h-4" />
         </Link>
+        {courseCode && (
+          <img src={courseLogo(courseCode)} alt="" className="h-7 w-auto max-w-[120px] object-contain shrink-0" />
+        )}
         <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#FFC300]">AI Training Chatbot</p>
           <p className="text-white font-semibold truncate">{courseName || `Course #${cohortId}`}</p>
@@ -142,8 +164,8 @@ export default function ChatPage() {
                   {m.content === '' && m.streaming ? (
                     <Loader2 className="w-4 h-4 animate-spin text-[#FFC300]" />
                   ) : (
-                    <div className="prose prose-invert prose-sm max-w-none prose-p:my-2 prose-li:my-0.5 prose-headings:text-white prose-strong:text-white prose-code:text-[#FFC300]">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+                    <div className="text-[15px] leading-relaxed space-y-2.5">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD}>{m.content}</ReactMarkdown>
                     </div>
                   )}
                   {m.sources && m.sources.length > 0 && <SourcesBlock sources={m.sources} />}

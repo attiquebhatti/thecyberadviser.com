@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { GraduationCap, MessageSquareText, ShieldCheck, Loader2, BookOpen, ChevronRight, Settings } from 'lucide-react';
+import { courseLogo } from '@/lib/chatbot/courseLogos';
 import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 import { atcApi, ChatbotCourse } from '@/lib/chatbot/api';
 
@@ -78,9 +79,12 @@ export default function AiChatbotLandingPage() {
                 <button
                   key={c.id}
                   onClick={() => router.push(`/tools/ai-chatbot/chat/${c.id}`)}
-                  className="text-left rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:border-[#FFC300]/40 hover:bg-white/[0.04] p-5 transition-all flex items-center justify-between gap-3"
+                  className="text-left rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:border-[#FFC300]/40 hover:bg-white/[0.04] p-5 transition-all flex items-center gap-4"
                 >
-                  <div>
+                  <div className="w-16 h-12 flex items-center justify-center shrink-0">
+                    <img src={courseLogo(c.course_code)} alt="" className="max-h-10 max-w-full object-contain" />
+                  </div>
+                  <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold uppercase tracking-wide text-[#FFC300]/80 mb-1">{c.course_code}</p>
                     <p className="text-white font-semibold">{c.name}</p>
                     <p className="text-xs text-slate-500 mt-1">{c.session_count} session{c.session_count === 1 ? '' : 's'} available</p>
