@@ -30,10 +30,16 @@ export default function DashboardPage() {
   const [deleteTarget, setDeleteTarget]   = useState<Quiz | null>(null);
   const [deleting, setDeleting]           = useState(false);
   const [activeTab, setActiveTab]         = useState<'panw' | 'quizzes' | 'sessions'>('panw');
+  const [isAdmin, setIsAdmin]             = useState(false);
 
   useEffect(() => {
     if (!user) return;
     loadData();
+    const token = typeof window !== 'undefined' ? localStorage.getItem('qa_token') : null;
+    if (token) {
+      fetch('/api/admin/check', { headers: { Authorization: `Bearer ${token}` } })
+        .then((r) => r.json()).then((d) => setIsAdmin(!!d.isAdmin)).catch(() => {});
+    }
   }, [user]);
 
   const loadData = async () => {
@@ -91,6 +97,16 @@ export default function DashboardPage() {
             <p className="text-sm text-[#94a3b8]">Welcome back, {user.displayName || user.email}</p>
           </div>
           <div className="flex gap-2">
+            {isAdmin && (
+              <>
+                <CQButton variant="ghost" size="sm" onClick={() => router.push(`${BASE}/admin/analytics`)}>
+                  <BarChart3 className="w-4 h-4" /> Traffic
+                </CQButton>
+                <CQButton variant="ghost" size="sm" onClick={() => router.push(`${BASE}/admin/users`)}>
+                  <Users className="w-4 h-4" /> Users
+                </CQButton>
+              </>
+            )}
             <CQButton variant="ghost" size="sm" onClick={() => router.push(`${BASE}/join`)}>
               <Play className="w-4 h-4" /> Join Session
             </CQButton>

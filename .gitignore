@@ -46,6 +46,12 @@ unified_utils_tmp_old.ts
 # CyberLearn — work in progress, never commit
 app/tools/cyberlearn/
 
+# Uploaded transcript files — runtime data, served from disk, not tracked in git
+uploads/
+
+# Service-account / credential JSON files — never commit
+gen-lang-client-*.json
+
 # Large seed data files — seeded directly to DB, not tracked in git
 lib/cyberquiz/seeds/*.json
 

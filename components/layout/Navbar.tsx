@@ -51,6 +51,7 @@ const navItems = [
       { href: '/tools/prisma-access-sizing', label: 'Prisma Access Sizing Calculator', description: 'Interactive Prisma Access estimator' },
       { href: '/tools/siem-sizing', label: 'SIEM Sizing Calculator', description: 'Estimate storage, compute, and architecture' },
       { href: '/tools/cyberquiz', label: 'CyberQuiz', description: 'Real-time multiplayer cybersecurity quiz platform' },
+      { href: '/tools/ai-chatbot', label: 'AI Training Chatbot', description: 'Post-training Q&A for PANW course alumni' },
     ]
   },
   { href: '/contact', label: 'Contact' },

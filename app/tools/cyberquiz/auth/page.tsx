@@ -8,6 +8,13 @@ import { CQButton } from '@/components/cyberquiz/ui/Button';
 
 const BASE = '/tools/cyberquiz';
 
+// Only allow same-site relative paths — never an absolute/external URL — to avoid open-redirect.
+function getSafeRedirect(params: URLSearchParams): string {
+  const target = params.get('redirect');
+  if (target && target.startsWith('/') && !target.startsWith('//')) return target;
+  return `${BASE}/dashboard`;
+}
+
 function AuthContent() {
   const router = useRouter();
   const params = useSearchParams();
@@ -21,15 +28,17 @@ function AuthContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const redirectTarget = getSafeRedirect(params);
+
   useEffect(() => {
-    if (user) { router.replace(`${BASE}/dashboard`); return; }
+    if (user) { router.replace(redirectTarget); return; }
 
     const oauthToken = params.get('oauthToken');
     const oauthError = params.get('oauthError');
     if (oauthToken) {
       localStorage.setItem('qa_token', oauthToken);
       window.dispatchEvent(new Event('cq-auth-change'));
-      cqApi.getMe().then(me => { setUser(me); router.replace(`${BASE}/dashboard`); }).catch(() => setError('OAuth login failed'));
+      cqApi.getMe().then(me => { setUser(me); router.replace(redirectTarget); }).catch(() => setError('OAuth login failed'));
     } else if (oauthError) {
       const code = decodeURIComponent(oauthError);
       const messages: Record<string, string> = {
@@ -57,7 +66,7 @@ function AuthContent() {
       localStorage.setItem('qa_token', res.token);
       window.dispatchEvent(new Event('cq-auth-change'));
       setUser(res.user);
-      router.push(`${BASE}/dashboard`);
+      router.push(redirectTarget);
     } catch (err: unknown) {
       setError((err as Error).message || 'Authentication failed');
     } finally {

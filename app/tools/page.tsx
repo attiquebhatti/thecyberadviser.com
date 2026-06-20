@@ -103,6 +103,24 @@ export default function ToolsPage() {
               </div>
             </CardContent>
           </Card>
+
+          <Card className="card-premium rounded-3xl border border-white/10">
+            <CardContent className="p-8">
+              <p className="eyebrow">New</p>
+              <h3 className="text-white">AI Training Chatbot</h3>
+              <p className="mt-4 body-default">
+                Post-training Q&amp;A for PANW course alumni — ask questions any time after class, answered
+                in Attique&apos;s voice, grounded strictly in your session transcripts.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button asChild className="bg-[#FFC300] text-black hover:bg-[#FFD54D]">
+                  <Link href="/tools/ai-chatbot">
+                    Open AI Training Chatbot
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </Section>
     </>
