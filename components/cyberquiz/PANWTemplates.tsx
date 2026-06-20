@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cqApi } from '@/lib/cyberquiz/api';
+import { productLogo } from '@/lib/productLogos';
 import { CQGenerateQuizModal } from './GenerateQuizModal';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
@@ -330,15 +331,15 @@ export function CQPANWTemplates() {
           <motion.div key={activeGroup.groupKey} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {coursesForGroup.map((bank, i) => {
-              const Icon = ICON_MAP[bank.icon] || Shield;
               const hasModules = !!(COURSE_MODULES[bank.course_code]?.length);
+              const logo = productLogo(bank.course_code, bank.label);
               return (
                 <motion.button key={bank.course_code} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
                   whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => setActiveCourse(bank)}
                   className="text-left p-4 rounded-xl glass glass-hover relative overflow-hidden group">
                   <div className="absolute top-0 left-0 right-0 h-[1.5px] opacity-70 group-hover:opacity-100 transition-opacity" style={{ background: bank.color }} />
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3 shadow-md" style={{ background: `${bank.color}18`, boxShadow: `0 4px 10px ${bank.color}20` }}>
-                    <Icon className="w-5 h-5" style={{ color: bank.color }} />
+                  <div className="h-9 flex items-center mb-3">
+                    <img src={logo} alt="" className="h-6 w-auto max-w-[110px] object-contain object-left" />
                   </div>
                   <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold mb-1.5" style={{ background: `${bank.color}18`, color: bank.color }}>
                     <BookOpen className="w-2.5 h-2.5" />{bank.code}
