@@ -5,7 +5,6 @@ import { embedQuery } from '@/lib/chatbot/embeddings';
 import { retrieveTopChunks, buildSystemPrompt, LOW_CONFIDENCE_THRESHOLD } from '@/lib/chatbot/rag';
 import { getActivePersona } from '@/lib/chatbot/persona';
 import { streamGroqChat, ChatMessage } from '@/lib/chatbot/llm';
-import { docRefsFor } from '@/lib/chatbot/docRefs';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -47,19 +46,11 @@ export async function POST(req: NextRequest) {
       const personaText = persona?.prompt_text || 'You are a helpful Palo Alto Networks training assistant.';
       let systemPrompt = buildSystemPrompt(personaText, chunks);
 
-      const docRefs = docRefsFor(course.course_code);
-      const docList = docRefs.map((d) => `  - ${d}`).join('\n');
-
-      // Three grounding modes:
-      //  (a) DOC MODE      — course has no transcripts at all → answer purely from PANW
-      //                      knowledge + official docs, with no "your sessions" language.
-      //  (b) FALLBACK      — has transcripts but this question isn't covered → supplement
-      //                      with general knowledge, flagged "Not covered in your sessions".
-      //  (c) TRANSCRIPT    — good retrieval → answer from context, cite Session N.
-      if (chunks.length === 0) {
-        systemPrompt += `\n\nThis course has no class transcripts yet, so answer as an authoritative Palo Alto Networks training assistant using your well-established, accurate knowledge of the relevant PANW product. Be precise and current. Do NOT mention class sessions or transcripts. Where useful, point the student to the official documentation:\n${docList}\nEnd with **Sources:** Official PANW documentation, citing the most relevant link above.`;
-      } else if (chunks[0].score < LOW_CONFIDENCE_THRESHOLD) {
-        systemPrompt += `\n\nNOTE: The class transcript above does not clearly cover this question. Answer from your well-established, accurate Palo Alto Networks product knowledge instead, and BEGIN that part with "Not covered in your sessions, but in general:". You may also point to official docs:\n${docList}\nDo not claim it came from class. End with **Sources:** General PANW knowledge.`;
+      // Seamless grounding: use the context when it answers the question, otherwise
+      // answer from PANW knowledge — without ever revealing which. When retrieval is
+      // weak/empty, nudge the model toward its own product knowledge.
+      if (chunks.length === 0 || chunks[0].score < LOW_CONFIDENCE_THRESHOLD) {
+        systemPrompt += `\n\nThe context above may not fully answer this question. If so, answer from your accurate, current Palo Alto Networks product knowledge. Either way, answer directly and never mention or hint at where the answer came from.`;
       }
 
       const messages: ChatMessage[] = [
@@ -68,7 +59,8 @@ export async function POST(req: NextRequest) {
         { role: 'user', content: question },
       ];
 
-      // Distinct sessions cited, for the collapsible Sources panel.
+      // Sessions used — logged for the admin's question log, but NOT shown to the
+      // student (per the requirement to never surface the source).
       const sources = Array.from(
         new Map(chunks.map((c) => [c.session_number, { session: c.session_number, title: c.title }])).values()
       ).sort((a, b) => a.session - b.session);
@@ -85,7 +77,6 @@ export async function POST(req: NextRequest) {
         full += msg;
       }
 
-      send({ type: 'sources', value: sources });
       const logId = await logQA(cohortId, user.id, question, full, sources);
       send({ type: 'done', logId });
       controller.close();

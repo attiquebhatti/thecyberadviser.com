@@ -7,10 +7,10 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 3600,
   },
-  // Server-only packages with native/optional binaries — load at runtime instead
-  // of bundling through webpack. (Local-only; chatbot + analytics not yet on live.)
+  // Server-only package with native/optional binaries — load at runtime instead
+  // of bundling through webpack.
   experimental: {
-    serverComponentsExternalPackages: ['@xenova/transformers', '@google-analytics/data'],
+    serverComponentsExternalPackages: ['@google-analytics/data'],
   },
   async redirects() {
     return [

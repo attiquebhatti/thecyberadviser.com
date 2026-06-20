@@ -12,8 +12,8 @@ export async function processTranscript(transcriptId: number): Promise<number> {
   // Clear any previous chunks for idempotency (safe re-publish).
   await pool.query('DELETE FROM atc_chunks WHERE transcript_id = ?', [transcriptId]);
 
-  // Smaller chunks (~200 tokens) to fit within the local MiniLM embedding window.
-  const chunks = chunkText(t.raw_text, { targetTokens: 200, overlapTokens: 40 });
+  // ~400-token chunks (Gemini text-embedding-004 handles long inputs comfortably).
+  const chunks = chunkText(t.raw_text, { targetTokens: 400, overlapTokens: 80 });
   if (chunks.length === 0) throw new Error('Chunking produced no content.');
 
   const embeddings = await embedTexts(chunks);
