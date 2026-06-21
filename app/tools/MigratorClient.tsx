@@ -31,8 +31,22 @@ export default function MigratorClient() {
   const [scmResult, setScmResult] = useState<ScmMigrationResult | null>(null);
   const [error, setError] = useState('');
   const [fileName, setFileName] = useState('');
-  const [sourceVendor, setSourceVendor] = useState<SourceVendor | 'auto'>('auto');
+  const [sourceVendor, setSourceVendor] = useState<SourceVendor | 'auto' | 'panorama'>('auto');
   const [targetVendor, setTargetVendor] = useState<TargetVendor | 'scm'>('pan-os');
+
+  // Source ↔ target coherence: Panorama is only meaningful as the source for
+  // an SCM migration, and SCM only accepts a Panorama source — keep them in sync.
+  const onSourceChange = useCallback((value: SourceVendor | 'auto' | 'panorama') => {
+    setSourceVendor(value);
+    if (value === 'panorama') setTargetVendor('scm');
+    else if (targetVendor === 'scm') setTargetVendor('pan-os');
+  }, [targetVendor]);
+
+  const onTargetChange = useCallback((value: TargetVendor | 'scm') => {
+    setTargetVendor(value);
+    if (value === 'scm') setSourceVendor('panorama');
+    else if (sourceVendor === 'panorama') setSourceVendor('auto');
+  }, [sourceVendor]);
   const [role, setRole] = useState<AppRole>('admin');
   const [recentProjects, setRecentProjects] = useState<ProjectListItem[]>([]);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -102,14 +116,18 @@ export default function MigratorClient() {
           return;
         }
 
+        // Generic vendor → PAN-OS path (Panorama/SCM handled above).
+        const genericSource =
+          sourceVendor === 'auto' || sourceVendor === 'panorama' ? undefined : sourceVendor;
+        const genericTarget = targetVendor as TargetVendor;
         const migrationResult = runMigration(
           {
             fileName: file.name,
             content,
-            selectedVendor: sourceVendor === 'auto' ? undefined : sourceVendor,
-            targetVendor,
+            selectedVendor: genericSource,
+            targetVendor: genericTarget,
           },
-          targetVendor
+          genericTarget
         );
 
         // Save project and log securely in local mode
@@ -253,14 +271,15 @@ export default function MigratorClient() {
               <select
                 id="source-vendor-select"
                 value={sourceVendor}
-                onChange={(e) => setSourceVendor(e.target.value as SourceVendor | 'auto')}
+                onChange={(e) => onSourceChange(e.target.value as SourceVendor | 'auto' | 'panorama')}
                 className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               >
                 <option value="auto" className="bg-[#020914] text-white">Auto-detect</option>
                 <option value="cisco-asa" className="bg-[#020914] text-white">Cisco ASA</option>
                 <option value="fortigate" className="bg-[#020914] text-white">FortiGate</option>
                 <option value="checkpoint" className="bg-[#020914] text-white">Check Point</option>
-                <option value="pan-os" className="bg-[#020914] text-white">PAN-OS</option>
+                <option value="pan-os" className="bg-[#020914] text-white">PAN-OS (single firewall)</option>
+                <option value="panorama" className="bg-[#020914] text-white">Panorama (→ SCM)</option>
               </select>
             </div>
 
@@ -270,7 +289,7 @@ export default function MigratorClient() {
               <select
                 id="target-vendor-select"
                 value={targetVendor}
-                onChange={(e) => setTargetVendor(e.target.value as TargetVendor | 'scm')}
+                onChange={(e) => onTargetChange(e.target.value as TargetVendor | 'scm')}
                 className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               >
                 <option value="pan-os" className="bg-[#020914] text-white">Palo Alto PAN-OS</option>
@@ -516,7 +535,7 @@ export default function MigratorClient() {
                 Drop a firewall config file here, or click to browse
               </p>
               <p className="text-white/20 text-xs">
-                Supports Cisco ASA, FortiGate, Check Point, and PAN-OS formats
+                Supports Cisco ASA, FortiGate, Check Point, PAN-OS, and Panorama → Strata Cloud Manager (SCM)
               </p>
             </div>
           )}
