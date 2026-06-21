@@ -37,8 +37,8 @@ export default function ForgotPasswordPage() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-[#7c3aed]/10 border border-[#7c3aed]/20 flex items-center justify-center mx-auto mb-4">
-            <KeyRound className="w-7 h-7 text-[#7c3aed]" />
+          <div className="w-14 h-14 rounded-2xl bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center mx-auto mb-4">
+            <KeyRound className="w-7 h-7 text-[#10b981]" />
           </div>
           <h1 className="text-2xl font-black font-display mb-2">Reset Password</h1>
           <p className="text-[#94a3b8] text-sm">Enter your email and we'll send you a reset link</p>
@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#7c3aed] transition-colors text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm"
                 />
               </div>
               {error && <div className="p-3 rounded-lg bg-[#ef4444]/10 border border-[#ef4444]/30 text-sm text-[#f87171]">{error}</div>}

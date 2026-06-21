@@ -33,7 +33,7 @@ interface Summary {
 }
 
 const TIER_COLOR: Record<string, string> = {
-  free: '#94a3b8', educator: '#06b6d4', pro: '#7c3aed', enterprise: '#FFC300',
+  free: '#94a3b8', educator: '#06b6d4', pro: '#10b981', enterprise: '#FFC300',
 };
 
 function authHeaders(): Record<string, string> {
@@ -88,7 +88,7 @@ export default function AdminUsersPage() {
   };
 
   if (loading || !user || allowed === null) {
-    return <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-6 h-6 text-[#7c3aed] animate-spin" /></div>;
+    return <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-6 h-6 text-[#10b981] animate-spin" /></div>;
   }
   if (!allowed) {
     return (
@@ -97,7 +97,7 @@ export default function AdminUsersPage() {
           <AlertCircle className="w-10 h-10 text-[#ef4444] mx-auto mb-3" />
           <p className="text-[#f1f5f9] font-semibold mb-1">Admin access only</p>
           <p className="text-sm text-[#94a3b8] mb-5">This page is restricted to the site owner.</p>
-          <button onClick={() => router.push(`${BASE}/dashboard`)} className="text-sm text-[#7c3aed] hover:underline">Back to dashboard</button>
+          <button onClick={() => router.push(`${BASE}/dashboard`)} className="text-sm text-[#10b981] hover:underline">Back to dashboard</button>
         </div>
       </div>
     );
@@ -111,7 +111,7 @@ export default function AdminUsersPage() {
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-[#f1f5f9] flex items-center gap-2"><Users className="w-5 h-5 text-[#7c3aed]" /> Global Admin · Users</h1>
+            <h1 className="text-xl font-bold text-[#f1f5f9] flex items-center gap-2"><Users className="w-5 h-5 text-[#10b981]" /> Global Admin · Users</h1>
             <p className="text-sm text-[#94a3b8]">Everyone signed up across your tools — manage roles &amp; see tool usage</p>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
         {summary && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <StatCard icon={Users} label="Total Users" value={summary.total} color="#7c3aed" />
+              <StatCard icon={Users} label="Total Users" value={summary.total} color="#10b981" />
               <StatCard icon={UserPlus} label="New This Week" value={summary.newThisWeek} color="#22c55e" />
               <StatCard icon={UserPlus} label="New This Month" value={summary.newThisMonth} color="#06b6d4" />
               <StatCard icon={BookOpen} label="Quizzes Created" value={summary.totalQuizzes} color="#FFC300" />
@@ -148,7 +148,7 @@ export default function AdminUsersPage() {
         <div className="relative max-w-sm">
           <Search className="w-4 h-4 text-[#64748b] absolute left-3 top-1/2 -translate-y-1/2" />
           <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email…"
-            className="w-full rounded-lg bg-[#1a1a2e] border border-[#2d2d44] pl-9 pr-4 py-2.5 text-sm text-[#f1f5f9] placeholder:text-[#64748b] focus:outline-none focus:border-[#7c3aed]/60" />
+            className="w-full rounded-lg bg-[#1a1a2e] border border-[#2d2d44] pl-9 pr-4 py-2.5 text-sm text-[#f1f5f9] placeholder:text-[#64748b] focus:outline-none focus:border-[#10b981]/60" />
         </div>
 
         {/* Users table */}
@@ -174,7 +174,7 @@ export default function AdminUsersPage() {
                   <tr key={u.id} className="border-t border-[#2d2d44] hover:bg-white/[0.02]">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7c3aed] to-[#a855f7] flex items-center justify-center text-xs font-bold text-white shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#10b981] to-[#a855f7] flex items-center justify-center text-xs font-bold text-white shrink-0">
                           {(u.displayName || u.email).slice(0, 2).toUpperCase()}
                         </div>
                         <div className="min-w-0">
@@ -192,7 +192,7 @@ export default function AdminUsersPage() {
                         <select
                           value={u.role}
                           onChange={(e) => changeRole(u, e.target.value as 'standard' | 'admin')}
-                          className="rounded-lg bg-[#0f0f1a] border border-[#2d2d44] px-2 py-1 text-xs text-[#f1f5f9] focus:outline-none focus:border-[#7c3aed]/60 cursor-pointer"
+                          className="rounded-lg bg-[#0f0f1a] border border-[#2d2d44] px-2 py-1 text-xs text-[#f1f5f9] focus:outline-none focus:border-[#10b981]/60 cursor-pointer"
                         >
                           <option value="standard">Standard User</option>
                           <option value="admin">Admin</option>

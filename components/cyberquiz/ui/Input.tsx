@@ -14,7 +14,7 @@ export const CQInput = forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref} id={id}
         className={cn(
-          'w-full px-3 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors',
+          'w-full px-3 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] focus:ring-1 focus:ring-[#10b981] transition-colors',
           error && 'border-[#ef4444] focus:border-[#ef4444] focus:ring-[#ef4444]',
           className
         )}
@@ -38,7 +38,7 @@ export const CQTextarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       <textarea
         ref={ref} id={id}
         className={cn(
-          'w-full px-3 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors resize-none',
+          'w-full px-3 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] focus:ring-1 focus:ring-[#10b981] transition-colors resize-none',
           error && 'border-[#ef4444]',
           className
         )}

@@ -152,9 +152,9 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
                 </button>
 
                 <button onClick={() => setStep('host')}
-                  className="flex flex-col items-center gap-3 p-5 rounded-xl border border-[#7c3aed]/30 bg-[#7c3aed]/[0.08] hover:bg-[#7c3aed]/15 transition-all group">
-                  <div className="w-11 h-11 rounded-full bg-[#7c3aed]/20 flex items-center justify-center group-hover:bg-[#7c3aed]/30 transition-colors">
-                    <Users className="w-5 h-5 text-[#a78bfa]" />
+                  className="flex flex-col items-center gap-3 p-5 rounded-xl border border-[#10b981]/30 bg-[#10b981]/[0.08] hover:bg-[#10b981]/15 transition-all group">
+                  <div className="w-11 h-11 rounded-full bg-[#10b981]/20 flex items-center justify-center group-hover:bg-[#10b981]/30 transition-colors">
+                    <Users className="w-5 h-5 text-[#5eead4]" />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-bold text-[#f1f5f9]">Host Live Quiz</p>
@@ -173,7 +173,7 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
                 <div className="flex gap-2">
                   {[5, 10, 20, 30].map(n => (
                     <button key={n} onClick={() => setCount(n)}
-                      className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${count === n ? 'bg-[#7c3aed] text-white shadow-md shadow-[#7c3aed]/30' : 'glass-sm text-[#94a3b8] hover:text-white'}`}>
+                      className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${count === n ? 'bg-[#10b981] text-[#04130c] shadow-md shadow-[#10b981]/30' : 'glass-sm text-[#94a3b8] hover:text-white'}`}>
                       {n}
                     </button>
                   ))}
@@ -186,7 +186,7 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
                   Back
                 </button>
                 <button onClick={createLiveQuiz} disabled={hosting}
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#06b6d4] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#7c3aed]/30 hover:opacity-90 transition-opacity disabled:opacity-60">
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#10b981] to-[#06b6d4] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#10b981]/30 hover:opacity-90 transition-opacity disabled:opacity-60">
                   {hosting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Users className="w-4 h-4" />}
                   {hosting ? 'Creating…' : 'Create Session'}
                 </button>
@@ -275,7 +275,7 @@ export function CQPANWTemplates() {
         {(activeGroup || activeCourse) ? (
           <button onClick={goBack} className="flex items-center gap-2 text-[#94a3b8] hover:text-white transition-colors text-sm glass-sm px-3 py-1.5 rounded-lg"><ArrowLeft className="w-4 h-4" /> Back</button>
         ) : (
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c3aed] to-[#06b6d4] flex items-center justify-center shadow-md shadow-[#7c3aed]/20"><BookOpen className="w-4 h-4 text-white" /></div>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#10b981] to-[#06b6d4] flex items-center justify-center shadow-md shadow-[#10b981]/20"><BookOpen className="w-4 h-4 text-white" /></div>
         )}
         <div>
           {activeCourse ? (

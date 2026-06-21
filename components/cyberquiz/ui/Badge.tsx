@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 type BadgeVariant = 'purple' | 'cyan' | 'green' | 'yellow' | 'red' | 'gray' | 'gold';
 
 const variants: Record<BadgeVariant, string> = {
-  purple: 'bg-[#7c3aed]/20 text-[#a855f7] border-[#7c3aed]/30',
+  purple: 'bg-[#10b981]/20 text-[#a855f7] border-[#10b981]/30',
   cyan:   'bg-[#06b6d4]/20 text-[#22d3ee] border-[#06b6d4]/30',
   green:  'bg-[#22c55e]/20 text-[#4ade80] border-[#22c55e]/30',
   yellow: 'bg-[#f59e0b]/20 text-[#fbbf24] border-[#f59e0b]/30',

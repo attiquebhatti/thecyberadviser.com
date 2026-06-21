@@ -43,7 +43,7 @@ export class CQErrorBoundary extends Component<Props, State> {
               </pre>
             </details>
           )}
-          <button onClick={this.handleReset} className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold transition-colors">
+          <button onClick={this.handleReset} className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#10b981] hover:bg-[#059669] text-[#04130c] font-semibold transition-colors">
             <RefreshCw className="w-4 h-4" /> Go to CyberQuiz
           </button>
         </div>

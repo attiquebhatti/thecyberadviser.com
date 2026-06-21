@@ -54,7 +54,7 @@ export default function ResultsDashboardPage() {
 
   if (loading) return (
     <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center">
-      <Loader2 className="w-8 h-8 animate-spin text-[#7c3aed]" />
+      <Loader2 className="w-8 h-8 animate-spin text-[#10b981]" />
     </div>
   );
 
@@ -116,7 +116,7 @@ export default function ResultsDashboardPage() {
         <div className="flex gap-1 bg-[#1a1a2e] border border-[#2d2d44] rounded-xl p-1 w-fit">
           {(['leaderboard', 'questions', 'heatmap'] as const).map(t => (
             <button key={t} onClick={() => setActiveTab(t)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${activeTab === t ? 'bg-[#7c3aed] text-white' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${activeTab === t ? 'bg-[#10b981] text-[#04130c]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
               {t}
             </button>
           ))}
@@ -148,7 +148,7 @@ export default function ResultsDashboardPage() {
                         <span className="text-[#f1f5f9]">{p.name}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-[#7c3aed]">{formatScore(p.score)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#10b981]">{formatScore(p.score)}</td>
                     <td className="px-4 py-3 text-right text-[#94a3b8]">
                       {p.total_questions > 0 ? Math.round((p.correct_count / p.total_questions) * 100) : 0}%
                     </td>
@@ -170,7 +170,7 @@ export default function ResultsDashboardPage() {
                   <XAxis dataKey="question" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                   <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} unit="%" domain={[0, 100]} />
                   <Tooltip contentStyle={{ background: '#1a1a2e', border: '1px solid #2d2d44', borderRadius: 8 }} formatter={(v: number) => [`${v}%`, 'Accuracy']} />
-                  <Bar dataKey="accuracy" fill="#7c3aed" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="accuracy" fill="#10b981" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -239,7 +239,7 @@ export default function ResultsDashboardPage() {
                           </td>
                         );
                       })}
-                      <td className="py-2 pl-4 text-right font-bold text-[#7c3aed]">{formatScore(p.score)}</td>
+                      <td className="py-2 pl-4 text-right font-bold text-[#10b981]">{formatScore(p.score)}</td>
                     </tr>
                   ))}
                 </tbody>

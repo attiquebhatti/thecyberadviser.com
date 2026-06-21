@@ -14,7 +14,7 @@ export function CQSelect({ className, label, options, error, id, ...props }: Sel
       <select
         id={id}
         className={cn(
-          'w-full px-3 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-colors cursor-pointer',
+          'w-full px-3 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] focus:outline-none focus:border-[#10b981] focus:ring-1 focus:ring-[#10b981] transition-colors cursor-pointer',
           error && 'border-[#ef4444]',
           className
         )}

@@ -63,7 +63,7 @@ export default function AnalyticsPage() {
   const topQuizzes = [...quizzes].sort((a, b) => (b.play_count ?? 0) - (a.play_count ?? 0)).slice(0, 5);
 
   const STATS = [
-    { label: 'Total Sessions',       value: totalSessions,     icon: Calendar,  color: '#7c3aed' },
+    { label: 'Total Sessions',       value: totalSessions,     icon: Calendar,  color: '#10b981' },
     { label: 'Total Players',        value: totalPlayers,      icon: Users,     color: '#06b6d4' },
     { label: 'Avg Players/Session',  value: avgPlayers,        icon: TrendingUp,color: '#22c55e' },
     { label: 'Sessions This Month',  value: sessionsThisMonth, icon: Trophy,    color: '#f59e0b' },
@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
           <ChevronLeft className="w-5 h-5" />
         </button>
         <div className="flex items-center gap-2">
-          <BarChart3Icon className="w-5 h-5 text-[#7c3aed]" />
+          <BarChart3Icon className="w-5 h-5 text-[#10b981]" />
           <h1 className="font-bold text-[#f1f5f9]">Analytics Overview</h1>
         </div>
       </header>
@@ -111,7 +111,7 @@ export default function AnalyticsPage() {
                 <XAxis dataKey="date" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                 <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} />
                 <Tooltip contentStyle={{ background: '#1a1a2e', border: '1px solid #2d2d44', borderRadius: 8 }} labelStyle={{ color: '#f1f5f9' }} />
-                <Line type="monotone" dataKey="players" stroke="#7c3aed" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="players" stroke="#10b981" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -126,7 +126,7 @@ export default function AnalyticsPage() {
                 <XAxis type="number" tick={{ fill: '#94a3b8', fontSize: 11 }} />
                 <YAxis type="category" dataKey="mode" tick={{ fill: '#94a3b8', fontSize: 11 }} width={120} />
                 <Tooltip contentStyle={{ background: '#1a1a2e', border: '1px solid #2d2d44', borderRadius: 8 }} labelStyle={{ color: '#f1f5f9' }} />
-                <Bar dataKey="count" fill="#7c3aed" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="count" fill="#10b981" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -147,7 +147,7 @@ export default function AnalyticsPage() {
                     <p className="text-sm text-[#f1f5f9] truncate">{quiz.title}</p>
                     {quiz.subject && <p className="text-xs text-[#94a3b8]">{quiz.subject}</p>}
                   </div>
-                  <span className="text-sm font-bold text-[#7c3aed]">{quiz.play_count ?? 0} plays</span>
+                  <span className="text-sm font-bold text-[#10b981]">{quiz.play_count ?? 0} plays</span>
                 </div>
               ))}
             </div>

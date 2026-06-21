@@ -165,21 +165,21 @@ export default function PlayerViewPage() {
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">🎮</div>
           <h1 className="text-3xl font-black font-display mb-2">Joining Game</h1>
-          <p className="text-[#94a3b8]">Code: <span className="font-mono font-bold text-[#7c3aed]">{code}</span></p>
+          <p className="text-[#94a3b8]">Code: <span className="font-mono font-bold text-[#10b981]">{code}</span></p>
         </div>
         <div className="glass rounded-2xl p-6 space-y-5">
           <div>
             <label className="block text-xs font-medium text-[#94a3b8] mb-2">Your Name</label>
             <input type="text" value={name} onChange={e => setName(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleJoin()}
               placeholder="Enter your name…" maxLength={20}
-              className="w-full px-4 py-2.5 rounded-xl bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#7c3aed] transition-colors" />
+              className="w-full px-4 py-2.5 rounded-xl bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors" />
           </div>
           <div>
             <label className="block text-xs font-medium text-[#94a3b8] mb-2">Pick an Avatar</label>
             <div className="grid grid-cols-4 gap-2">
               {AVATARS.map(av => (
                 <button key={av} onClick={() => setAvatar(av)}
-                  className={`text-2xl p-3 rounded-xl transition-all ${avatar === av ? 'bg-[#7c3aed] ring-2 ring-[#7c3aed]/50' : 'bg-[#0f0f1a] hover:bg-white/5'}`}>
+                  className={`text-2xl p-3 rounded-xl transition-all ${avatar === av ? 'bg-[#10b981] ring-2 ring-[#10b981]/50' : 'bg-[#0f0f1a] hover:bg-white/5'}`}>
                   {av}
                 </button>
               ))}
@@ -207,7 +207,7 @@ export default function PlayerViewPage() {
           <span>{lobbyPlayers} player{lobbyPlayers !== 1 ? 's' : ''} in lobby</span>
         </div>
         <div className="w-32 h-1 bg-[#2d2d44] rounded-full overflow-hidden mx-auto">
-          <motion.div className="h-full bg-[#7c3aed] rounded-full" animate={{ x: ['-100%', '200%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }} />
+          <motion.div className="h-full bg-[#10b981] rounded-full" animate={{ x: ['-100%', '200%'] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }} />
         </div>
       </motion.div>
     </div>
@@ -220,15 +220,15 @@ export default function PlayerViewPage() {
       <div className="min-h-screen bg-[#0f0f1a] flex flex-col">
         {/* Timer bar */}
         <div className="h-2 bg-[#2d2d44]">
-          <motion.div className="h-full bg-gradient-to-r from-[#7c3aed] to-[#06b6d4]" animate={{ width: `${progressPct}%` }} transition={{ duration: 0.5 }} />
+          <motion.div className="h-full bg-gradient-to-r from-[#10b981] to-[#06b6d4]" animate={{ width: `${progressPct}%` }} transition={{ duration: 0.5 }} />
         </div>
 
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-sm text-[#94a3b8]">Q{qIndex + 1}/{totalQ}</span>
           <div className={`text-2xl font-black ${timeLeft <= 5 ? 'text-[#ef4444]' : 'text-[#f1f5f9]'}`}>{timeLeft}s</div>
           <div className="flex items-center gap-1">
-            <Zap className="w-4 h-4 text-[#7c3aed]" />
-            <span className="text-sm font-bold text-[#7c3aed]">{formatScore(score)}</span>
+            <Zap className="w-4 h-4 text-[#10b981]" />
+            <span className="text-sm font-bold text-[#10b981]">{formatScore(score)}</span>
           </div>
         </div>
 
@@ -241,7 +241,7 @@ export default function PlayerViewPage() {
             <div className="grid grid-cols-2 gap-3">
               {['True', 'False'].map((v, i) => (
                 <button key={v} onClick={() => submitAnswer(i)}
-                  className={`py-6 rounded-2xl text-xl font-bold transition-all border-2 ${selectedAnswer === i ? 'border-[#7c3aed] bg-[#7c3aed]/20 scale-95' : 'border-[#2d2d44] bg-[#1a1a2e] hover:border-[#3d3d5a] active:scale-95'} ${selectedAnswer !== null && selectedAnswer !== i ? 'opacity-50' : ''}`}>
+                  className={`py-6 rounded-2xl text-xl font-bold transition-all border-2 ${selectedAnswer === i ? 'border-[#10b981] bg-[#10b981]/20 scale-95' : 'border-[#2d2d44] bg-[#1a1a2e] hover:border-[#3d3d5a] active:scale-95'} ${selectedAnswer !== null && selectedAnswer !== i ? 'opacity-50' : ''}`}>
                   {v}
                 </button>
               ))}
@@ -274,7 +274,7 @@ export default function PlayerViewPage() {
         <div>
           <h2 className="text-3xl font-black mb-1">{isCorrect ? 'Correct!' : 'Wrong'}</h2>
           {pointsEarned != null && isCorrect && (
-            <p className="text-[#7c3aed] font-bold text-xl">+{formatScore(pointsEarned)} pts</p>
+            <p className="text-[#10b981] font-bold text-xl">+{formatScore(pointsEarned)} pts</p>
           )}
           {streak > 1 && isCorrect && (
             <div className="flex items-center gap-1 justify-center mt-2">
@@ -327,16 +327,16 @@ export default function PlayerViewPage() {
         <div className="text-center mb-6">
           <Trophy className="w-8 h-8 text-[#f59e0b] mx-auto mb-2" />
           <h2 className="text-2xl font-black text-[#f1f5f9]">Leaderboard</h2>
-          <p className="text-[#94a3b8]">Your rank: <span className="font-bold text-[#7c3aed]">#{rank}</span></p>
+          <p className="text-[#94a3b8]">Your rank: <span className="font-bold text-[#10b981]">#{rank}</span></p>
         </div>
         <div className="space-y-2">
           {leaderboard.slice(0, 10).map((p, i) => (
             <motion.div key={p.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
-              className={`flex items-center gap-3 p-3 rounded-xl ${p.id === playerId ? 'bg-[#7c3aed]/20 border border-[#7c3aed]/30' : 'bg-[#1a1a2e]'}`}>
+              className={`flex items-center gap-3 p-3 rounded-xl ${p.id === playerId ? 'bg-[#10b981]/20 border border-[#10b981]/30' : 'bg-[#1a1a2e]'}`}>
               <span className={`text-sm font-black w-6 text-center ${p.rank === 1 ? 'text-[#fbbf24]' : p.rank === 2 ? 'text-[#94a3b8]' : p.rank === 3 ? 'text-[#f97316]' : 'text-[#4a4a6a]'}`}>#{p.rank}</span>
               <CQAvatar seed={p.id} size={32} />
               <span className="flex-1 text-sm text-[#f1f5f9] truncate">{p.name}</span>
-              <span className="text-sm font-bold text-[#7c3aed]">{formatScore(p.score)}</span>
+              <span className="text-sm font-bold text-[#10b981]">{formatScore(p.score)}</span>
             </motion.div>
           ))}
         </div>
@@ -356,10 +356,10 @@ export default function PlayerViewPage() {
         {leaderboard.slice(0, 5).length > 0 && (
           <div className="w-full max-w-xs space-y-2">
             {leaderboard.slice(0, 5).map((p, i) => (
-              <div key={p.id} className={`flex items-center gap-3 p-2.5 rounded-xl text-sm ${p.id === playerId ? 'bg-[#7c3aed]/20 border border-[#7c3aed]/30' : 'bg-[#1a1a2e]'}`}>
+              <div key={p.id} className={`flex items-center gap-3 p-2.5 rounded-xl text-sm ${p.id === playerId ? 'bg-[#10b981]/20 border border-[#10b981]/30' : 'bg-[#1a1a2e]'}`}>
                 <span className="font-black text-[#4a4a6a] w-4">#{i + 1}</span>
                 <span className="flex-1 text-[#f1f5f9] truncate">{p.name}</span>
-                <span className="font-bold text-[#7c3aed]">{formatScore(p.score)}</span>
+                <span className="font-bold text-[#10b981]">{formatScore(p.score)}</span>
               </div>
             ))}
           </div>

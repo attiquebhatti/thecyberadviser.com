@@ -72,7 +72,7 @@ export default function DashboardPage() {
   if (!user) {
     return (
       <div className="min-h-screen bg-[#0f0f1a] flex flex-col items-center justify-center text-center px-4">
-        <LogIn className="w-12 h-12 text-[#7c3aed] mb-4" />
+        <LogIn className="w-12 h-12 text-[#10b981] mb-4" />
         <h2 className="text-2xl font-bold mb-2">Sign in to access your dashboard</h2>
         <p className="text-[#94a3b8] mb-6">Manage your quizzes, sessions, and more</p>
         <CQButton onClick={() => router.push(`${BASE}/auth`)}>Sign In</CQButton>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
             Array.from({ length: 4 }).map((_, i) => <CQStatCardSkeleton key={i} />)
           ) : (
             [
-              { label: 'Quizzes',      value: quizzes.length,   icon: BookOpen,  color: '#7c3aed' },
+              { label: 'Quizzes',      value: quizzes.length,   icon: BookOpen,  color: '#10b981' },
               { label: 'Sessions',     value: sessions.length,  icon: Zap,       color: '#06b6d4' },
               { label: 'Total Players',value: totalPlayers,     icon: Users,     color: '#22c55e' },
               { label: 'Questions',    value: quizzes.reduce((s, q) => s + (q.question_count || 0), 0), icon: BarChart3, color: '#f59e0b' },
@@ -147,7 +147,7 @@ export default function DashboardPage() {
         <div className="flex gap-1 bg-[#1a1a2e] border border-[#2d2d44] rounded-xl p-1 w-fit">
           {(['panw', 'quizzes', 'sessions'] as const).map(t => (
             <button key={t} onClick={() => setActiveTab(t)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === t ? 'bg-[#7c3aed] text-white' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === t ? 'bg-[#10b981] text-[#04130c]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
               {t === 'panw' ? 'Palo Alto Networks Quiz' : t === 'quizzes' ? 'Custom Quizzes' : 'Sessions'}
             </button>
           ))}
@@ -163,7 +163,7 @@ export default function DashboardPage() {
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   placeholder="Search quizzes…"
-                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#7c3aed] text-sm transition-colors"
+                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] text-sm transition-colors"
                 />
               </div>
               <CQButton size="sm" variant="ghost" onClick={() => router.push(`${BASE}/quiz/ai`)}>
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                         </td>
                         <td className="px-4 py-3 text-center">
                           {s.id ? (
-                            <button onClick={() => router.push(`${BASE}/session/${String(s.id)}/results`)} className="text-xs text-[#7c3aed] hover:underline">
+                            <button onClick={() => router.push(`${BASE}/session/${String(s.id)}/results`)} className="text-xs text-[#10b981] hover:underline">
                               View
                             </button>
                           ) : null}

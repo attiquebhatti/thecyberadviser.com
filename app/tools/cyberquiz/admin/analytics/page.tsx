@@ -52,7 +52,7 @@ export default function AnalyticsPage() {
   }, [loading, user, router, days]);
 
   if (loading || !user || allowed === null) {
-    return <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-6 h-6 text-[#7c3aed] animate-spin" /></div>;
+    return <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-6 h-6 text-[#10b981] animate-spin" /></div>;
   }
   if (!allowed) {
     return (
@@ -60,7 +60,7 @@ export default function AnalyticsPage() {
         <div className="text-center">
           <AlertCircle className="w-10 h-10 text-[#ef4444] mx-auto mb-3" />
           <p className="text-[#f1f5f9] font-semibold mb-1">Admin access only</p>
-          <button onClick={() => router.push(`${BASE}/dashboard`)} className="text-sm text-[#7c3aed] hover:underline">Back to dashboard</button>
+          <button onClick={() => router.push(`${BASE}/dashboard`)} className="text-sm text-[#10b981] hover:underline">Back to dashboard</button>
         </div>
       </div>
     );
@@ -77,13 +77,13 @@ export default function AnalyticsPage() {
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <h1 className="text-xl font-bold text-[#f1f5f9] flex items-center gap-2"><TrendingUp className="w-5 h-5 text-[#7c3aed]" /> Website Traffic</h1>
+              <h1 className="text-xl font-bold text-[#f1f5f9] flex items-center gap-2"><TrendingUp className="w-5 h-5 text-[#10b981]" /> Website Traffic</h1>
               <p className="text-sm text-[#94a3b8]">Live insights from Google Analytics</p>
             </div>
           </div>
           {configured && (
             <select value={days} onChange={(e) => { setInsights(null); setDays(parseInt(e.target.value, 10)); }}
-              className="rounded-lg bg-[#0f0f1a] border border-[#2d2d44] px-3 py-2 text-sm text-[#f1f5f9] focus:outline-none focus:border-[#7c3aed]/60">
+              className="rounded-lg bg-[#0f0f1a] border border-[#2d2d44] px-3 py-2 text-sm text-[#f1f5f9] focus:outline-none focus:border-[#10b981]/60">
               <option value={7}>Last 7 days</option>
               <option value={28}>Last 28 days</option>
               <option value={90}>Last 90 days</option>
@@ -104,7 +104,7 @@ export default function AnalyticsPage() {
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" /><span>{error}</span>
           </div>
         ) : !insights ? (
-          <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 text-[#7c3aed] animate-spin" /></div>
+          <div className="flex items-center justify-center py-16"><Loader2 className="w-6 h-6 text-[#10b981] animate-spin" /></div>
         ) : (
           <>
             {/* Realtime + headline stats */}
@@ -116,7 +116,7 @@ export default function AnalyticsPage() {
                 </div>
                 <p className="text-2xl font-bold text-[#f1f5f9]">{insights.activeNow}</p>
               </div>
-              <Stat icon={Users} label="Active Users" value={insights.totals.activeUsers} color="#7c3aed" />
+              <Stat icon={Users} label="Active Users" value={insights.totals.activeUsers} color="#10b981" />
               <Stat icon={UserPlus} label="New Users" value={insights.totals.newUsers} color="#06b6d4" />
               <Stat icon={MousePointerClick} label="Sessions" value={insights.totals.sessions} color="#FFC300" />
               <Stat icon={Eye} label="Page Views" value={insights.totals.pageViews} color="#ec4899" />
@@ -124,11 +124,11 @@ export default function AnalyticsPage() {
 
             {/* Trend */}
             <div className="rounded-xl border border-[#2d2d44] bg-[#1a1a2e] p-5">
-              <p className="text-sm font-semibold text-[#f1f5f9] mb-4 flex items-center gap-2"><Activity className="w-4 h-4 text-[#7c3aed]" /> Daily Active Users</p>
+              <p className="text-sm font-semibold text-[#f1f5f9] mb-4 flex items-center gap-2"><Activity className="w-4 h-4 text-[#10b981]" /> Daily Active Users</p>
               <div className="flex items-end gap-1 h-40">
                 {insights.trend.map((t) => (
                   <div key={t.date} className="flex-1 group relative flex flex-col justify-end items-center">
-                    <div className="w-full rounded-t bg-gradient-to-t from-[#7c3aed] to-[#a855f7] transition-all hover:opacity-80"
+                    <div className="w-full rounded-t bg-gradient-to-t from-[#10b981] to-[#a855f7] transition-all hover:opacity-80"
                       style={{ height: `${(t.users / maxTrend) * 100}%`, minHeight: t.users > 0 ? '2px' : '0' }} />
                     <span className="absolute -top-6 text-[10px] text-[#cbd5e1] opacity-0 group-hover:opacity-100 whitespace-nowrap bg-[#0f0f1a] px-1.5 py-0.5 rounded border border-[#2d2d44]">
                       {t.users} · {t.date.slice(5)}
@@ -178,7 +178,7 @@ function Stat({ icon: Icon, label, value, color }: { icon: any; label: string; v
 function Panel({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-[#2d2d44] bg-[#1a1a2e] p-5">
-      <p className="text-sm font-semibold text-[#f1f5f9] mb-3 flex items-center gap-2"><Icon className="w-4 h-4 text-[#7c3aed]" /> {title}</p>
+      <p className="text-sm font-semibold text-[#f1f5f9] mb-3 flex items-center gap-2"><Icon className="w-4 h-4 text-[#10b981]" /> {title}</p>
       <div className="space-y-1">{children}</div>
     </div>
   );

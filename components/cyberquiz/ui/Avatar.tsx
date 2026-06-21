@@ -7,9 +7,9 @@ interface AvatarProps {
 }
 
 const GRADIENTS: [string, string][] = [
-  ['#7c3aed', '#a855f7'], ['#06b6d4', '#0284c7'], ['#5b21b6', '#7c3aed'],
-  ['#0e7490', '#06b6d4'], ['#4f46e5', '#7c3aed'], ['#7c3aed', '#06b6d4'],
-  ['#6d28d9', '#4f46e5'], ['#0891b2', '#7c3aed'],
+  ['#10b981', '#a855f7'], ['#06b6d4', '#0284c7'], ['#5b21b6', '#10b981'],
+  ['#0e7490', '#06b6d4'], ['#4f46e5', '#10b981'], ['#10b981', '#06b6d4'],
+  ['#059669', '#4f46e5'], ['#0891b2', '#10b981'],
 ];
 
 function getInitials(seed: string): string {
