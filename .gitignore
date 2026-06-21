@@ -59,3 +59,6 @@ lib/cyberquiz/seeds/*.json
 public/downloads/*.exe
 public/downloads/*.dmg
 public/downloads/*.zip
+
+# local dev-server scratch logs
+test/devserver.*.log

@@ -10,6 +10,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:unified-migrator": "sucrase-node test/unified-migrator.test.ts",
+    "test:scm": "sucrase-node test/scm-migration.harness.ts",
     "test:prisma-sizing": "sucrase-node test/prisma-sizing.test.ts",
     "test:siem-sizing": "sucrase-node test/siem-sizing.test.ts",
     "desktop:dev": "cross-env UNIFIED_MIGRATOR_DESKTOP_URL=http://localhost:3000 electron .",
@@ -152,6 +153,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@xmldom/xmldom": "^0.8.12",
     "@types/canvas-confetti": "^1.9.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/uuid": "^10.0.0",

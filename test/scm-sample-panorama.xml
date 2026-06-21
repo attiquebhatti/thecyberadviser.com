@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<config version="11.2.10" urldb="paloaltonetworks">
+  <shared>
+    <tag>
+      <entry name="Prod"><color>color5</color></entry>
+    </tag>
+    <address>
+      <entry name="web-srv"><ip-netmask>10.1.1.10/32</ip-netmask><description>web</description><tag><member>Prod</member></tag></entry>
+      <entry name="dns-fqdn"><fqdn>dns.example.com</fqdn></entry>
+    </address>
+    <address-group>
+      <entry name="web-grp"><static><member>web-srv</member></static></entry>
+    </address-group>
+    <service>
+      <entry name="tcp-8443"><protocol><tcp><port>8443</port></tcp></protocol></entry>
+    </service>
+    <service-group>
+      <entry name="web-svcs"><members><member>tcp-8443</member></members></entry>
+    </service-group>
+    <pre-rulebase>
+      <security><rules>
+        <entry name="Shared-Allow-DNS" uuid="aaaa-1111">
+          <from><member>any</member></from>
+          <to><member>any</member></to>
+          <source><member>any</member></source>
+          <destination><member>dns-fqdn</member></destination>
+          <application><member>dns</member></application>
+          <service><member>application-default</member></service>
+          <action>allow</action>
+          <log-end>yes</log-end>
+        </entry>
+      </rules></security>
+    </pre-rulebase>
+  </shared>
+  <devices>
+    <entry name="localhost.localdomain">
+      <device-group>
+        <entry name="AZ-GLOBAL-DG">
+          <address>
+            <entry name="app-srv"><ip-netmask>10.2.2.20/32</ip-netmask></entry>
+          </address>
+          <post-rulebase>
+            <security><rules>
+              <entry name="Allow Cyglass" uuid="bbbb-2222">
+                <from><member>trust</member></from>
+                <to><member>untrust</member></to>
+                <source><member>app-srv</member></source>
+                <destination><member>any</member></destination>
+                <application><member>ssl</member></application>
+                <service><member>web-svcs</member></service>
+                <action>allow</action>
+                <log-end>yes</log-end>
+                <group-tag>Outbound</group-tag>
+                <tag><member>Prod</member></tag>
+                <target><devices><entry name="0011C100001"/><entry name="0011C100002"/></devices></target>
+              </entry>
+            </rules></security>
+          </post-rulebase>
+        </entry>
+        <entry name="AZCANCEN-Transit-DG">
+          <parent-dg>AZ-GLOBAL-DG</parent-dg>
+          <devices><entry name="0011C100001"/></devices>
+          <pre-rulebase>
+            <nat><rules>
+              <entry name="Primary SNAT to SCC" uuid="cccc-3333">
+                <from><member>trust</member></from>
+                <to><member>untrust</member></to>
+                <source><member>app-srv</member></source>
+                <destination><member>any</member></destination>
+                <service>any</service>
+                <source-translation><dynamic-ip-and-port><interface-address><interface>ethernet1/1</interface></interface-address></dynamic-ip-and-port></source-translation>
+                <target><devices><entry name="0011C100001"/></devices></target>
+              </entry>
+              <entry name="Inbound-HTTPS-DNAT" uuid="dddd-4444">
+                <from><member>untrust</member></from>
+                <to><member>untrust</member></to>
+                <source><member>any</member></source>
+                <destination><member>1.2.3.4</member></destination>
+                <service>tcp-8443</service>
+                <destination-translation><translated-address>10.2.2.20</translated-address><translated-port>443</translated-port></destination-translation>
+              </entry>
+            </rules></nat>
+          </pre-rulebase>
+        </entry>
+        <entry name="Remote_Network_Device_Group">
+          <master-device><device>0011C100009</device></master-device>
+          <pre-rulebase>
+            <security><rules>
+              <entry name="Allow AD Group Dropbox Exemption" uuid="eeee-5555">
+                <from><member>trust</member></from>
+                <to><member>untrust</member></to>
+                <source><member>any</member></source>
+                <destination><member>any</member></destination>
+                <source-user><member>cn=dropbox-users</member></source-user>
+                <application><member>dropbox</member></application>
+                <service><member>application-default</member></service>
+                <action>allow</action>
+                <saas-user-list>SaaS_Dropbox</saas-user-list>
+              </entry>
+            </rules></security>
+          </pre-rulebase>
+        </entry>
+      </device-group>
+      <template>
+        <entry name="Mobile_User_Template">
+          <config><devices><entry name="localhost.localdomain"><vsys><entry name="vsys1">
+            <group-mapping><entry name="ad-groups"><server-profile>AD</server-profile></entry></group-mapping>
+          </entry></vsys>
+          <network><virtual-router><entry name="default"><protocol><bgp><peer-group><entry name="pg1"><peer><entry name="p1"><address-family-identifier>ipv4</address-family-identifier></entry></peer></entry></peer-group></bgp></protocol></entry></virtual-router></network>
+          </entry></devices>
+          <global-protect><global-protect-portal><entry name="GP"><client-config><configs><entry name="c1"><app-config><default-browser>yes</default-browser></app-config></entry></configs></client-config></entry></global-protect-portal>
+          <global-protect-gateway><entry name="GW"><clientless-vpn><applications><entry name="app1"/></applications></clientless-vpn></entry></global-protect-gateway></global-protect></config>
+        </entry>
+      </template>
+      <template>
+        <entry name="Global_T">
+          <config><cloud-identity-engine><region>us</region></cloud-identity-engine></config>
+        </entry>
+      </template>
+      <template-stack>
+        <entry name="Mobile_User_Stack">
+          <templates><member>Mobile_User_Template</member><member>Global_T</member></templates>
+          <devices><entry name="0011C100009"/></devices>
+        </entry>
+      </template-stack>
+    </entry>
+  </devices>
+</config>

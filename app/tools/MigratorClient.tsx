@@ -3,11 +3,14 @@
 import { useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { runMigration } from '@/lib/unified-migrator/runtime';
+import { runScmMigration } from '@/lib/unified-migrator/scm/runtime';
 import type {
   MigrationRunResult,
   SourceVendor,
   TargetVendor,
 } from '@/lib/unified-migrator/types';
+import type { ScmMigrationResult } from '@/lib/unified-migrator/scm/types';
+import ScmResultPanel from '@/components/tools/ScmResultPanel';
 import { saveProjectLocally, appendAuditLog, isDesktopMode, listProjectsLocally, loadProjectLocally, exportAuditEvidence } from '@/lib/unified-migrator/desktop-storage';
 import AuditLogModal from '@/components/tools/AuditLogModal';
 
@@ -25,10 +28,11 @@ type AppState = 'idle' | 'loading' | 'done' | 'error';
 export default function MigratorClient() {
   const [state, setState] = useState<AppState>('idle');
   const [result, setResult] = useState<MigrationRunResult | null>(null);
+  const [scmResult, setScmResult] = useState<ScmMigrationResult | null>(null);
   const [error, setError] = useState('');
   const [fileName, setFileName] = useState('');
   const [sourceVendor, setSourceVendor] = useState<SourceVendor | 'auto'>('auto');
-  const [targetVendor, setTargetVendor] = useState<TargetVendor>('pan-os');
+  const [targetVendor, setTargetVendor] = useState<TargetVendor | 'scm'>('pan-os');
   const [role, setRole] = useState<AppRole>('admin');
   const [recentProjects, setRecentProjects] = useState<ProjectListItem[]>([]);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -75,12 +79,29 @@ export default function MigratorClient() {
       setState('loading');
       setError('');
       setResult(null);
+      setScmResult(null);
 
       try {
         const content = await file.text();
         if (!content || content.trim().length === 0) {
           throw new Error('File is empty or unreadable');
         }
+
+        // ── Panorama → Strata Cloud Manager pipeline ──
+        if (targetVendor === 'scm') {
+          const scm = runScmMigration(content);
+          appendAuditLog('MIGRATION_RUN', {
+            fileName: file.name,
+            sourceVendor: 'panorama',
+            targetVendor: 'scm',
+            folders: scm.scm.stats.folders,
+            flagged: scm.scm.stats.flagged,
+          }, role).catch(console.error);
+          setScmResult(scm);
+          setState('done');
+          return;
+        }
+
         const migrationResult = runMigration(
           {
             fileName: file.name,
@@ -249,11 +270,17 @@ export default function MigratorClient() {
               <select
                 id="target-vendor-select"
                 value={targetVendor}
-                onChange={(e) => setTargetVendor(e.target.value as TargetVendor)}
+                onChange={(e) => setTargetVendor(e.target.value as TargetVendor | 'scm')}
                 className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               >
                 <option value="pan-os" className="bg-[#020914] text-white">Palo Alto PAN-OS</option>
+                <option value="scm" className="bg-[#020914] text-white">Strata Cloud Manager (SCM)</option>
               </select>
+              {targetVendor === 'scm' && (
+                <p className="mt-1.5 text-[11px] text-blue-300/70">
+                  Upload a Panorama running-config <span className="font-mono">XML</span> export.
+                </p>
+              )}
             </div>
 
             {/* Upload Button */}
@@ -309,6 +336,11 @@ export default function MigratorClient() {
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300 text-sm">
               {error}
             </div>
+          )}
+
+          {/* SCM Results */}
+          {state === 'done' && scmResult && (
+            <ScmResultPanel result={scmResult} />
           )}
 
           {/* Results */}
