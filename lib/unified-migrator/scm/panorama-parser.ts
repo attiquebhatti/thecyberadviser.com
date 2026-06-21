@@ -12,6 +12,7 @@
 import type {
   PanAddress,
   PanAddressGroup,
+  PanApplicationGroup,
   PanDeviceGroup,
   PanExternalList,
   PanNatRule,
@@ -23,9 +24,11 @@ import type {
   PanSecurityRule,
   PanService,
   PanServiceGroup,
+  PanStaticRouteEntry,
   PanTag,
   PanTemplate,
   PanTemplateStack,
+  PanVirtualRouter,
   ScmRulebasePhase,
 } from '@/lib/unified-migrator/scm/types';
 
@@ -77,6 +80,19 @@ function directChild(parent: Element, tag: string): Element | null {
 
 function directChildren(parent: Element, tag: string): Element[] {
   return elementChildren(parent).filter((c) => c.tagName === tag);
+}
+
+/** All descendant elements with the given tag, at any depth. */
+function findDescendants(parent: Element, tag: string): Element[] {
+  const out: Element[] = [];
+  const walk = (el: Element) => {
+    for (const child of elementChildren(el)) {
+      if (child.tagName === tag) out.push(child);
+      walk(child);
+    }
+  };
+  walk(parent);
+  return out;
 }
 
 /** Serialized inner XML of an element (browser innerHTML, or a serializer fallback). */
@@ -131,6 +147,7 @@ function parseObjectBag(scope: Element | null, phaseRoot: Element | null = scope
     addressGroups: parseAddressGroups(scope),
     services: parseServices(scope),
     serviceGroups: parseServiceGroups(scope),
+    applicationGroups: parseApplicationGroups(scope),
     tags: parseTags(scope),
     externalLists: parseExternalLists(scope),
     schedules: parseSchedules(scope),
@@ -212,6 +229,13 @@ function parseServiceGroups(scope: Element | null): PanServiceGroup[] {
     name: name(e),
     members: members(e, 'members'),
     tags: members(e, 'tag'),
+  }));
+}
+
+function parseApplicationGroups(scope: Element | null): PanApplicationGroup[] {
+  return entries(scope, 'application-group').map((e) => ({
+    name: name(e),
+    members: members(e, 'members'),
   }));
 }
 
@@ -370,14 +394,62 @@ function parseNatRules(phaseRoot: Element | null, phase: ScmRulebasePhase): PanN
 
 // ── Templates & template-stacks ─────────────────────────────────
 
+function parseStaticRoutes(vrEntry: Element): PanStaticRouteEntry[] {
+  // routing-table → ip → static-route → entry  (also tolerate logical-router vrf layout)
+  const srRoots = findDescendants(vrEntry, 'static-route');
+  const out: PanStaticRouteEntry[] = [];
+  for (const sr of srRoots) {
+    for (const r of directChildren(sr, 'entry')) {
+      const nh = directChild(r, 'nexthop');
+      let nexthopType: PanStaticRouteEntry['nexthopType'] = 'none';
+      let nexthop: string | undefined;
+      if (nh) {
+        if (text(nh, 'ip-address')) { nexthopType = 'ip-address'; nexthop = text(nh, 'ip-address'); }
+        else if (text(nh, 'next-vr')) { nexthopType = 'next-vr'; nexthop = text(nh, 'next-vr'); }
+        else if (text(nh, 'fqdn')) { nexthopType = 'fqdn'; nexthop = text(nh, 'fqdn'); }
+        else if (directChild(nh, 'discard')) { nexthopType = 'discard'; }
+      }
+      out.push({
+        name: name(r),
+        destination: text(r, 'destination') || '',
+        nexthopType,
+        nexthop,
+        interface: text(r, 'interface'),
+        metric: text(r, 'metric'),
+        adminDistance: text(r, 'admin-dist'),
+      });
+    }
+  }
+  return out;
+}
+
+function parseVirtualRouters(e: Element): PanVirtualRouter[] {
+  // virtual-router (classic) or logical-router (newer) entries, at any depth.
+  const vrParents = [...findDescendants(e, 'virtual-router'), ...findDescendants(e, 'logical-router')];
+  const out: PanVirtualRouter[] = [];
+  for (const vp of vrParents) {
+    for (const vr of directChildren(vp, 'entry')) {
+      out.push({
+        name: name(vr),
+        staticRoutes: parseStaticRoutes(vr),
+        hasBgp: findDescendants(vr, 'bgp').length > 0,
+        interfaces: members(vr, 'interface'),
+      });
+    }
+  }
+  return out;
+}
+
 function parseTemplate(e: Element): PanTemplate {
   const raw = innerXml(e);
+  const virtualRouters = parseVirtualRouters(e);
   return {
     name: name(e),
     hasGroupMapping: /<group-mapping>/.test(raw),
     hasCloudIdentityEngine: /<cloud-identity-engine>/.test(raw),
     bgpAddressFamilies: Array.from(raw.matchAll(/<address-family-identifier>([^<]+)<\/address-family-identifier>/g)).map((m) => m[1]),
-    virtualRouterNames: Array.from(raw.matchAll(/<virtual-router>[\s\S]*?<entry name="([^"]+)"/g)).map((m) => m[1]),
+    virtualRouterNames: virtualRouters.map((v) => v.name),
+    virtualRouters,
     gpDefaultBrowser: /<default-browser>/.test(raw),
     zones: Array.from(raw.matchAll(/<zone>[\s\S]*?<entry name="([^"]+)"/g)).map((m) => m[1]),
     interfaces: Array.from(raw.matchAll(/<ethernet>[\s\S]*?<entry name="([^"]+)"/g)).map((m) => m[1]),
@@ -406,6 +478,49 @@ function parseDeviceGroup(e: Element): PanDeviceGroup {
     objects: parseObjectBag(e, e),
     userIdMasterDevice: masterEl ? text(masterEl, 'device') : undefined,
     deviceSerials: devicesEl ? directChildren(devicesEl, 'entry').map(name).filter(Boolean) : [],
+  };
+}
+
+// ── Coverage cross-check ────────────────────────────────────────
+//
+// Independent (regex-based) count of <entry> elements per section,
+// computed straight from the raw XML — deliberately NOT reusing the
+// DOM traversal above, so it can catch anything the structured parser
+// silently misses. Surfaced in the report as a sanity check.
+
+/** Count <entry> inside every <wrapper>…</wrapper> block (wrappers don't self-nest). */
+function countEntriesIn(xml: string, wrapper: string): number {
+  let total = 0;
+  const re = new RegExp(`<${wrapper}>([\\s\\S]*?)</${wrapper}>`, 'g');
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(xml))) {
+    total += (m[1].match(/<entry\b/g) || []).length;
+  }
+  return total;
+}
+
+export function rawSectionCounts(xml: string): Record<string, number> {
+  // security/nat rules: count entries within each rulebase kind block.
+  // Strip nested <target> blocks first — their <entry> firewall-serials would
+  // otherwise be miscounted as rules.
+  const ruleEntries = (kind: 'security' | 'nat') => {
+    let total = 0;
+    const re = new RegExp(`<${kind}>\\s*<rules>([\\s\\S]*?)</rules>\\s*</${kind}>`, 'g');
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(xml))) {
+      const body = m[1].replace(/<target>[\s\S]*?<\/target>/g, '');
+      total += (body.match(/<entry\b/g) || []).length;
+    }
+    return total;
+  };
+  return {
+    address: countEntriesIn(xml, 'address'),
+    'address-group': countEntriesIn(xml, 'address-group'),
+    service: countEntriesIn(xml, 'service'),
+    'service-group': countEntriesIn(xml, 'service-group'),
+    'application-group': countEntriesIn(xml, 'application-group'),
+    'security-rules': ruleEntries('security'),
+    'nat-rules': ruleEntries('nat'),
   };
 }
 

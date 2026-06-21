@@ -70,6 +70,11 @@ export interface PanServiceGroup {
   tags: string[];
 }
 
+export interface PanApplicationGroup {
+  name: string;
+  members: string[];
+}
+
 export interface PanTag {
   name: string;
   color?: string;
@@ -165,6 +170,7 @@ export interface PanObjectBag {
   addressGroups: PanAddressGroup[];
   services: PanService[];
   serviceGroups: PanServiceGroup[];
+  applicationGroups: PanApplicationGroup[];
   tags: PanTag[];
   externalLists: PanExternalList[];
   schedules: PanSchedule[];
@@ -184,6 +190,23 @@ export interface PanDeviceGroup {
   deviceSerials: string[];
 }
 
+export interface PanStaticRouteEntry {
+  name: string;
+  destination: string;
+  nexthopType: 'ip-address' | 'next-vr' | 'fqdn' | 'discard' | 'none';
+  nexthop?: string;
+  interface?: string;
+  metric?: string;
+  adminDistance?: string;
+}
+
+export interface PanVirtualRouter {
+  name: string;
+  staticRoutes: PanStaticRouteEntry[];
+  hasBgp: boolean;
+  interfaces: string[];
+}
+
 export interface PanTemplate {
   name: string;
   /** raw network/device config blocks we carry as snippet content. */
@@ -191,6 +214,7 @@ export interface PanTemplate {
   hasCloudIdentityEngine: boolean; // SCM121
   bgpAddressFamilies: string[];   // SCM142
   virtualRouterNames: string[];   // SCM144 context
+  virtualRouters: PanVirtualRouter[]; // SCM144 — parsed for auto-migration
   gpDefaultBrowser: boolean;      // SCM140
   zones: string[];
   interfaces: string[];
@@ -241,9 +265,25 @@ export interface ScmObjectBag {
   addressGroups: PanAddressGroup[];
   services: PanService[];
   serviceGroups: PanServiceGroup[];
+  applicationGroups: PanApplicationGroup[];
   tags: PanTag[];
   externalLists: PanExternalList[];
   schedules: PanSchedule[];
+}
+
+/** An SCM logical router migrated from a Panorama virtual router. */
+export interface ScmLogicalRouter {
+  name: string;
+  fromTemplate: string;
+  staticRoutes: PanStaticRouteEntry[];
+  hasBgp: boolean;
+}
+
+/** Per-section coverage cross-check (independent raw count vs parsed). */
+export interface CoverageRow {
+  section: string;
+  rawEntries: number;
+  parsed: number;
 }
 
 export interface ScmRule {
@@ -282,7 +322,9 @@ export interface ScmModel {
   global: ScmObjectBag;
   folders: ScmFolder[];
   snippets: ScmSnippet[];
+  logicalRouters: ScmLogicalRouter[];
   remediations: Remediation[];
+  coverage: CoverageRow[];
   stats: ScmStats;
 }
 
@@ -293,8 +335,11 @@ export interface ScmStats {
   addressGroups: number;
   services: number;
   serviceGroups: number;
+  applicationGroups: number;
   securityRules: number;
   natRules: number;
+  logicalRouters: number;
+  staticRoutes: number;
   autoRemapped: number;
   flagged: number;
 }

@@ -188,15 +188,24 @@ export function applyRemediations(pan: PanoramaModel, scm: ScmModel): void {
   }
 
   // ── SCM144 — virtual-router settings ──────────────────────────
+  // Static routes are now auto-migrated into SCM logical routers (see the
+  // scm-logical-routers artifact). Dynamic routing / redistribution still
+  // needs a review pass, and BGP specifics are covered by SCM142.
   {
-    const locs = pan.templates
-      .filter((t) => t.virtualRouterNames.length)
-      .map((t) => `template:${t.name} (VR: ${Array.from(new Set(t.virtualRouterNames)).join(', ')})`);
+    const withStatic = scm.logicalRouters.filter((lr) => lr.staticRoutes.length);
+    const autoLocs = withStatic.map((lr) => `logical-router:${lr.name} (${lr.staticRoutes.length} static route(s))`);
     add(
-      acc, 'SCM144', 'Virtual router settings', 'flagged', 'medium',
+      acc, 'SCM144', 'Virtual router → logical router (static routes)', 'auto-remapped', 'medium',
+      'SCM logical router static routes',
+      'Each Panorama virtual router was converted to an SCM logical router and its static routes were generated as ready-to-apply config (see the "SCM Logical Routers" download). Apply them to the matching logical router in SCM, then confirm interface assignments.',
+      autoLocs
+    );
+    const dynamicLocs = scm.logicalRouters.filter((lr) => lr.hasBgp).map((lr) => `logical-router:${lr.name} (dynamic routing/redistribution)`);
+    add(
+      acc, 'SCM144', 'Virtual router dynamic routing / redistribution', 'flagged', 'medium',
       'Device-level logical router',
-      'Virtual-router configuration is recreated as a logical router on each device in SCM. Rebuild the routers and their interfaces/redistribution in SCM Network configuration.',
-      locs
+      'Dynamic routing protocols (OSPF/RIP), route redistribution, and PBF are not auto-migrated. Recreate these on the logical router in SCM Network configuration.',
+      dynamicLocs
     );
   }
 
@@ -222,6 +231,59 @@ export function applyRemediations(pan: PanoramaModel, scm: ScmModel): void {
       'Clientless VPN is not available in Strata Cloud Manager / Prisma Access. Migrate affected users to the GlobalProtect app, or publish those internal web apps through Prisma Access ZTNA / browser-based access instead.',
       locs
     );
+  }
+
+  // ── Integrity check — rule references to undefined objects ────
+  // A correctness aid for the upload: flags address/service/group names
+  // used by rules that aren't defined anywhere in the migrated config
+  // (so they're either predefined in SCM or need to be created first).
+  {
+    const defined = new Set<string>();
+    const addBag = (b: { addresses: any[]; addressGroups: any[]; services: any[]; serviceGroups: any[]; applicationGroups: any[]; externalLists: any[] }) => {
+      for (const x of b.addresses) defined.add(x.name);
+      for (const x of b.addressGroups) defined.add(x.name);
+      for (const x of b.services) defined.add(x.name);
+      for (const x of b.serviceGroups) defined.add(x.name);
+      for (const x of b.applicationGroups) defined.add(x.name);
+      for (const x of b.externalLists) defined.add(x.name);
+    };
+    addBag(scm.global);
+    for (const f of scm.folders) addBag(f.objects);
+
+    const isLiteral = (s: string) =>
+      s === 'any' ||
+      /^\d{1,3}(\.\d{1,3}){3}(\/\d{1,2})?$/.test(s) || // IPv4 / CIDR
+      /^\d{1,3}(\.\d{1,3}){3}-\d{1,3}(\.\d{1,3}){3}$/.test(s) || // range
+      /:/.test(s); // IPv6-ish
+
+    const undefinedRefs = new Map<string, string[]>(); // name → locations
+    const note = (refName: string, where: string) => {
+      if (!undefinedRefs.has(refName)) undefinedRefs.set(refName, []);
+      const arr = undefinedRefs.get(refName)!;
+      if (arr.length < 8) arr.push(where);
+    };
+    for (const f of scm.folders) {
+      for (const r of f.rules) {
+        const sec = r.security;
+        const nat = r.nat;
+        const addrRefs = [...(sec?.source || []), ...(sec?.destination || []), ...(nat?.source || []), ...(nat?.destination || [])];
+        for (const ref of addrRefs) if (!isLiteral(ref) && !defined.has(ref)) note(ref, `${f.name}/${r.name}`);
+        const svcRefs = [...(sec?.service || []), ...(nat?.service ? [nat.service] : [])];
+        for (const ref of svcRefs) if (ref !== 'any' && ref !== 'application-default' && !defined.has(ref)) note(ref, `${f.name}/${r.name}`);
+      }
+    }
+    const locs = Array.from(undefinedRefs.entries()).slice(0, 80).map(([n, w]) => `${n} (e.g. ${w[0]})`);
+    if (locs.length) {
+      acc.remediations.push({
+        code: 'CHECK',
+        feature: 'Object references not defined in this config',
+        status: 'informational',
+        severity: 'low',
+        scmAlternative: 'Verify these are predefined in SCM, or create them before import',
+        detail: `${undefinedRefs.size} object name(s) are referenced by rules but not defined in the Panorama config (they may be predefined services/regions/EDLs, or live in a config section not exported). Confirm they exist in SCM so rules don't fail validation on import.`,
+        locations: locs,
+      });
+    }
   }
 
   // Attach + update stats.

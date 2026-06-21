@@ -22,6 +22,7 @@ import type {
   PanObjectBag,
   PanoramaModel,
   ScmFolder,
+  ScmLogicalRouter,
   ScmModel,
   ScmObjectBag,
   ScmRule,
@@ -37,6 +38,7 @@ function toObjectBag(bag: PanObjectBag): ScmObjectBag {
     addressGroups: dedupe(bag.addressGroups),
     services: dedupe(bag.services),
     serviceGroups: dedupe(bag.serviceGroups),
+    applicationGroups: dedupe(bag.applicationGroups),
     tags: dedupe(bag.tags),
     externalLists: dedupe(bag.externalLists),
     schedules: dedupe(bag.schedules),
@@ -116,9 +118,31 @@ export function mapToScm(pan: PanoramaModel): ScmModel {
     });
   }
 
-  const stats = computeStats(folders, snippets, global);
+  // Virtual routers → SCM logical routers (deduped by name across templates).
+  const lrByName = new Map<string, ScmLogicalRouter>();
+  for (const t of pan.templates) {
+    for (const vr of t.virtualRouters) {
+      const existing = lrByName.get(vr.name);
+      if (existing) {
+        // merge static routes (avoid dup names) + OR the bgp flag
+        const seen = new Set(existing.staticRoutes.map((r) => r.name));
+        for (const r of vr.staticRoutes) if (!seen.has(r.name)) existing.staticRoutes.push(r);
+        existing.hasBgp = existing.hasBgp || vr.hasBgp;
+      } else {
+        lrByName.set(vr.name, {
+          name: vr.name,
+          fromTemplate: t.name,
+          staticRoutes: [...vr.staticRoutes],
+          hasBgp: vr.hasBgp,
+        });
+      }
+    }
+  }
+  const logicalRouters = Array.from(lrByName.values());
 
-  return { global, folders, snippets, remediations: [], stats };
+  const stats = computeStats(folders, snippets, global, logicalRouters);
+
+  return { global, folders, snippets, logicalRouters, remediations: [], coverage: [], stats };
 }
 
 function emptyBag(): ScmObjectBag {
@@ -127,17 +151,24 @@ function emptyBag(): ScmObjectBag {
     addressGroups: [],
     services: [],
     serviceGroups: [],
+    applicationGroups: [],
     tags: [],
     externalLists: [],
     schedules: [],
   };
 }
 
-function computeStats(folders: ScmFolder[], snippets: ScmSnippet[], global: ScmObjectBag): ScmStats {
+function computeStats(
+  folders: ScmFolder[],
+  snippets: ScmSnippet[],
+  global: ScmObjectBag,
+  logicalRouters: ScmLogicalRouter[]
+): ScmStats {
   let addresses = global.addresses.length;
   let addressGroups = global.addressGroups.length;
   let services = global.services.length;
   let serviceGroups = global.serviceGroups.length;
+  let applicationGroups = global.applicationGroups.length;
   let securityRules = 0;
   let natRules = 0;
   for (const f of folders) {
@@ -145,6 +176,7 @@ function computeStats(folders: ScmFolder[], snippets: ScmSnippet[], global: ScmO
     addressGroups += f.objects.addressGroups.length;
     services += f.objects.services.length;
     serviceGroups += f.objects.serviceGroups.length;
+    applicationGroups += f.objects.applicationGroups.length;
     securityRules += f.rules.filter((r) => r.type === 'security').length;
     natRules += f.rules.filter((r) => r.type === 'nat').length;
   }
@@ -155,8 +187,11 @@ function computeStats(folders: ScmFolder[], snippets: ScmSnippet[], global: ScmO
     addressGroups,
     services,
     serviceGroups,
+    applicationGroups,
     securityRules,
     natRules,
+    logicalRouters: logicalRouters.length,
+    staticRoutes: logicalRouters.reduce((n, lr) => n + lr.staticRoutes.length, 0),
     autoRemapped: 0,
     flagged: 0,
   };

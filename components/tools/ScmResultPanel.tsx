@@ -21,6 +21,7 @@ export default function ScmResultPanel({ result }: { result: ScmMigrationResult 
 
   const auto = scm.remediations.filter((r) => r.status === 'auto-remapped');
   const flagged = scm.remediations.filter((r) => r.status === 'flagged');
+  const informational = scm.remediations.filter((r) => r.status === 'informational');
 
   return (
     <div className="space-y-6">
@@ -50,7 +51,41 @@ export default function ScmResultPanel({ result }: { result: ScmMigrationResult 
         <Stat label="Address Groups" value={s.addressGroups} />
         <Stat label="Services" value={s.services} />
         <Stat label="Service Groups" value={s.serviceGroups} />
+        <Stat label="App Groups" value={s.applicationGroups} />
+        <Stat label="Logical Routers" value={s.logicalRouters} hint="from virtual routers" />
+        <Stat label="Static Routes" value={s.staticRoutes} hint="auto-migrated" />
       </div>
+
+      {/* Coverage check */}
+      {scm.coverage.length > 0 && (
+        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+          <h3 className="text-white font-semibold mb-1">Coverage check</h3>
+          <p className="text-white/40 text-xs mb-4">Independent count from the raw config vs what was migrated — a quick sanity check before upload.</p>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-white/40 text-xs uppercase tracking-wider">
+                <th className="text-left pb-2">Section</th>
+                <th className="text-right pb-2">Found in XML</th>
+                <th className="text-right pb-2">Migrated</th>
+              </tr>
+            </thead>
+            <tbody className="text-white/70">
+              {scm.coverage.map((c) => {
+                const short = c.parsed < c.rawEntries;
+                return (
+                  <tr key={c.section} className="border-t border-white/[0.04]">
+                    <td className="py-2">{c.section}</td>
+                    <td className="py-2 text-right">{c.rawEntries}</td>
+                    <td className={`py-2 text-right ${short ? 'text-amber-400' : 'text-emerald-400'}`}>
+                      {c.parsed}{short ? ' ⚠' : ' ✓'}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Limitation coverage */}
       <div className="grid sm:grid-cols-2 gap-4">
@@ -110,6 +145,15 @@ export default function ScmResultPanel({ result }: { result: ScmMigrationResult 
           title="Needs a manual step in SCM"
           tone="amber"
           items={flagged}
+        />
+      )}
+
+      {/* Informational verification checks */}
+      {informational.length > 0 && (
+        <RemediationList
+          title="Verification checks"
+          tone="amber"
+          items={informational}
         />
       )}
 

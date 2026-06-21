@@ -70,6 +70,27 @@ assert(cyglass?.security?.target === undefined, 'SCM112: per-rule target strippe
 assert(cyglass?.security?.groupTag === undefined, 'SCM193: group-tag stripped from rule');
 assert((cyglass?.security?.tags || []).includes('Outbound'), 'SCM193: group-tag preserved as a tag');
 
+// application-groups
+assert(res.scm.stats.applicationGroups === 1, 'application-group migrated (collab-apps)');
+const xmlArtAG = res.artifacts.find((a) => a.id === 'scm-config-xml');
+assert(!!xmlArtAG && /<application-group>[\s\S]*collab-apps/.test(xmlArtAG.content), 'output XML includes application-group');
+
+// virtual-router → logical-router static routes (SCM144 automation)
+assert(res.scm.logicalRouters.length === 1, '1 logical router migrated from VR');
+assert(res.scm.stats.staticRoutes === 2, '2 static routes auto-migrated');
+const lrArt = res.artifacts.find((a) => a.id === 'scm-logical-routers');
+assert(!!lrArt && /default-route/.test(lrArt.content) && /discard/.test(lrArt.content), 'logical-router artifact has the static routes');
+const codes2 = new Set(res.scm.remediations.filter((r) => r.status === 'auto-remapped').map((r) => r.code));
+assert(codes2.has('SCM144'), 'SCM144 now auto-remapped (static routes)');
+assert(res.scm.remediations.some((r) => r.code === 'SCM142' && r.status === 'flagged'), 'SCM142 BGP still flagged');
+
+// coverage check present and consistent
+assert(res.scm.coverage.length === 7, 'coverage rows present');
+const covAddr = res.scm.coverage.find((c) => c.section === 'address');
+assert(!!covAddr && covAddr.rawEntries === covAddr.parsed, 'address coverage matches (no silent drop)');
+const covSec = res.scm.coverage.find((c) => c.section === 'security-rules');
+assert(!!covSec && covSec.rawEntries === covSec.parsed, 'security-rules coverage matches');
+
 const xmlArt = res.artifacts.find((a) => a.id === 'scm-config-xml');
 assert(!!xmlArt && !/<target>/.test(xmlArt.content), 'output XML contains NO <target> blocks');
 assert(!!xmlArt && !/<group-tag>/.test(xmlArt.content), 'output XML contains NO <group-tag>');

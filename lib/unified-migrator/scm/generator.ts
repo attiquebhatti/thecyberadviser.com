@@ -28,7 +28,7 @@ import type {
 } from '@/lib/unified-migrator/scm/types';
 
 export function generateScmArtifacts(scm: ScmModel): ScmArtifact[] {
-  return [
+  const artifacts: ScmArtifact[] = [
     {
       id: 'scm-config-xml',
       label: 'SCM-Ready Config (XML)',
@@ -58,6 +58,56 @@ export function generateScmArtifacts(scm: ScmModel): ScmArtifact[] {
       content: JSON.stringify(scm, null, 2),
     },
   ];
+
+  // Only include the logical-router bundle when there's routing to migrate.
+  if (scm.logicalRouters.some((lr) => lr.staticRoutes.length)) {
+    artifacts.splice(2, 0, {
+      id: 'scm-logical-routers',
+      label: 'SCM Logical Routers',
+      mimeType: 'text/plain',
+      fileName: 'scm-logical-routers.txt',
+      content: buildLogicalRouters(scm),
+    });
+  }
+
+  return artifacts;
+}
+
+// ── Logical routers (static routes) ─────────────────────────────
+
+function buildLogicalRouters(scm: ScmModel): string {
+  const out: string[] = [];
+  out.push('# Strata Cloud Manager — Logical Router static routes');
+  out.push('# Migrated from Panorama virtual routers. Review interface/next-hop, then apply.');
+  out.push('# (BGP/OSPF and redistribution are not included — recreate those in SCM.)');
+  out.push('');
+  for (const lr of scm.logicalRouters) {
+    out.push(`## Logical router: ${lr.name}  (from template: ${lr.fromTemplate})${lr.hasBgp ? '  [also has BGP — migrate separately]' : ''}`);
+    if (!lr.staticRoutes.length) {
+      out.push('  (no static routes)');
+      out.push('');
+      continue;
+    }
+    out.push('  Name | Destination | Next hop | Interface | Metric');
+    out.push('  ' + '-'.repeat(60));
+    for (const r of lr.staticRoutes) {
+      const nh = r.nexthopType === 'discard' ? 'discard' : (r.nexthop || '-');
+      out.push(`  ${r.name} | ${r.destination} | ${r.nexthopType}:${nh} | ${r.interface || '-'} | ${r.metric || '-'}`);
+    }
+    out.push('');
+    out.push('  # set commands:');
+    for (const r of lr.staticRoutes) {
+      const base = `set network logical-router "${lr.name}" vrf default routing-table ip static-route "${r.name}" destination ${r.destination}`;
+      if (r.nexthopType === 'ip-address' && r.nexthop) out.push(`  ${base} nexthop ip-address ${r.nexthop}`);
+      else if (r.nexthopType === 'next-vr' && r.nexthop) out.push(`  ${base} nexthop next-lr "${r.nexthop}"`);
+      else if (r.nexthopType === 'discard') out.push(`  ${base} nexthop discard`);
+      else out.push(`  ${base}`);
+      if (r.interface) out.push(`  ${base} interface ${r.interface}`);
+      if (r.metric) out.push(`  ${base} metric ${r.metric}`);
+    }
+    out.push('');
+  }
+  return out.join('\n');
 }
 
 // ── XML ─────────────────────────────────────────────────────────
@@ -166,6 +216,18 @@ function emitObjects(p: string[], bag: ScmObjectBag, indent: number) {
       p.push(`${i2}</entry>`);
     }
     p.push(`${i}</service-group>`);
+  }
+
+  if (bag.applicationGroups.length) {
+    p.push(`${i}<application-group>`);
+    for (const g of bag.applicationGroups) {
+      p.push(`${i2}<entry name="${escapeXml(g.name)}">`);
+      p.push(`${i3}<members>`);
+      for (const m of g.members) p.push(`${pad(indent + 6)}<member>${escapeXml(m)}</member>`);
+      p.push(`${i3}</members>`);
+      p.push(`${i2}</entry>`);
+    }
+    p.push(`${i}</application-group>`);
   }
 
   if (bag.externalLists.length) {
@@ -311,6 +373,7 @@ function emitCliObjects(c: string[], bag: ScmObjectBag, scope: string) {
     if (s.protocol === 'tcp' || s.protocol === 'udp') c.push(`set ${scope} service "${s.name}" protocol ${s.protocol} port ${s.port || ''}`);
   }
   for (const g of bag.serviceGroups) for (const m of g.members) c.push(`set ${scope} service-group "${g.name}" members "${m}"`);
+  for (const g of bag.applicationGroups) for (const m of g.members) c.push(`set ${scope} application-group "${g.name}" members "${m}"`);
 }
 
 function emitCliSecurity(c: string[], r: PanSecurityRule, scope: string) {
@@ -333,10 +396,23 @@ function buildReport(scm: ScmModel): string {
   lines.push(`- **Folders** (from device-groups): ${s.folders}`);
   lines.push(`- **Snippets** (from templates / template-stacks): ${s.snippets}`);
   lines.push(`- **Address objects**: ${s.addresses}  |  **Address groups**: ${s.addressGroups}`);
-  lines.push(`- **Service objects**: ${s.services}  |  **Service groups**: ${s.serviceGroups}`);
+  lines.push(`- **Service objects**: ${s.services}  |  **Service groups**: ${s.serviceGroups}  |  **Application groups**: ${s.applicationGroups}`);
   lines.push(`- **Security rules**: ${s.securityRules}  |  **NAT rules**: ${s.natRules}`);
+  lines.push(`- **Logical routers**: ${s.logicalRouters}  |  **Static routes migrated**: ${s.staticRoutes}`);
   lines.push(`- **Auto-remapped items**: ${s.autoRemapped}  |  **Flagged for manual step**: ${s.flagged}`);
   lines.push('');
+
+  if (scm.coverage.length) {
+    lines.push('## Coverage check (independent count vs migrated)', '');
+    lines.push('| Section | Found in XML | Migrated |');
+    lines.push('|---|---|---|');
+    for (const c of scm.coverage) {
+      const flag = c.parsed < c.rawEntries ? ' ⚠️' : '';
+      lines.push(`| ${c.section} | ${c.rawEntries} | ${c.parsed}${flag} |`);
+    }
+    lines.push('');
+    lines.push('_A ⚠️ means fewer items were migrated than counted in the raw config — investigate before import. (Counts can differ legitimately when the same object name is defined in both shared and a device-group; SCM keeps the most specific.)_', '');
+  }
 
   const auto = scm.remediations.filter((r) => r.status === 'auto-remapped');
   const flagged = scm.remediations.filter((r) => r.status === 'flagged');
@@ -364,6 +440,17 @@ function buildReport(scm: ScmModel): string {
     for (const l of r.locations.slice(0, 50)) lines.push(`- ${l}`);
     if (r.locations.length > 50) lines.push(`- … and ${r.locations.length - 50} more`);
     lines.push('');
+  }
+
+  const informational = scm.remediations.filter((r) => r.status === 'informational');
+  if (informational.length) {
+    lines.push('## Verification checks', '');
+    for (const r of informational) {
+      lines.push(`### ℹ️ ${r.code} — ${r.feature}`);
+      lines.push(r.detail, '');
+      for (const l of r.locations.slice(0, 80)) lines.push(`- ${l}`);
+      lines.push('');
+    }
   }
 
   lines.push('## Folder hierarchy', '');
