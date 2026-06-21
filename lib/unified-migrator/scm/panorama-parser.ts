@@ -13,8 +13,10 @@ import type {
   PanAddress,
   PanAddressGroup,
   PanApplicationGroup,
+  PanClientlessApp,
   PanDeviceGroup,
   PanExternalList,
+  PanInterface,
   PanNatRule,
   PanNatTranslation,
   PanObjectBag,
@@ -440,6 +442,48 @@ function parseVirtualRouters(e: Element): PanVirtualRouter[] {
   return out;
 }
 
+function parseInterfaceDetails(e: Element, templateName: string): PanInterface[] {
+  // network/interface/ethernet/entry[@name]/layer3/ip/entry[@name=<cidr>]
+  const out: PanInterface[] = [];
+  for (const eth of findDescendants(e, 'ethernet')) {
+    for (const iface of directChildren(eth, 'entry')) {
+      const l3 = directChild(iface, 'layer3');
+      let ip: string | undefined;
+      if (l3) {
+        const ipEl = directChild(l3, 'ip');
+        if (ipEl) ip = directChildren(ipEl, 'entry').map(name).filter(Boolean)[0];
+        if (!ip && directChild(l3, 'dhcp-client')) ip = 'dhcp';
+      }
+      out.push({ name: name(iface), ip, template: templateName, comment: text(iface, 'comment') });
+    }
+  }
+  return out;
+}
+
+function parseClientlessApps(e: Element, templateName: string): PanClientlessApp[] {
+  const out: PanClientlessApp[] = [];
+  for (const cv of findDescendants(e, 'clientless-vpn')) {
+    // climb to the enclosing gateway entry name if available
+    let gw = '';
+    let p: any = (cv as any).parentNode;
+    while (p && p.nodeType === 1) {
+      if (p.tagName === 'entry') { gw = p.getAttribute('name') || ''; break; }
+      p = p.parentNode;
+    }
+    for (const appsEl of directChildren(cv, 'applications')) {
+      for (const app of directChildren(appsEl, 'entry')) {
+        out.push({
+          name: name(app),
+          url: text(app, 'application-domain') || text(app, 'landing-page') || undefined,
+          gateway: gw,
+          template: templateName,
+        });
+      }
+    }
+  }
+  return out;
+}
+
 function parseTemplate(e: Element): PanTemplate {
   const raw = innerXml(e);
   const virtualRouters = parseVirtualRouters(e);
@@ -453,6 +497,8 @@ function parseTemplate(e: Element): PanTemplate {
     gpDefaultBrowser: /<default-browser>/.test(raw),
     zones: Array.from(raw.matchAll(/<zone>[\s\S]*?<entry name="([^"]+)"/g)).map((m) => m[1]),
     interfaces: Array.from(raw.matchAll(/<ethernet>[\s\S]*?<entry name="([^"]+)"/g)).map((m) => m[1]),
+    interfaceDetails: parseInterfaceDetails(e, name(e)),
+    clientlessApps: parseClientlessApps(e, name(e)),
     rawXml: raw,
   };
 }

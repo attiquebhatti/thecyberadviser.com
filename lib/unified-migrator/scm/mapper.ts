@@ -140,9 +140,11 @@ export function mapToScm(pan: PanoramaModel): ScmModel {
   }
   const logicalRouters = Array.from(lrByName.values());
 
+  const interfaces = pan.templates.flatMap((t) => t.interfaceDetails);
+
   const stats = computeStats(folders, snippets, global, logicalRouters);
 
-  return { global, folders, snippets, logicalRouters, remediations: [], coverage: [], stats };
+  return { global, folders, snippets, logicalRouters, interfaces, remediations: [], coverage: [], stats };
 }
 
 function emptyBag(): ScmObjectBag {

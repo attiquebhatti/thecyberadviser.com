@@ -167,6 +167,43 @@ export default function ScmResultPanel({ result }: { result: ScmMigrationResult 
         </div>
       )}
 
+      {/* Clientless VPN mapping */}
+      {scm.clientlessVpn && scm.clientlessVpn.applications.length > 0 && (
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
+          <h3 className="text-emerald-300 font-semibold mb-1">
+            Clientless VPN → {scm.clientlessVpn.target === 'explicit-proxy' ? 'Explicit Proxy' : scm.clientlessVpn.target === 'gp-app' ? 'GlobalProtect app' : 'Prisma Access Clientless VPN'}
+          </h3>
+          <p className="text-white/45 text-xs mb-3">
+            {scm.clientlessVpn.applications.length} published web app(s) mapped to Mobile Users. Attach the SAML/IdP auth profile + portal certificate in SCM to finish.
+          </p>
+          <ul className="text-xs text-white/60 font-mono space-y-0.5 max-h-44 overflow-y-auto">
+            {scm.clientlessVpn.applications.slice(0, 60).map((a, i) => (
+              <li key={i}>{a.name}{a.url ? ` — ${a.url}` : ''} <span className="text-white/30">({a.template}/{a.gateway})</span></li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Interfaces */}
+      {scm.interfaces.length > 0 && (
+        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+          <h3 className="text-white font-semibold mb-1">Interfaces ({scm.interfaces.filter((i) => i.ip).length} with IP)</h3>
+          <p className="text-white/40 text-xs mb-3">Informational for SCM (Prisma Access uses IPSec tunnels); migrated directly to a PAN-OS target.</p>
+          <ul className="text-xs text-white/60 font-mono grid sm:grid-cols-2 gap-x-6 gap-y-0.5 max-h-44 overflow-y-auto">
+            {scm.interfaces.slice(0, 60).map((i, idx) => (
+              <li key={idx}>{i.name} {i.ip ? `→ ${i.ip}` : ''} <span className="text-white/30">({i.template})</span></li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Duplicate cleanup */}
+      {scm.dedup?.enabled && (
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] px-4 py-3 text-sm text-emerald-200">
+          <span className="font-semibold">Duplicate cleanup:</span> merged {scm.dedup.objectsMerged} object(s) across {scm.dedup.groups.length} group(s).
+        </div>
+      )}
+
       {/* Downloads */}
       <div className="flex flex-wrap gap-3">
         {artifacts.map((a) => (

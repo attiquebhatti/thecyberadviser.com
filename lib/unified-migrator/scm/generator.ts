@@ -70,7 +70,37 @@ export function generateScmArtifacts(scm: ScmModel): ScmArtifact[] {
     });
   }
 
+  // Clientless VPN / Explicit Proxy mapping (Mobile Users).
+  if (scm.clientlessVpn && scm.clientlessVpn.applications.length) {
+    artifacts.push({
+      id: 'scm-clientless-vpn',
+      label: 'Clientless VPN',
+      mimeType: 'text/plain',
+      fileName: 'scm-clientless-vpn.txt',
+      content: buildClientless(scm),
+    });
+  }
+
   return artifacts;
+}
+
+function buildClientless(scm: ScmModel): string {
+  const cv = scm.clientlessVpn!;
+  const label =
+    cv.target === 'explicit-proxy' ? 'Prisma Access Explicit Proxy'
+    : cv.target === 'gp-app' ? 'GlobalProtect app'
+    : 'Prisma Access Mobile Users → Clientless VPN';
+  const out: string[] = [];
+  out.push(`# Clientless VPN migration → ${label}`);
+  out.push('# Published web applications migrated from GlobalProtect Clientless VPN.');
+  out.push('# Manual finish in SCM: attach SAML/IdP auth profile + portal certificate.');
+  out.push('');
+  out.push('Application | URL/Domain | Source gateway | Template');
+  out.push('-'.repeat(70));
+  for (const a of cv.applications) {
+    out.push(`${a.name} | ${a.url || '-'} | ${a.gateway || '-'} | ${a.template}`);
+  }
+  return out.join('\n');
 }
 
 // ── Logical routers (static routes) ─────────────────────────────
@@ -399,8 +429,28 @@ function buildReport(scm: ScmModel): string {
   lines.push(`- **Service objects**: ${s.services}  |  **Service groups**: ${s.serviceGroups}  |  **Application groups**: ${s.applicationGroups}`);
   lines.push(`- **Security rules**: ${s.securityRules}  |  **NAT rules**: ${s.natRules}`);
   lines.push(`- **Logical routers**: ${s.logicalRouters}  |  **Static routes migrated**: ${s.staticRoutes}`);
+  lines.push(`- **Interfaces (with IP)**: ${scm.interfaces.filter((i) => i.ip).length}  |  **Clientless VPN apps**: ${scm.clientlessVpn?.applications.length || 0}`);
   lines.push(`- **Auto-remapped items**: ${s.autoRemapped}  |  **Flagged for manual step**: ${s.flagged}`);
+  if (scm.dedup?.enabled) {
+    lines.push(`- **Duplicate cleanup**: ${scm.dedup.objectsMerged} object(s) merged across ${scm.dedup.groups.length} group(s)`);
+  }
   lines.push('');
+
+  if (scm.interfaces.length) {
+    lines.push('## Interfaces', '');
+    for (const i of scm.interfaces.slice(0, 60)) {
+      lines.push(`- \`${i.name}\` ${i.ip ? `→ ${i.ip}` : '(no IP)'}  _(template: ${i.template})_`);
+    }
+    lines.push('', '_Interface IPs are informational for SCM/Prisma Access (which uses IPSec tunnels for Remote Networks / Service Connections). They migrate directly when the target is a PAN-OS firewall._', '');
+  }
+
+  if (scm.dedup?.enabled && scm.dedup.groups.length) {
+    lines.push('## Duplicate cleanup', '');
+    for (const g of scm.dedup.groups.slice(0, 60)) {
+      lines.push(`- **${g.kind}** — kept \`${g.canonical}\`, merged: ${g.duplicates.map((d) => `\`${d}\``).join(', ')}`);
+    }
+    lines.push('');
+  }
 
   if (scm.coverage.length) {
     lines.push('## Coverage check (independent count vs migrated)', '');

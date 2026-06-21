@@ -95,7 +95,34 @@ export class PanosGenerator implements GeneratorAdapter {
         parts.push('    </service-group>');
       }
 
+      // ── Tags ──
+      if (ir.tags.length) {
+        parts.push('    <tag>');
+        ir.tags.forEach((t) => {
+          parts.push(`      <entry name="${escapeXml(t.name)}">`);
+          if (t.color) parts.push(`        <color>${escapeXml(t.color)}</color>`);
+          if (t.comments) parts.push(`        <comments>${escapeXml(t.comments)}</comments>`);
+          parts.push('      </entry>');
+        });
+        parts.push('    </tag>');
+      }
+
       parts.push('  </shared>');
+    }
+
+    // ── Interfaces (with IPs) ──
+    if (ir.interfaces.length) {
+      parts.push('  <devices><entry name="localhost.localdomain"><network><interface><ethernet>');
+      ir.interfaces.forEach((iface) => {
+        parts.push(`    <entry name="${escapeXml(iface.name)}">`);
+        if (iface.ip && iface.ip !== 'dhcp') {
+          parts.push(`      <layer3><ip><entry name="${escapeXml(iface.ip)}"/></ip></layer3>`);
+        } else if (iface.ip === 'dhcp') {
+          parts.push('      <layer3><dhcp-client><enable>yes</enable></dhcp-client></layer3>');
+        }
+        parts.push('    </entry>');
+      });
+      parts.push('  </ethernet></interface></network></entry></devices>');
     }
 
     // ── Zones ──

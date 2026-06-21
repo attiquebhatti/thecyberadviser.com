@@ -25,8 +25,10 @@
 //   SCM137  GlobalProtect Clientless VPN    → (unsupported) GP app / ZTNA
 //
 
+import type { MigrationOptions } from '@/lib/unified-migrator/types';
 import type {
   ExceptionLevel,
+  PanClientlessApp,
   PanoramaModel,
   Remediation,
   RemediationStatus,
@@ -51,7 +53,7 @@ function add(
   acc.remediations.push({ code, feature, status, severity, scmAlternative, detail, locations });
 }
 
-export function applyRemediations(pan: PanoramaModel, scm: ScmModel): void {
+export function applyRemediations(pan: PanoramaModel, scm: ScmModel, options: MigrationOptions): void {
   const acc: Acc = { remediations: [] };
 
   // ── SCM112 — per-rule target/devices ──────────────────────────
@@ -220,17 +222,26 @@ export function applyRemediations(pan: PanoramaModel, scm: ScmModel): void {
     );
   }
 
-  // ── SCM137 — GlobalProtect Clientless VPN ─────────────────────
+  // ── SCM137 — GlobalProtect Clientless VPN → Prisma Access ─────
+  // Clientless VPN IS supported in Prisma Access (Mobile Users → Clientless
+  // VPN) and Explicit Proxy. Map the published web apps to the chosen target
+  // and flag only the genuinely-manual pieces (SAML/IdP, certificates).
   {
-    const locs = pan.templates
-      .filter((t) => /clientless-vpn/i.test(t.rawXml))
-      .map((t) => `template:${t.name}`);
-    add(
-      acc, 'SCM137', 'GlobalProtect Clientless VPN', 'flagged', 'high',
-      'GlobalProtect app / ZTNA browser access',
-      'Clientless VPN is not available in Strata Cloud Manager / Prisma Access. Migrate affected users to the GlobalProtect app, or publish those internal web apps through Prisma Access ZTNA / browser-based access instead.',
-      locs
-    );
+    const apps: PanClientlessApp[] = pan.templates.flatMap((t) => t.clientlessApps);
+    if (apps.length) {
+      scm.clientlessVpn = { target: options.clientlessVpnTarget, applications: apps };
+      const targetLabel =
+        options.clientlessVpnTarget === 'explicit-proxy' ? 'Prisma Access Explicit Proxy'
+        : options.clientlessVpnTarget === 'gp-app' ? 'GlobalProtect app'
+        : 'Prisma Access Mobile Users → Clientless VPN';
+      const locs = apps.map((a) => `${a.template}/${a.gateway}: ${a.name}${a.url ? ` (${a.url})` : ''}`);
+      add(
+        acc, 'SCM137', 'GlobalProtect Clientless VPN', 'auto-remapped', 'medium',
+        targetLabel,
+        `Clientless VPN is supported in Prisma Access. The ${apps.length} published web app(s) were mapped to ${targetLabel} (see the "Clientless VPN" download). Finish in SCM by attaching the SAML/IdP auth profile and the portal certificate — those can't be migrated automatically.`,
+        locs
+      );
+    }
   }
 
   // ── Integrity check — rule references to undefined objects ────

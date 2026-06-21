@@ -23,9 +23,10 @@ moduleResolver._resolveFilename = function (request: string, ...rest: any[]) {
 (globalThis as any).XMLSerializer = XMLSerializer;
 
 import { runScmMigration } from '../lib/unified-migrator/scm/runtime';
+import { DEFAULT_MIGRATION_OPTIONS } from '../lib/unified-migrator/types';
 
 const xml = fs.readFileSync(path.join(__dirname, 'scm-sample-panorama.xml'), 'utf8');
-const res = runScmMigration(xml);
+const res = runScmMigration(xml, { ...DEFAULT_MIGRATION_OPTIONS, cleanupDuplicates: true });
 
 console.log('=== PANORAMA PARSE ===');
 console.log('hostname:', res.panorama.hostname, '| sw:', res.panorama.swVersion);
@@ -90,6 +91,23 @@ const covAddr = res.scm.coverage.find((c) => c.section === 'address');
 assert(!!covAddr && covAddr.rawEntries === covAddr.parsed, 'address coverage matches (no silent drop)');
 const covSec = res.scm.coverage.find((c) => c.section === 'security-rules');
 assert(!!covSec && covSec.rawEntries === covSec.parsed, 'security-rules coverage matches');
+
+// Clientless VPN → Prisma Access (SCM137 reclassified to auto-remapped)
+assert(!!res.scm.clientlessVpn, 'clientlessVpn mapping present');
+assert(res.scm.clientlessVpn?.applications.length === 1, '1 clientless app mapped (intranet)');
+assert(res.scm.clientlessVpn?.applications[0].url === 'https://intranet.example.com', 'clientless app URL parsed');
+const cvRem = res.scm.remediations.find((r) => r.code === 'SCM137');
+assert(cvRem?.status === 'auto-remapped', 'SCM137 now auto-remapped (was unsupported)');
+const cvArt = res.artifacts.find((a) => a.id === 'scm-clientless-vpn');
+assert(!!cvArt && /intranet/.test(cvArt.content), 'clientless VPN artifact generated');
+
+// Interface IPs parsed from template
+assert(res.scm.interfaces.length === 2, '2 interfaces parsed');
+assert(res.scm.interfaces.some((i) => i.ip === '10.1.1.1/24'), 'interface IP 10.1.1.1/24 parsed');
+assert(res.scm.interfaces.some((i) => i.ip === 'dhcp'), 'dhcp interface detected');
+
+// Dedup (opt-in) ran
+assert(res.scm.dedup?.enabled === true, 'dedup enabled when option set');
 
 const xmlArt = res.artifacts.find((a) => a.id === 'scm-config-xml');
 assert(!!xmlArt && !/<target>/.test(xmlArt.content), 'output XML contains NO <target> blocks');

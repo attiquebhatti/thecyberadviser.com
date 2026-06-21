@@ -20,6 +20,7 @@ import {
   SourceAuditTrace,
   SourceVendor,
   StaticRoute,
+  TagObject,
   UnrecognizedLine,
   VersionInfo,
   VersionProfile,
@@ -62,6 +63,7 @@ export abstract class BaseParser {
       addressGroups: [],
       services: [],
       serviceGroups: [],
+      tags: [],
       policies: [],
       natRules: [],
       interfaces: [],
@@ -217,6 +219,10 @@ export abstract class BaseParser {
 
   protected pushServiceGroup(entity: ServiceGroup) {
     this.ir.serviceGroups.push(this.finalizeEntity(entity));
+  }
+
+  protected pushTag(entity: TagObject) {
+    this.ir.tags.push(this.finalizeEntity(entity));
   }
 
   protected pushPolicy(entity: SecurityPolicy) {

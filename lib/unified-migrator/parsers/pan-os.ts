@@ -13,6 +13,7 @@ export class PanosParser extends BaseParser {
     this.parseAddressGroups(xml);
     this.parseServices(xml);
     this.parseServiceGroups(xml);
+    this.parseTags(xml);
     this.parseZones(xml);
     this.parsePolicies(xml);
     this.parseNatRules(xml);
@@ -75,6 +76,24 @@ export class PanosParser extends BaseParser {
         exceptions: [],
         fingerprint: fingerprint([name, ...members.map((member) => member.ref)]),
       });
+    }
+  }
+
+  private parseTags(xml: string) {
+    // Only the object-level <tag> section has <entry>; rule <tag><member> blocks are skipped.
+    for (const section of xml.matchAll(/<tag>([\s\S]*?)<\/tag>/g)) {
+      for (const match of section[1].matchAll(/<entry name="([^"]+)">([\s\S]*?)<\/entry>/g)) {
+        const [, name, body] = match;
+        const color = body.match(/<color>([^<]+)<\/color>/)?.[1];
+        const comments = body.match(/<comments>([^<]+)<\/comments>/)?.[1];
+        this.pushTag({
+          ...this.entityBase(name, 1),
+          color,
+          comments,
+          exceptions: [],
+          fingerprint: fingerprint([name, color || '']),
+        });
+      }
     }
   }
 

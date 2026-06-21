@@ -255,6 +255,11 @@ export interface CategoryConfidence {
   loggingProfiles: number;
 }
 
+export interface TagObject extends MigrationEntityBase {
+  color?: string;
+  comments?: string;
+}
+
 export interface MigrationIR {
   metadata: {
     sourceVendor: SourceVendor;
@@ -267,6 +272,7 @@ export interface MigrationIR {
   addressGroups: AddressGroup[];
   services: ServiceObject[];
   serviceGroups: ServiceGroup[];
+  tags: TagObject[];
   policies: SecurityPolicy[];
   natRules: NatRule[];
   interfaces: InterfaceObject[];
@@ -276,6 +282,45 @@ export interface MigrationIR {
   vpns: VpnObject[];
   loggingProfiles: LoggingProfile[];
   categoryConfidence?: CategoryConfidence;
+}
+
+// ── Cross-pipeline migration options (from the pre-migration questionnaire) ──
+
+export type ClientlessVpnTarget = 'clientless-vpn' | 'explicit-proxy' | 'gp-app';
+export type ManagementIpMode = 'keep' | 'assign' | 'manual';
+
+export interface MigrationOptions {
+  /** Detect & merge duplicate objects / drop redundant rules when true. */
+  cleanupDuplicates: boolean;
+  /** Where GlobalProtect Clientless VPN maps (SCM target). */
+  clientlessVpnTarget: ClientlessVpnTarget;
+  /** Migrate dataplane interface IPs (PAN-OS target). */
+  migrateInterfaceIps: boolean;
+  /** Management-IP handling (PAN-OS target only). */
+  managementIp: { mode: ManagementIpMode; newIp?: string };
+}
+
+export const DEFAULT_MIGRATION_OPTIONS: MigrationOptions = {
+  cleanupDuplicates: false,
+  clientlessVpnTarget: 'clientless-vpn',
+  migrateInterfaceIps: true,
+  managementIp: { mode: 'keep' },
+};
+
+// ── Duplicate detection / cleanup reporting ──
+
+export interface DuplicateGroup {
+  kind: string;            // 'address' | 'service' | 'security-rule' | …
+  canonical: string;       // the name kept
+  duplicates: string[];    // names merged into / shadowed by canonical
+  detail?: string;
+}
+
+export interface DedupReport {
+  enabled: boolean;
+  objectsMerged: number;
+  rulesRemoved: number;
+  groups: DuplicateGroup[];
 }
 
 export interface CoverageCounters {
@@ -398,8 +443,16 @@ export interface Validator {
   ): ValidationReport;
 }
 
+export interface ManagementWarning {
+  severity: 'high' | 'medium';
+  message: string;
+}
+
 export interface MigrationRunResult {
   parseResult: ParseResult;
   artifacts: GeneratedArtifact[];
   validationReport: ValidationReport;
+  dedupReport?: DedupReport;
+  managementWarning?: ManagementWarning;
+  options?: MigrationOptions;
 }

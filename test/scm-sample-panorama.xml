@@ -109,6 +109,12 @@
           <config><devices><entry name="localhost.localdomain"><vsys><entry name="vsys1">
             <group-mapping><entry name="ad-groups"><server-profile>AD</server-profile></entry></group-mapping>
           </entry></vsys>
+          <network>
+            <interface><ethernet>
+              <entry name="ethernet1/1"><layer3><ip><entry name="10.1.1.1/24"/></ip></layer3></entry>
+              <entry name="ethernet1/2"><layer3><dhcp-client><enable>yes</enable></dhcp-client></layer3></entry>
+            </ethernet></interface>
+          </network>
           <network><virtual-router><entry name="default">
             <routing-table><ip><static-route>
               <entry name="default-route"><destination>0.0.0.0/0</destination><nexthop><ip-address>10.0.0.1</ip-address></nexthop><interface>ethernet1/1</interface><metric>10</metric></entry>
@@ -117,7 +123,7 @@
             <protocol><bgp><peer-group><entry name="pg1"><peer><entry name="p1"><address-family-identifier>ipv4</address-family-identifier></entry></peer></entry></peer-group></bgp></protocol></entry></virtual-router></network>
           </entry></devices>
           <global-protect><global-protect-portal><entry name="GP"><client-config><configs><entry name="c1"><app-config><default-browser>yes</default-browser></app-config></entry></configs></client-config></entry></global-protect-portal>
-          <global-protect-gateway><entry name="GW"><clientless-vpn><applications><entry name="app1"/></applications></clientless-vpn></entry></global-protect-gateway></global-protect></config>
+          <global-protect-gateway><entry name="GW"><clientless-vpn><applications><entry name="intranet"><application-domain>https://intranet.example.com</application-domain></entry></applications></clientless-vpn></entry></global-protect-gateway></global-protect></config>
         </entry>
       </template>
       <template>

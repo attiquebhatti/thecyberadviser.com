@@ -207,6 +207,20 @@ export interface PanVirtualRouter {
   interfaces: string[];
 }
 
+export interface PanInterface {
+  name: string;
+  ip?: string;
+  template: string;
+  comment?: string;
+}
+
+export interface PanClientlessApp {
+  name: string;
+  url?: string;
+  gateway: string;
+  template: string;
+}
+
 export interface PanTemplate {
   name: string;
   /** raw network/device config blocks we carry as snippet content. */
@@ -218,6 +232,8 @@ export interface PanTemplate {
   gpDefaultBrowser: boolean;      // SCM140
   zones: string[];
   interfaces: string[];
+  interfaceDetails: PanInterface[]; // name + IP, for interface-IP migration
+  clientlessApps: PanClientlessApp[]; // SCM137 — GP Clientless VPN apps
   rawXml: string;
 }
 
@@ -317,14 +333,23 @@ export interface ScmSnippet {
   configNotes: string[];
 }
 
+/** Mobile Users → Clientless VPN (or Explicit Proxy) mapped from GP clientless config. */
+export interface ScmClientlessVpn {
+  target: import('@/lib/unified-migrator/types').ClientlessVpnTarget;
+  applications: PanClientlessApp[];
+}
+
 export interface ScmModel {
   /** the Global (shared) scope. */
   global: ScmObjectBag;
   folders: ScmFolder[];
   snippets: ScmSnippet[];
   logicalRouters: ScmLogicalRouter[];
+  interfaces: PanInterface[];
+  clientlessVpn?: ScmClientlessVpn;
   remediations: Remediation[];
   coverage: CoverageRow[];
+  dedup?: import('@/lib/unified-migrator/types').DedupReport;
   stats: ScmStats;
 }
 

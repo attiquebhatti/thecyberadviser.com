@@ -19,12 +19,16 @@ import {
   parseVersionInfo,
   scrubSensitiveContent,
 } from '@/lib/unified-migrator/utils';
-import type {
-  GeneratedArtifact,
-  MigrationRunResult,
-  ParseInput,
-  ParseResult,
-  TargetVendor,
+import { dedupeIr } from '@/lib/unified-migrator/dedup';
+import {
+  DEFAULT_MIGRATION_OPTIONS,
+  type GeneratedArtifact,
+  type ManagementWarning,
+  type MigrationOptions,
+  type MigrationRunResult,
+  type ParseInput,
+  type ParseResult,
+  type TargetVendor,
 } from '@/lib/unified-migrator/types';
 
 /**
@@ -32,7 +36,8 @@ import type {
  */
 export function runMigration(
   input: ParseInput,
-  targetVendor: TargetVendor = 'pan-os'
+  targetVendor: TargetVendor = 'pan-os',
+  options: MigrationOptions = DEFAULT_MIGRATION_OPTIONS
 ): MigrationRunResult {
   // 0. Security — proactive scrubbing
   input.content = scrubSensitiveContent(input.content);
@@ -61,6 +66,26 @@ export function runMigration(
 
   // 3. Normalize IR
   normalizeIr(parseResult.ir);
+
+  // 3b. Optional duplicate cleanup (opt-in via questionnaire)
+  const dedupReport = dedupeIr(parseResult.ir, options.cleanupDuplicates);
+
+  // 3c. Management-IP safety (PAN-OS target only — a real firewall you commit to)
+  let managementWarning: ManagementWarning | undefined;
+  if (targetVendor === 'pan-os') {
+    if (options.managementIp.mode === 'assign' && options.managementIp.newIp) {
+      managementWarning = {
+        severity: 'medium',
+        message: `A new management IP (${options.managementIp.newIp}) will be set in the generated config. Confirm it is reachable on your network before committing.`,
+      };
+    } else {
+      managementWarning = {
+        severity: 'high',
+        message:
+          'Management IP is carried over unchanged. If the target firewall uses a different management network, change the mgmt IP BEFORE committing — otherwise you will lose remote access after commit.',
+      };
+    }
+  }
 
   // 4. Translate — generate target config
   const generator = getGenerator(targetVendor);
@@ -123,6 +148,9 @@ export function runMigration(
     parseResult,
     artifacts: [...generatedArtifacts, reportArtifact, rollbackArtifact],
     validationReport,
+    dedupReport,
+    managementWarning,
+    options,
   };
 }
 

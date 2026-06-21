@@ -4,13 +4,16 @@ import { useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { runMigration } from '@/lib/unified-migrator/runtime';
 import { runScmMigration } from '@/lib/unified-migrator/scm/runtime';
-import type {
-  MigrationRunResult,
-  SourceVendor,
-  TargetVendor,
+import {
+  DEFAULT_MIGRATION_OPTIONS,
+  type MigrationOptions,
+  type MigrationRunResult,
+  type SourceVendor,
+  type TargetVendor,
 } from '@/lib/unified-migrator/types';
 import type { ScmMigrationResult } from '@/lib/unified-migrator/scm/types';
 import ScmResultPanel from '@/components/tools/ScmResultPanel';
+import MigrationOptionsPanel from '@/components/tools/MigrationOptionsPanel';
 import { saveProjectLocally, appendAuditLog, isDesktopMode, listProjectsLocally, loadProjectLocally, exportAuditEvidence } from '@/lib/unified-migrator/desktop-storage';
 import AuditLogModal from '@/components/tools/AuditLogModal';
 
@@ -23,7 +26,7 @@ interface ProjectListItem {
   createdAt: string;
 }
 
-type AppState = 'idle' | 'loading' | 'done' | 'error';
+type AppState = 'idle' | 'options' | 'loading' | 'done' | 'error';
 
 export default function MigratorClient() {
   const [state, setState] = useState<AppState>('idle');
@@ -31,6 +34,8 @@ export default function MigratorClient() {
   const [scmResult, setScmResult] = useState<ScmMigrationResult | null>(null);
   const [error, setError] = useState('');
   const [fileName, setFileName] = useState('');
+  const [pendingContent, setPendingContent] = useState('');
+  const [options, setOptions] = useState<MigrationOptions>(DEFAULT_MIGRATION_OPTIONS);
   const [sourceVendor, setSourceVendor] = useState<SourceVendor | 'auto' | 'panorama'>('auto');
   const [targetVendor, setTargetVendor] = useState<TargetVendor | 'scm'>('pan-os');
 
@@ -85,31 +90,47 @@ export default function MigratorClient() {
     }
   }, []);
 
+  // Step 1 — read the file and show the pre-migration questionnaire (don't run yet).
   const onFileSelect = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
       setFileName(file.name);
-      setState('loading');
       setError('');
       setResult(null);
       setScmResult(null);
-
       try {
         const content = await file.text();
-        if (!content || content.trim().length === 0) {
-          throw new Error('File is empty or unreadable');
-        }
+        if (!content || content.trim().length === 0) throw new Error('File is empty or unreadable');
+        setPendingContent(content);
+        setOptions(DEFAULT_MIGRATION_OPTIONS);
+        setState('options');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Could not read file');
+        setState('error');
+      }
+    },
+    []
+  );
 
+  // Step 2 — run the migration with the chosen options.
+  const runNow = useCallback(
+    async () => {
+      const content = pendingContent;
+      if (!content) return;
+      setState('loading');
+      setError('');
+      try {
         // ── Panorama → Strata Cloud Manager pipeline ──
         if (targetVendor === 'scm') {
-          const scm = runScmMigration(content);
+          const scm = runScmMigration(content, options);
           appendAuditLog('MIGRATION_RUN', {
-            fileName: file.name,
+            fileName,
             sourceVendor: 'panorama',
             targetVendor: 'scm',
             folders: scm.scm.stats.folders,
             flagged: scm.scm.stats.flagged,
+            cleanupDuplicates: options.cleanupDuplicates,
           }, role).catch(console.error);
           setScmResult(scm);
           setState('done');
@@ -122,29 +143,31 @@ export default function MigratorClient() {
         const genericTarget = targetVendor as TargetVendor;
         const migrationResult = runMigration(
           {
-            fileName: file.name,
+            fileName,
             content,
             selectedVendor: genericSource,
             targetVendor: genericTarget,
           },
-          genericTarget
+          genericTarget,
+          options
         );
 
         // Save project and log securely in local mode
         const projectData = {
           id: `proj_${Date.now()}`,
-          name: file.name,
+          name: fileName,
           vendor: migrationResult.parseResult.detectedVendor,
           createdAt: new Date().toISOString(),
           result: migrationResult
         };
         saveProjectLocally(projectData).catch(console.error);
-        
+
         appendAuditLog('MIGRATION_RUN', {
-          fileName: file.name,
+          fileName,
           detectedVendor: migrationResult.parseResult.detectedVendor,
           targetVendor,
-          automatedRate: migrationResult.validationReport.overallAutomatedRate
+          automatedRate: migrationResult.validationReport.overallAutomatedRate,
+          cleanupDuplicates: options.cleanupDuplicates,
         }, role).catch(console.error);
 
         setResult(migrationResult);
@@ -155,7 +178,7 @@ export default function MigratorClient() {
         setState('error');
       }
     },
-    [sourceVendor, targetVendor, role, refreshProjects]
+    [pendingContent, fileName, sourceVendor, targetVendor, role, options, refreshProjects]
   );
 
   const downloadArtifact = useCallback(
@@ -342,6 +365,18 @@ export default function MigratorClient() {
             </Link>
           </div>
 
+          {/* Pre-migration questionnaire */}
+          {state === 'options' && (
+            <MigrationOptionsPanel
+              options={options}
+              onChange={setOptions}
+              targetVendor={targetVendor}
+              fileName={fileName}
+              onRun={runNow}
+              onCancel={() => { setState('idle'); setPendingContent(''); setFileName(''); }}
+            />
+          )}
+
           {/* Loading State */}
           {state === 'loading' && (
             <div className="text-center py-12">
@@ -365,6 +400,23 @@ export default function MigratorClient() {
           {/* Results */}
           {state === 'done' && result && (
             <div className="space-y-6">
+              {/* Management-IP warning (PAN-OS target) */}
+              {result.managementWarning && (
+                <div className={`rounded-xl border px-4 py-3 text-sm ${
+                  result.managementWarning.severity === 'high'
+                    ? 'border-red-500/30 bg-red-500/10 text-red-200'
+                    : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
+                }`}>
+                  <span className="font-semibold">Management IP:</span> {result.managementWarning.message}
+                </div>
+              )}
+              {/* Duplicate cleanup summary */}
+              {result.dedupReport?.enabled && (
+                <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] px-4 py-3 text-sm text-emerald-200">
+                  <span className="font-semibold">Duplicate cleanup:</span> merged {result.dedupReport.objectsMerged} object(s)
+                  and removed {result.dedupReport.rulesRemoved} redundant rule(s) across {result.dedupReport.groups.length} group(s).
+                </div>
+              )}
               {/* Summary Cards */}
               <div className="grid md:grid-cols-4 gap-4">
                 <SummaryCard
