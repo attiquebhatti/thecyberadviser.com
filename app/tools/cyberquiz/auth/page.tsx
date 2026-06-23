@@ -101,7 +101,7 @@ function AuthContent() {
               <button
                 key={t}
                 onClick={() => { setTab(t); setError(''); }}
-                className={`flex-1 py-2 rounded-md text-sm font-medium transition-all capitalize ${tab === t ? 'bg-[#10b981] text-[#04130c]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}
+                className={`flex-1 py-2 rounded-md text-sm font-medium transition-all capitalize ${tab === t ? 'bg-[#6bd348] text-[#04130c]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}
               >
                 {t === 'login' ? 'Log In' : 'Sign Up'}
               </button>
@@ -130,7 +130,7 @@ function AuthContent() {
                   placeholder="Display name"
                   value={displayName}
                   onChange={e => setDisplayName(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm"
                 />
               </div>
             )}
@@ -142,7 +142,7 @@ function AuthContent() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm"
               />
             </div>
             <div className="relative">
@@ -154,7 +154,7 @@ function AuthContent() {
                 onChange={e => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full pl-10 pr-10 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm"
+                className="w-full pl-10 pr-10 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm"
               />
               <button type="button" onClick={() => setShowPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a4a6a] hover:text-[#94a3b8]">
                 {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -163,7 +163,7 @@ function AuthContent() {
 
             {tab === 'login' && (
               <div className="text-right">
-                <button type="button" onClick={() => router.push(`${BASE}/forgot-password`)} className="text-xs text-[#10b981] hover:underline">
+                <button type="button" onClick={() => router.push(`${BASE}/forgot-password`)} className="text-xs text-[#6bd348] hover:underline">
                   Forgot password?
                 </button>
               </div>
@@ -185,7 +185,7 @@ function AuthContent() {
 
 export default function AuthPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-[#10b981]" /></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-[#6bd348]" /></div>}>
       <AuthContent />
     </Suspense>
   );

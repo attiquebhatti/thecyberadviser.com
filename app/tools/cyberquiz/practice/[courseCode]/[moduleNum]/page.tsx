@@ -11,7 +11,7 @@ const DIFF_COLOR: Record<string, string> = {
   Basic: '#22c55e', Foundational: '#22c55e',
   Intermediate: '#f59e0b',
   Advanced: '#ef4444',
-  Scenario: '#34d399',
+  Scenario: '#6bd348',
 };
 
 interface PracticeQuestion {
@@ -82,7 +82,7 @@ export default function SoloPracticePage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#10b981] mx-auto mb-3" />
+          <Loader2 className="w-10 h-10 animate-spin text-[#6bd348] mx-auto mb-3" />
           <p className="text-[#94a3b8]">Loading questions…</p>
         </div>
       </div>
@@ -97,7 +97,7 @@ export default function SoloPracticePage() {
           <AlertCircle className="w-12 h-12 text-[#ef4444] mx-auto mb-4" />
           <h2 className="text-xl font-bold text-[#f1f5f9] mb-2">Questions not available</h2>
           <p className="text-[#94a3b8] text-sm mb-6">{error}</p>
-          <button onClick={() => router.back()} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#10b981] hover:bg-[#059669] text-[#04130c] font-semibold transition-colors">
+          <button onClick={() => router.back()} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#6bd348] hover:bg-[#5cbf3c] text-[#04130c] font-semibold transition-colors">
             <ArrowLeft className="w-4 h-4" /> Go back
           </button>
         </div>
@@ -123,7 +123,7 @@ export default function SoloPracticePage() {
               <RotateCcw className="w-4 h-4" /> Retry
             </button>
             <button onClick={() => router.push(`${BASE}/dashboard`)}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#10b981] hover:bg-[#059669] text-[#04130c] font-semibold transition-colors">
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#6bd348] hover:bg-[#5cbf3c] text-[#04130c] font-semibold transition-colors">
               Dashboard <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -159,7 +159,7 @@ export default function SoloPracticePage() {
 
       {/* Progress bar */}
       <div className="h-1.5 rounded-full bg-white/[0.06] mb-8 overflow-hidden">
-        <div className="h-full rounded-full bg-gradient-to-r from-[#10b981] to-[#06b6d4] transition-all duration-500" style={{ width: `${progress}%` }} />
+        <div className="h-full rounded-full bg-gradient-to-r from-[#6bd348] to-[#06b6d4] transition-all duration-500" style={{ width: `${progress}%` }} />
       </div>
 
       {/* Question card */}
@@ -202,8 +202,8 @@ export default function SoloPracticePage() {
 
       {/* Explanation */}
       {revealed && q.explanation && (
-        <div className="rounded-xl border border-[#10b981]/30 bg-[#10b981]/5 px-5 py-4 mb-4">
-          <p className="text-xs font-bold text-[#5eead4] mb-1.5 uppercase tracking-wide">Explanation</p>
+        <div className="rounded-xl border border-[#6bd348]/30 bg-[#6bd348]/5 px-5 py-4 mb-4">
+          <p className="text-xs font-bold text-[#6bd348] mb-1.5 uppercase tracking-wide">Explanation</p>
           <p className="text-sm text-[#cbd5e1] leading-relaxed">{q.explanation}</p>
         </div>
       )}
@@ -211,7 +211,7 @@ export default function SoloPracticePage() {
       {/* Next button */}
       {revealed && (
         <button onClick={handleNext}
-          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#10b981] to-[#06b6d4] text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#10b981]/30 hover:opacity-90 transition-opacity">
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#6bd348] to-[#06b6d4] text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#6bd348]/30 hover:opacity-90 transition-opacity">
           {current + 1 >= questions.length ? <><Trophy className="w-5 h-5" /> See Results</> : <>Next Question <ChevronRight className="w-5 h-5" /></>}
         </button>
       )}

@@ -134,7 +134,7 @@ function AIGeneratorContent() {
     }
   };
 
-  const ANSWER_COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#10b981'];
+  const ANSWER_COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#6bd348'];
   const ANSWER_LABELS = ['A', 'B', 'C', 'D'];
 
   return (
@@ -144,7 +144,7 @@ function AIGeneratorContent() {
           <ChevronLeft className="w-5 h-5" />
         </button>
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-[#10b981]" />
+          <Sparkles className="w-5 h-5 text-[#6bd348]" />
           <h1 className="font-bold text-[#f1f5f9]">AI Quiz Generator</h1>
         </div>
       </header>
@@ -161,7 +161,7 @@ function AIGeneratorContent() {
             <div className="flex rounded-lg bg-[#1a1a2e] border border-[#2d2d44] p-1 gap-1">
               {[{ id: 'topic', label: 'Topic', icon: BookOpen }, { id: 'notes', label: 'Paste Notes', icon: FileText }].map(({ id, label, icon: Icon }) => (
                 <button key={id} onClick={() => setInputTab(id as 'topic' | 'notes')}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all ${inputTab === id ? 'bg-[#10b981] text-[#04130c]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all ${inputTab === id ? 'bg-[#6bd348] text-[#04130c]' : 'text-[#94a3b8] hover:text-[#f1f5f9]'}`}>
                   <Icon className="w-4 h-4" /> {label}
                 </button>
               ))}
@@ -170,12 +170,12 @@ function AIGeneratorContent() {
             {inputTab === 'topic' ? (
               <input value={topic} onChange={e => setTopic(e.target.value)} onKeyDown={e => e.key === 'Enter' && generate()}
                 placeholder="e.g. PCNSE firewall policies, Prisma Access, Cortex XDR…"
-                className="w-full px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors" />
+                className="w-full px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors" />
             ) : (
               <textarea value={notes} onChange={e => setNotes(e.target.value)}
                 placeholder="Paste lecture notes, study guides, or any text here…"
                 rows={6}
-                className="w-full px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors resize-none" />
+                className="w-full px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors resize-none" />
             )}
 
             {/* Config */}
@@ -186,7 +186,7 @@ function AIGeneratorContent() {
               </div>
               <div>
                 <label className="text-sm text-[#94a3b8] mb-2 block">Questions: <span className="text-[#f1f5f9] font-semibold">{numQuestions}</span></label>
-                <input type="range" min={5} max={30} step={1} value={numQuestions} onChange={e => setNumQ(Number(e.target.value))} className="w-full accent-[#10b981]" />
+                <input type="range" min={5} max={30} step={1} value={numQuestions} onChange={e => setNumQ(Number(e.target.value))} className="w-full accent-[#6bd348]" />
                 <div className="flex justify-between text-xs text-[#4a4a6a] mt-1"><span>5</span><span>30</span></div>
               </div>
               <div>
@@ -194,7 +194,7 @@ function AIGeneratorContent() {
                 <div className="flex flex-wrap gap-2">
                   {[{ id: 'multiple_choice', label: 'Multiple Choice' }, { id: 'true_false', label: 'True/False' }, { id: 'short_answer', label: 'Short Answer' }, { id: 'fill_blank', label: 'Fill in Blank' }].map(t => (
                     <button key={t.id} onClick={() => toggleType(t.id)}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${types.includes(t.id) ? 'bg-[#10b981] border-[#10b981] text-white' : 'border-[#2d2d44] text-[#94a3b8] hover:border-[#10b981]/50'}`}>
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${types.includes(t.id) ? 'bg-[#6bd348] border-[#6bd348] text-white' : 'border-[#2d2d44] text-[#94a3b8] hover:border-[#6bd348]/50'}`}>
                       {t.label}
                     </button>
                   ))}
@@ -205,7 +205,7 @@ function AIGeneratorContent() {
                 <div className="flex gap-2">
                   {['easy', 'balanced', 'hard'].map(d => (
                     <button key={d} onClick={() => setDifficulty(d)}
-                      className={`flex-1 py-1.5 rounded-lg text-sm capitalize transition-all border ${difficulty === d ? 'bg-[#10b981] border-[#10b981] text-white' : 'border-[#2d2d44] text-[#94a3b8] hover:border-[#10b981]/50'}`}>
+                      className={`flex-1 py-1.5 rounded-lg text-sm capitalize transition-all border ${difficulty === d ? 'bg-[#6bd348] border-[#6bd348] text-white' : 'border-[#2d2d44] text-[#94a3b8] hover:border-[#6bd348]/50'}`}>
                       {d}
                     </button>
                   ))}
@@ -215,14 +215,14 @@ function AIGeneratorContent() {
                 <div>
                   <label className="block text-xs text-[#94a3b8] mb-1.5">Subject</label>
                   <select value={subject} onChange={e => setSubject(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] text-sm focus:outline-none focus:border-[#10b981]">
+                    className="w-full px-3 py-2 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] text-sm focus:outline-none focus:border-[#6bd348]">
                     {['Palo Alto Networks', 'Checkpoint', 'F5', 'Other'].map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs text-[#94a3b8] mb-1.5">Level</label>
                   <select value={gradeLevel} onChange={e => setGradeLevel(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] text-sm focus:outline-none focus:border-[#10b981]">
+                    className="w-full px-3 py-2 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] text-sm focus:outline-none focus:border-[#6bd348]">
                     {['K-2', '3-5', '6-8', '9-12', 'College', 'Professional'].map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
@@ -237,14 +237,14 @@ function AIGeneratorContent() {
         ) : loading ? (
           <div className="text-center py-16 space-y-6">
             <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              className="w-16 h-16 mx-auto rounded-full border-4 border-[#10b981]/30 border-t-[#10b981]" />
+              className="w-16 h-16 mx-auto rounded-full border-4 border-[#6bd348]/30 border-t-[#6bd348]" />
             <div>
               <AnimatePresence mode="wait">
                 <motion.p key={loadingText} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
                   className="text-lg font-semibold text-[#f1f5f9] mb-2">{loadingText}</motion.p>
               </AnimatePresence>
               <div className="w-64 mx-auto h-2 bg-[#2d2d44] rounded-full overflow-hidden">
-                <motion.div className="h-full bg-gradient-to-r from-[#10b981] to-[#06b6d4] rounded-full" animate={{ width: `${loadingProgress}%` }} transition={{ duration: 0.5 }} />
+                <motion.div className="h-full bg-gradient-to-r from-[#6bd348] to-[#06b6d4] rounded-full" animate={{ width: `${loadingProgress}%` }} transition={{ duration: 0.5 }} />
               </div>
             </div>
           </div>
@@ -253,7 +253,7 @@ function AIGeneratorContent() {
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <input type="text" value={generatedTitle} onChange={e => setGeneratedTitle(e.target.value)}
-                  className="bg-transparent text-2xl font-bold text-[#f1f5f9] focus:outline-none border-b-2 border-transparent focus:border-[#10b981] transition-colors" />
+                  className="bg-transparent text-2xl font-bold text-[#f1f5f9] focus:outline-none border-b-2 border-transparent focus:border-[#6bd348] transition-colors" />
                 <p className="text-[#94a3b8] text-sm mt-1">{questions.length} questions generated</p>
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -275,7 +275,7 @@ function AIGeneratorContent() {
             </div>
 
             {savedQuiz && (
-              <div className="p-3 rounded-lg bg-[#22c55e]/10 border border-[#22c55e]/30 text-sm text-[#4ade80] flex items-center gap-2">
+              <div className="p-3 rounded-lg bg-[#22c55e]/10 border border-[#22c55e]/30 text-sm text-[#6bd348] flex items-center gap-2">
                 <Check className="w-4 h-4" /> Saved to library!
                 <button className="ml-auto text-[#22c55e] hover:underline" onClick={() => router.push(`${BASE}/quiz/${savedQuiz.id}/edit`)}>Open in editor →</button>
               </div>
@@ -292,7 +292,7 @@ function AIGeneratorContent() {
                     </div>
                     <div className="flex gap-1">
                       <button onClick={() => regenerateQuestion(i)} disabled={q._editing}
-                        className="p-1.5 rounded hover:bg-white/5 text-[#94a3b8] hover:text-[#10b981] transition-colors">
+                        className="p-1.5 rounded hover:bg-white/5 text-[#94a3b8] hover:text-[#6bd348] transition-colors">
                         {q._editing
                           ? <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}><RefreshCw className="w-4 h-4" /></motion.div>
                           : <RefreshCw className="w-4 h-4" />}
@@ -349,7 +349,7 @@ const Edit = ({ className }: { className?: string }) => (
 
 export default function AIGeneratorPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-[#10b981]" /></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-[#6bd348]" /></div>}>
       <AIGeneratorContent />
     </Suspense>
   );

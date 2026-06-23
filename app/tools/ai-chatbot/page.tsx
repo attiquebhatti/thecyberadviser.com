@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { GraduationCap, MessageSquareText, ShieldCheck, Loader2, BookOpen, ChevronRight, Settings } from 'lucide-react';
 import { courseLogo } from '@/lib/chatbot/courseLogos';
+import { productVendor, type VendorGroup } from '@/lib/productLogos';
 import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 import { atcApi, ChatbotCourse } from '@/lib/chatbot/api';
 
@@ -74,24 +75,38 @@ export default function AiChatbotLandingPage() {
             <p className="text-sm text-slate-500">No courses are available yet. Check back soon.</p>
           )}
           {courses && courses.length > 0 && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              {courses.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => router.push(`/tools/ai-chatbot/chat/${c.id}`)}
-                  className="text-left rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:border-[#FFC300]/40 hover:bg-white/[0.04] p-5 transition-all flex items-center gap-4"
-                >
-                  <div className="w-16 h-12 flex items-center justify-center shrink-0">
-                    <img src={courseLogo(c.course_code)} alt="" className="max-h-10 max-w-full object-contain" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#FFC300]/80 mb-1">{c.course_code}</p>
-                    <p className="text-white font-semibold">{c.name}</p>
-                    <p className="text-xs text-slate-500 mt-1">{c.session_count} session{c.session_count === 1 ? '' : 's'} available</p>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-slate-500 shrink-0" />
-                </button>
-              ))}
+            <div className="space-y-10">
+              {(['Palo Alto Networks', 'Check Point', 'F5'] as VendorGroup[]).map((vendor) => {
+                const group = courses.filter((c) => productVendor(c.course_code, c.name) === vendor);
+                if (group.length === 0) return null;
+                return (
+                  <section key={vendor}>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4 flex items-center gap-2">
+                      <span className="h-4 w-1 rounded-full bg-[#FFC300]" /> {vendor}
+                      <span className="text-slate-600 font-normal normal-case">· {group.length} course{group.length === 1 ? '' : 's'}</span>
+                    </h3>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {group.map((c) => (
+                        <button
+                          key={c.id}
+                          onClick={() => router.push(`/tools/ai-chatbot/chat/${c.id}`)}
+                          className="text-left rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:border-[#FFC300]/40 hover:bg-white/[0.04] p-5 transition-all flex items-center gap-4"
+                        >
+                          <div className="w-16 h-12 flex items-center justify-center shrink-0">
+                            <img src={courseLogo(c.course_code)} alt="" className="max-h-10 max-w-full object-contain" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[#FFC300]/80 mb-1">{c.course_code}</p>
+                            <p className="text-white font-semibold">{c.name}</p>
+                            <p className="text-xs text-slate-500 mt-1">{c.session_count} session{c.session_count === 1 ? '' : 's'} available</p>
+                          </div>
+                          <ChevronRight className="w-5 h-5 text-slate-500 shrink-0" />
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
             </div>
           )}
         </div>

@@ -7,6 +7,13 @@ export function detectVendor(input: ParseInput): SourceVendor {
 
   const sample = `${input.fileName}\n${input.content.slice(0, 4000)}`.toLowerCase();
 
+  // SSE JSON policy exports (Netskope / Zscaler) — checked before generic JSON.
+  const looksJson = input.content.trim().startsWith('{') || input.content.trim().startsWith('[');
+  if (looksJson || sample.includes('netskope') || sample.includes('zscaler')) {
+    if (sample.includes('netskope') || sample.includes('realtime_policies') || sample.includes('npa')) return 'netskope';
+    if (sample.includes('zscaler') || sample.includes('urlfilteringrules') || sample.includes('nwservices') || sample.includes('destipgroups')) return 'zscaler';
+  }
+
   // PAN-OS XML detection
   if (sample.includes('<config version=') || sample.includes('<config urldb=')) {
     return 'pan-os';

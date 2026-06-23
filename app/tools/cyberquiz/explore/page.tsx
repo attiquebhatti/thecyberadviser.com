@@ -63,7 +63,7 @@ export default function ExplorePage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <Globe className="w-6 h-6 text-[#10b981]" />
+            <Globe className="w-6 h-6 text-[#6bd348]" />
             <h1 className="text-3xl font-black font-display">Explore Quizzes</h1>
           </div>
           <p className="text-[#94a3b8]">Discover and fork publicly shared quizzes</p>
@@ -76,7 +76,7 @@ export default function ExplorePage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search quizzes by topic, subject…"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors"
             />
           </div>
           <CQButton type="submit" size="sm">

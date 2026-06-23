@@ -228,23 +228,23 @@
 }
 
 .cq-gradient-text {
-  background: linear-gradient(135deg, #16d97f, #06b6d4);
+  background: linear-gradient(135deg, #6bd348, #9be072);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ── CyberQuiz landing — PANW Cortex green / HUD theme (scoped: cqx-) ── */
+/* ── CyberQuiz — brand green (#6bd348) / HUD theme (scoped: cqx-) ── */
 .cqx-page {
   background:
-    radial-gradient(900px 420px at 50% -6%, rgba(0, 204, 102, 0.20), transparent 60%),
-    radial-gradient(760px 380px at 88% 6%, rgba(45, 212, 191, 0.13), transparent 60%),
-    radial-gradient(640px 360px at 10% 14%, rgba(163, 230, 53, 0.07), transparent 60%),
+    radial-gradient(900px 420px at 50% -6%, rgba(107, 211, 72, 0.20), transparent 60%),
+    radial-gradient(760px 380px at 88% 6%, rgba(107, 211, 72, 0.12), transparent 60%),
+    radial-gradient(640px 360px at 10% 14%, rgba(107, 211, 72, 0.07), transparent 60%),
     #070d0a;
 }
-/* green→teal gradient text (Cortex), scoped so other CQ pages keep their gradient */
+/* brand-green gradient text, scoped so other CQ pages keep their gradient */
 .cqx-gradient-text {
-  background: linear-gradient(135deg, #16d97f, #5eead4);
+  background: linear-gradient(135deg, #6bd348, #9be072);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -255,20 +255,20 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 204, 102, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 204, 102, 0.09) 1px, transparent 1px);
+    linear-gradient(rgba(107, 211, 72, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107, 211, 72, 0.09) 1px, transparent 1px);
   background-size: 46px 46px;
   -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 0%, #000 35%, transparent 78%);
           mask-image: radial-gradient(ellipse 75% 70% at 50% 0%, #000 35%, transparent 78%);
   pointer-events: none;
 }
 .cqx-text-glow {
-  text-shadow: 0 0 30px rgba(0, 204, 102, 0.45), 0 0 10px rgba(45, 212, 191, 0.30);
+  text-shadow: 0 0 30px rgba(107, 211, 72, 0.45), 0 0 10px rgba(107, 211, 72, 0.25);
 }
 .cqx-chip {
-  background: rgba(0, 204, 102, 0.12);
-  border: 1px solid rgba(0, 204, 102, 0.34);
-  box-shadow: inset 0 0 22px rgba(0, 204, 102, 0.10);
+  background: rgba(107, 211, 72, 0.12);
+  border: 1px solid rgba(107, 211, 72, 0.34);
+  box-shadow: inset 0 0 22px rgba(107, 211, 72, 0.10);
 }
 .cqx-card {
   position: relative;
@@ -278,23 +278,23 @@
 }
 .cqx-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 204, 102, 0.45);
-  box-shadow: 0 14px 44px -12px rgba(0, 204, 102, 0.40), 0 8px 32px rgba(0, 0, 0, 0.5);
+  border-color: rgba(107, 211, 72, 0.45);
+  box-shadow: 0 14px 44px -12px rgba(107, 211, 72, 0.40), 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 .cqx-btn {
-  background: linear-gradient(135deg, #19e587, #06a85b);
+  background: linear-gradient(135deg, #7bd84e, #57b339);
   color: #04130c;
-  box-shadow: 0 10px 26px -8px rgba(0, 204, 102, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 26px -8px rgba(107, 211, 72, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: box-shadow 0.2s ease, filter 0.2s ease;
 }
 .cqx-btn:hover {
   filter: brightness(1.07);
-  box-shadow: 0 12px 34px -6px rgba(0, 204, 102, 0.85), inset 0 0 0 1px rgba(110, 231, 183, 0.5);
+  box-shadow: 0 12px 34px -6px rgba(107, 211, 72, 0.85), inset 0 0 0 1px rgba(155, 224, 114, 0.5);
 }
 .cqx-ring-popular {
-  border-color: rgba(0, 204, 102, 0.7) !important;
-  box-shadow: 0 0 0 1px rgba(0, 204, 102, 0.5), 0 22px 54px -22px rgba(0, 204, 102, 0.55),
-    inset 0 0 44px rgba(0, 204, 102, 0.08);
+  border-color: rgba(107, 211, 72, 0.7) !important;
+  box-shadow: 0 0 0 1px rgba(107, 211, 72, 0.5), 0 22px 54px -22px rgba(107, 211, 72, 0.55),
+    inset 0 0 44px rgba(107, 211, 72, 0.08);
 }
 @media (prefers-reduced-motion: reduce) {
   .cqx-card { transition: none; }

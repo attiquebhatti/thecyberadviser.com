@@ -152,9 +152,9 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
                 </button>
 
                 <button onClick={() => setStep('host')}
-                  className="flex flex-col items-center gap-3 p-5 rounded-xl border border-[#10b981]/30 bg-[#10b981]/[0.08] hover:bg-[#10b981]/15 transition-all group">
-                  <div className="w-11 h-11 rounded-full bg-[#10b981]/20 flex items-center justify-center group-hover:bg-[#10b981]/30 transition-colors">
-                    <Users className="w-5 h-5 text-[#5eead4]" />
+                  className="flex flex-col items-center gap-3 p-5 rounded-xl border border-[#6bd348]/30 bg-[#6bd348]/[0.08] hover:bg-[#6bd348]/15 transition-all group">
+                  <div className="w-11 h-11 rounded-full bg-[#6bd348]/20 flex items-center justify-center group-hover:bg-[#6bd348]/30 transition-colors">
+                    <Users className="w-5 h-5 text-[#6bd348]" />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-bold text-[#f1f5f9]">Host Live Quiz</p>
@@ -173,7 +173,7 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
                 <div className="flex gap-2">
                   {[5, 10, 20, 30].map(n => (
                     <button key={n} onClick={() => setCount(n)}
-                      className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${count === n ? 'bg-[#10b981] text-[#04130c] shadow-md shadow-[#10b981]/30' : 'glass-sm text-[#94a3b8] hover:text-white'}`}>
+                      className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${count === n ? 'bg-[#6bd348] text-[#04130c] shadow-md shadow-[#6bd348]/30' : 'glass-sm text-[#94a3b8] hover:text-white'}`}>
                       {n}
                     </button>
                   ))}
@@ -186,7 +186,7 @@ function ModuleChoiceModal({ module: mod, moduleIndex, course, onClose }: { modu
                   Back
                 </button>
                 <button onClick={createLiveQuiz} disabled={hosting}
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#10b981] to-[#06b6d4] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#10b981]/30 hover:opacity-90 transition-opacity disabled:opacity-60">
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#6bd348] to-[#06b6d4] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#6bd348]/30 hover:opacity-90 transition-opacity disabled:opacity-60">
                   {hosting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Users className="w-4 h-4" />}
                   {hosting ? 'Creating…' : 'Create Session'}
                 </button>
@@ -267,7 +267,7 @@ export function CQPANWTemplates() {
 
   const coursesForGroup   = activeGroup  ? banks.filter(b => (b.group || 'Other') === activeGroup.groupKey) : [];
   const modulesForCourse  = activeCourse ? (COURSE_MODULES[activeCourse.course_code] || []) : [];
-  const goBack = () => { if (activeCourse) setActiveCourse(null); else setActiveGroup(null); };
+  const goBack = () => { setActiveCourse(null); setActiveGroup(null); };
 
   return (
     <section className="mt-10">
@@ -275,7 +275,7 @@ export function CQPANWTemplates() {
         {(activeGroup || activeCourse) ? (
           <button onClick={goBack} className="flex items-center gap-2 text-[#94a3b8] hover:text-white transition-colors text-sm glass-sm px-3 py-1.5 rounded-lg"><ArrowLeft className="w-4 h-4" /> Back</button>
         ) : (
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#10b981] to-[#06b6d4] flex items-center justify-center shadow-md shadow-[#10b981]/20"><BookOpen className="w-4 h-4 text-white" /></div>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6bd348] to-[#06b6d4] flex items-center justify-center shadow-md shadow-[#6bd348]/20"><BookOpen className="w-4 h-4 text-white" /></div>
         )}
         <div>
           {activeCourse ? (
@@ -283,7 +283,7 @@ export function CQPANWTemplates() {
           ) : activeGroup ? (
             <><h2 className="font-bold text-[#f1f5f9]">{activeGroup.label}</h2><p className="text-xs text-[#94a3b8]">{activeGroup.tagline}</p></>
           ) : (
-            <><h2 className="font-bold text-[#f1f5f9]">Quiz Templates</h2><p className="text-xs text-[#94a3b8]">Choose a vendor → course → practice full course or individual modules</p></>
+            <><h2 className="font-bold text-[#f1f5f9]">Quiz Templates</h2><p className="text-xs text-[#94a3b8]">Pick a course from Palo Alto Networks, Check Point, or F5 — then practice the full course or individual modules</p></>
           )}
         </div>
       </div>
@@ -293,35 +293,63 @@ export function CQPANWTemplates() {
       )}
 
       <AnimatePresence mode="wait">
-        {!loading && !activeGroup && (
-          <motion.div key="vendors" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {GROUPS.map((g, i) => {
+        {!loading && !activeGroup && !activeCourse && (
+          <motion.div key="all-vendors" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
+            {GROUPS.map((g) => {
+              const groupCourses = banks.filter((b) => (b.group || 'Other') === g.groupKey);
               const stats = statsByGroup[g.groupKey] || { courses: 0, questions: 0 };
-              const isEmpty = stats.courses === 0;
               return (
-                <motion.button key={g.groupKey} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                  whileHover={!isEmpty ? { scale: 1.025, y: -4 } : undefined} whileTap={!isEmpty ? { scale: 0.975 } : undefined}
-                  onClick={() => !isEmpty && setActiveGroup(g)} disabled={isEmpty}
-                  className={`text-left p-5 rounded-2xl relative overflow-hidden glass glass-hover ${isEmpty ? 'opacity-45 cursor-not-allowed' : 'cursor-pointer'}`}
-                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.07)' }}>
-                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${g.accent}, ${g.accent2}, transparent)` }} />
-                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-3xl pointer-events-none" style={{ background: `${g.accent}18` }} />
-                  <div className="mb-4"><VendorLogo g={g} /></div>
-                  <p className="font-bold text-[#f1f5f9] text-base leading-tight mb-0.5">{g.label}</p>
-                  <p className="text-[11px] text-[#64748b] mb-4 leading-snug">{g.tagline}</p>
-                  {isEmpty ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs text-[#4a4a6a] px-2.5 py-1 rounded-full glass-sm">Coming soon</span>
+                <section key={g.groupKey}>
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="h-5 w-1 rounded-full" style={{ background: g.accent }} />
+                    <VendorLogo g={g} />
+                    <div className="min-w-0">
+                      <p className="font-bold text-[#f1f5f9] leading-tight">{g.label}</p>
+                      <p className="text-[11px] text-[#64748b] leading-snug">{g.tagline}</p>
+                    </div>
+                    {stats.courses > 0 && (
+                      <span className="ml-auto text-[11px] text-[#64748b] whitespace-nowrap">{stats.courses} course{stats.courses === 1 ? '' : 's'} · {stats.questions} questions</span>
+                    )}
+                  </div>
+                  {groupCourses.length === 0 ? (
+                    <div className="rounded-xl glass-sm px-4 py-5 text-xs text-[#4a4a6a]">No quizzes published yet — coming soon.</div>
                   ) : (
-                    <div className="flex items-end justify-between">
-                      <div className="flex gap-4">
-                        <div><p className="text-xl font-black leading-none" style={{ color: g.accent }}>{stats.questions}</p><p className="text-[10px] text-[#64748b] mt-0.5">questions</p></div>
-                        <div className="w-px bg-white/10 self-stretch" />
-                        <div><p className="text-xl font-black leading-none text-[#f1f5f9]">{stats.courses}</p><p className="text-[10px] text-[#64748b] mt-0.5">courses</p></div>
-                      </div>
-                      <span className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: g.accent }}>Browse <ChevronRight className="w-3.5 h-3.5" /></span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                      {groupCourses.map((bank, i) => {
+                        const hasModules = !!(COURSE_MODULES[bank.course_code]?.length);
+                        const logo = productLogo(bank.course_code, bank.label);
+                        return (
+                          <motion.button key={bank.course_code} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
+                            whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => { setActiveGroup(g); setActiveCourse(bank); }}
+                            className="text-left p-4 rounded-xl glass glass-hover relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 right-0 h-[1.5px] opacity-70 group-hover:opacity-100 transition-opacity" style={{ background: bank.color }} />
+                            <div className="h-9 flex items-center mb-3">
+                              <img src={logo} alt="" className="h-6 w-auto max-w-[110px] object-contain object-left" />
+                            </div>
+                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold mb-1.5" style={{ background: `${bank.color}18`, color: bank.color }}>
+                              <BookOpen className="w-2.5 h-2.5" />{bank.code}
+                            </div>
+                            <p className="text-sm font-semibold text-[#f1f5f9] leading-tight mb-2 line-clamp-2">{bank.label}</p>
+                            <div className="flex items-center justify-between">
+                              <div className="flex flex-col gap-0.5">
+                                <span className="text-xs text-[#94a3b8]">{bank.total_questions} questions</span>
+                                {hasModules && <span className="text-[10px] text-[#64748b]">{COURSE_MODULES[bank.course_code].length} modules</span>}
+                              </div>
+                              <span className="flex items-center gap-0.5 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: bank.color }}>Select <ChevronRight className="w-3 h-3" /></span>
+                            </div>
+                            <div className="mt-2 h-1 rounded-full bg-white/[0.06] overflow-hidden flex gap-0.5">
+                              {(['Foundational','Intermediate','Advanced'] as const).map(d => {
+                                const pct = bank.total_questions > 0 ? ((bank.by_difficulty[d]||0)/bank.total_questions)*100 : 0;
+                                const colors = { Foundational:'#22c55e', Intermediate:'#f59e0b', Advanced:'#ef4444' };
+                                return pct>0 ? <div key={d} className="h-full rounded-full" style={{ width:`${pct}%`, background:colors[d] }} title={`${d}: ${bank.by_difficulty[d]}`} /> : null;
+                              })}
+                            </div>
+                          </motion.button>
+                        );
+                      })}
                     </div>
                   )}
-                </motion.button>
+                </section>
               );
             })}
           </motion.div>

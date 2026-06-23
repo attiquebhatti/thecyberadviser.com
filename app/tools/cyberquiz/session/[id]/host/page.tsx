@@ -12,7 +12,7 @@ import { CQConfirmDialog } from '@/components/cyberquiz/ConfirmDialog';
 import { formatScore } from '@/lib/cyberquiz/utils';
 
 const BASE = '/tools/cyberquiz';
-const ANSWER_COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#10b981'];
+const ANSWER_COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#6bd348'];
 const ANSWER_LABELS = ['A', 'B', 'C', 'D'];
 
 interface GamePlayer { id: string; name: string; score: number; rank: number; prevRank?: number; answeredCount: number; streak: number; }
@@ -77,7 +77,7 @@ export default function HostGamePage() {
   if (loading) return (
     <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center">
       <div className="text-center space-y-4">
-        <Loader2 className="w-10 h-10 animate-spin text-[#10b981] mx-auto" />
+        <Loader2 className="w-10 h-10 animate-spin text-[#6bd348] mx-auto" />
         <p className="text-[#94a3b8]">Waiting for game to start…</p>
       </div>
     </div>
@@ -99,7 +99,7 @@ export default function HostGamePage() {
                 Q{(gameState.index || 0) + 1} / {gameState.total}
               </div>
               <div className="w-48 h-2 bg-[#2d2d44] rounded-full overflow-hidden">
-                <motion.div className="h-full bg-gradient-to-r from-[#10b981] to-[#06b6d4]" animate={{ width: `${progressPct}%` }} transition={{ duration: 0.5 }} />
+                <motion.div className="h-full bg-gradient-to-r from-[#6bd348] to-[#06b6d4]" animate={{ width: `${progressPct}%` }} transition={{ duration: 0.5 }} />
               </div>
               <div className={`text-2xl font-black ${(gameState.timeLeft || 0) <= 5 ? 'text-[#ef4444]' : 'text-[#f1f5f9]'}`}>
                 {gameState.timeLeft}s
@@ -160,7 +160,7 @@ export default function HostGamePage() {
                   <span>{totalAnswers} / {players.length} answered</span>
                 </div>
                 <div className="h-2 flex-1 mx-4 bg-[#2d2d44] rounded-full overflow-hidden">
-                  <div className="h-full bg-[#10b981] transition-all" style={{ width: players.length > 0 ? `${(totalAnswers / players.length) * 100}%` : '0%' }} />
+                  <div className="h-full bg-[#6bd348] transition-all" style={{ width: players.length > 0 ? `${(totalAnswers / players.length) * 100}%` : '0%' }} />
                 </div>
               </div>
             </>
@@ -188,7 +188,7 @@ export default function HostGamePage() {
                       <span className="flex-1 text-sm text-[#f1f5f9] truncate">{p.name}</span>
                       {rankDelta > 0 && <span className="text-xs text-[#22c55e]">▲{rankDelta}</span>}
                       {rankDelta < 0 && <span className="text-xs text-[#ef4444]">▼{Math.abs(rankDelta)}</span>}
-                      <span className="text-xs font-bold text-[#10b981]">{formatScore(p.score)}</span>
+                      <span className="text-xs font-bold text-[#6bd348]">{formatScore(p.score)}</span>
                     </div>
                   );
                 })}

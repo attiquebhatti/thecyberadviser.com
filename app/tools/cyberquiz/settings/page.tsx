@@ -12,7 +12,7 @@ const BASE = '/tools/cyberquiz';
 
 const TIERS = [
   { id: 'free',     label: 'Free',     price: '$0',     color: '#6b7280', features: ['50 players/session', '10 quizzes', '3 game modes', '10 AI generations/month'] },
-  { id: 'educator', label: 'Educator', price: '$8/mo',  color: '#10b981', features: ['500 players', 'Unlimited quizzes', 'All 8 modes', 'Unlimited AI'] },
+  { id: 'educator', label: 'Educator', price: '$8/mo',  color: '#6bd348', features: ['500 players', 'Unlimited quizzes', 'All 8 modes', 'Unlimited AI'] },
   { id: 'pro',      label: 'Pro',      price: '$16/mo', color: '#06b6d4', features: ['1,000 players', 'Custom branding', 'Priority support'] },
 ];
 
@@ -83,7 +83,7 @@ export default function SettingsPage() {
         {/* Profile */}
         <div className="rounded-xl bg-[#1a1a2e] border border-[#2d2d44] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <User className="w-4 h-4 text-[#10b981]" />
+            <User className="w-4 h-4 text-[#6bd348]" />
             <h2 className="font-semibold text-[#f1f5f9]">Profile</h2>
           </div>
           <div className="flex items-center gap-4 mb-4">
@@ -103,7 +103,7 @@ export default function SettingsPage() {
                 value={displayName}
                 onChange={e => setDisplayName(e.target.value)}
                 placeholder="Your name"
-                className="w-full px-3 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm"
               />
             </div>
             <div>
@@ -124,7 +124,7 @@ export default function SettingsPage() {
         {/* Change Password */}
         <div className="rounded-xl bg-[#1a1a2e] border border-[#2d2d44] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Lock className="w-4 h-4 text-[#10b981]" />
+            <Lock className="w-4 h-4 text-[#6bd348]" />
             <h2 className="font-semibold text-[#f1f5f9]">Change Password</h2>
           </div>
           <form onSubmit={handleChangePassword} className="space-y-3">
@@ -135,18 +135,18 @@ export default function SettingsPage() {
                 value={currentPw}
                 onChange={e => setCurrentPw(e.target.value)}
                 required
-                className="w-full px-3 pr-10 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm"
+                className="w-full px-3 pr-10 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm"
               />
               <button type="button" onClick={() => setShowPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a4a6a] hover:text-[#94a3b8]">
                 {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
             <input type={showPw ? 'text' : 'password'} placeholder="New password (min. 8 chars)" value={newPw} onChange={e => setNewPw(e.target.value)} required minLength={8}
-              className="w-full px-3 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm" />
+              className="w-full px-3 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm" />
             <input type={showPw ? 'text' : 'password'} placeholder="Confirm new password" value={confirmPw} onChange={e => setConfirmPw(e.target.value)} required
-              className="w-full px-3 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors text-sm" />
+              className="w-full px-3 py-2.5 rounded-lg bg-[#0f0f1a] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors text-sm" />
             {pwError && <p className="text-sm text-[#f87171]">{pwError}</p>}
-            {pwSuccess && <p className="text-sm text-[#4ade80]">Password changed successfully</p>}
+            {pwSuccess && <p className="text-sm text-[#6bd348]">Password changed successfully</p>}
             <CQButton type="submit" loading={changingPw} size="sm">
               <Lock className="w-4 h-4" /> Update Password
             </CQButton>
@@ -156,19 +156,19 @@ export default function SettingsPage() {
         {/* Billing */}
         <div className="rounded-xl bg-[#1a1a2e] border border-[#2d2d44] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <CreditCard className="w-4 h-4 text-[#10b981]" />
+            <CreditCard className="w-4 h-4 text-[#6bd348]" />
             <h2 className="font-semibold text-[#f1f5f9]">Plan</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {TIERS.map(tier => (
-              <div key={tier.id} className={`p-4 rounded-xl border-2 transition-all ${user.tier === tier.id ? 'border-[#10b981] bg-[#10b981]/10' : 'border-[#2d2d44]'}`}>
+              <div key={tier.id} className={`p-4 rounded-xl border-2 transition-all ${user.tier === tier.id ? 'border-[#6bd348] bg-[#6bd348]/10' : 'border-[#2d2d44]'}`}>
                 <p className="font-bold text-[#f1f5f9]">{tier.label}</p>
                 <p className="text-lg font-black" style={{ color: tier.color }}>{tier.price}</p>
                 <ul className="mt-2 space-y-1">
                   {tier.features.map((f, i) => <li key={i} className="text-xs text-[#94a3b8]">✓ {f}</li>)}
                 </ul>
                 {user.tier === tier.id
-                  ? <p className="text-xs text-[#10b981] mt-2 text-center font-medium">Current plan</p>
+                  ? <p className="text-xs text-[#6bd348] mt-2 text-center font-medium">Current plan</p>
                   : <CQButton size="sm" className="w-full mt-3" variant={tier.id === 'educator' ? 'primary' : 'ghost'}>Upgrade</CQButton>
                 }
               </div>

@@ -7,9 +7,11 @@ export type SourceVendor =
   | 'fortigate'
   | 'checkpoint'
   | 'pan-os'
+  | 'netskope'
+  | 'zscaler'
   | 'unknown';
 
-export type TargetVendor = 'pan-os' | 'cisco-asa' | 'fortigate' | 'checkpoint';
+export type TargetVendor = 'pan-os' | 'cisco-asa' | 'fortigate' | 'checkpoint' | 'prisma-access';
 
 export type ConfidenceBucket = 'high' | 'medium' | 'low';
 
@@ -362,7 +364,7 @@ export interface GeneratorOptions {
 }
 
 export interface GeneratedArtifact {
-  id: 'panos-xml' | 'panos-cli' | 'report-json' | 'rollback-bundle';
+  id: string;
   label: string;
   mimeType: string;
   fileName: string;

@@ -11,14 +11,14 @@ import { CQBadge } from './ui/Badge';
 import type { Quiz } from '@/lib/cyberquiz/types';
 
 const GAME_MODES = [
-  { id: 'classic_blitz',  name: 'Classic Blitz',    icon: Zap,      color: '#10b981', bg: 'from-[#10b981]/20 to-[#10b981]/5', desc: 'Speed + accuracy = points. Perfect for any group.', free: true  },
+  { id: 'classic_blitz',  name: 'Classic Blitz',    icon: Zap,      color: '#6bd348', bg: 'from-[#6bd348]/20 to-[#6bd348]/5', desc: 'Speed + accuracy = points. Perfect for any group.', free: true  },
   { id: 'battle_royale',  name: 'Battle Royale',    icon: Skull,    color: '#ef4444', bg: 'from-[#ef4444]/20 to-[#ef4444]/5', desc: 'One wrong answer = one life lost. Last one standing.', free: true  },
   { id: 'gold_rush',      name: 'Gold Rush',        icon: Coins,    color: '#fbbf24', bg: 'from-[#fbbf24]/20 to-[#fbbf24]/5', desc: 'Earn coins, buy power-ups, steal from rivals.',        free: false },
   { id: 'tower_defense',  name: 'Tower Defense',    icon: Castle,   color: '#3b82f6', bg: 'from-[#3b82f6]/20 to-[#3b82f6]/5', desc: 'Build defenses with correct answers.',               free: false },
   { id: 'space_race',     name: 'Space Race',       icon: Rocket,   color: '#06b6d4', bg: 'from-[#06b6d4]/20 to-[#06b6d4]/5', desc: 'Team rocket race. Speed and accuracy push you forward.', free: false },
   { id: 'puzzle_race',    name: 'Puzzle Race',      icon: Puzzle,   color: '#f97316', bg: 'from-[#f97316]/20 to-[#f97316]/5', desc: 'Reveal the hidden image piece by piece.',              free: false },
   { id: 'word_forge',     name: 'Word Forge',       icon: BookOpen, color: '#22c55e', bg: 'from-[#22c55e]/20 to-[#22c55e]/5', desc: 'AI-scored open answers. Closest meaning wins.',       free: false },
-  { id: 'infinity_mode',  name: 'Infinity Mode',    icon: Infinity, color: '#2dd4bf', bg: 'from-[#2dd4bf]/20 to-[#2dd4bf]/5', desc: 'Endless loop. Currency keeps accumulating.',          free: false },
+  { id: 'infinity_mode',  name: 'Infinity Mode',    icon: Infinity, color: '#6bd348', bg: 'from-[#6bd348]/20 to-[#6bd348]/5', desc: 'Endless loop. Currency keeps accumulating.',          free: false },
 ];
 
 interface Props { quiz: Quiz; open: boolean; onClose: () => void; }
@@ -72,7 +72,7 @@ export function CQGameModeSelector({ quiz, open, onClose }: Props) {
               <label key={key} className="flex items-center justify-between cursor-pointer">
                 <span className="flex items-center gap-2 text-sm text-[#94a3b8]"><Icon className="w-4 h-4" /> {label}</span>
                 <button
-                  className={`w-10 h-5 rounded-full transition-colors ${settings[key as keyof typeof settings] ? 'bg-[#10b981]' : 'bg-[#2d2d44]'} relative`}
+                  className={`w-10 h-5 rounded-full transition-colors ${settings[key as keyof typeof settings] ? 'bg-[#6bd348]' : 'bg-[#2d2d44]'} relative`}
                   onClick={() => setSettings(s => ({ ...s, [key]: !s[key as keyof typeof settings] }))}
                 >
                   <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${settings[key as keyof typeof settings] ? 'translate-x-5' : ''}`} />
@@ -116,7 +116,7 @@ export function CQGameModeSelector({ quiz, open, onClose }: Props) {
                   <Icon className="w-6 h-6 mb-2" style={{ color: mode.color }} />
                   <p className="text-sm font-semibold text-[#f1f5f9] mb-0.5">{mode.name}</p>
                   <p className="text-xs text-[#94a3b8] leading-tight">{mode.desc}</p>
-                  {locked && <p className="text-xs text-[#10b981] mt-1">Upgrade to unlock</p>}
+                  {locked && <p className="text-xs text-[#6bd348] mt-1">Upgrade to unlock</p>}
                 </motion.button>
               );
             })}

@@ -43,7 +43,7 @@ export function CQConfirmDialog({
             <AlertDialog.Action asChild>
               <button
                 onClick={onConfirm}
-                className={`px-4 py-2 rounded-xl text-sm font-semibold text-white transition-colors ${variant === 'danger' ? 'bg-[#ef4444] hover:bg-[#dc2626]' : 'bg-[#10b981] hover:bg-[#059669]'}`}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold text-white transition-colors ${variant === 'danger' ? 'bg-[#ef4444] hover:bg-[#dc2626]' : 'bg-[#6bd348] hover:bg-[#5cbf3c]'}`}
               >
                 {confirmLabel}
               </button>

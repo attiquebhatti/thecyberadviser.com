@@ -10,7 +10,7 @@ async function getConfetti() {
 
 export async function celebrateCorrect() {
   const fire = await getConfetti();
-  fire({ particleCount: 60, spread: 60, origin: { y: 0.7 }, colors: ['#10b981', '#06b6d4', '#22c55e'] });
+  fire({ particleCount: 60, spread: 60, origin: { y: 0.7 }, colors: ['#6bd348', '#06b6d4', '#22c55e'] });
 }
 
 export async function celebrateWin() {

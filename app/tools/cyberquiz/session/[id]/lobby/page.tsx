@@ -100,7 +100,7 @@ export default function SessionLobbyPage() {
 
   if (loading) return (
     <div className="min-h-screen bg-[#0f0f1a] flex items-center justify-center">
-      <Loader2 className="w-8 h-8 animate-spin text-[#10b981]" />
+      <Loader2 className="w-8 h-8 animate-spin text-[#6bd348]" />
     </div>
   );
 
@@ -167,10 +167,10 @@ export default function SessionLobbyPage() {
         <div className="md:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-[#10b981]" />
+              <Users className="w-5 h-5 text-[#6bd348]" />
               <h2 className="font-bold text-[#f1f5f9]">Players</h2>
             </div>
-            <div className="text-2xl font-black text-[#10b981]">{players.length}</div>
+            <div className="text-2xl font-black text-[#6bd348]">{players.length}</div>
           </div>
 
           {players.length === 0 ? (

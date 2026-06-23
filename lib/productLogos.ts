@@ -10,6 +10,16 @@ const PANW       = '/logos/PANW_Parent_Brand_Primary_Logo_RGB_Red_White.png';
 const CHECKPOINT = '/logos/checkpoint.png';
 const F5         = '/logos/f5.png';
 
+export type VendorGroup = 'Palo Alto Networks' | 'Check Point' | 'F5';
+
+/** Classify a course/quiz into one of the three training vendors. */
+export function productVendor(code: string, name = '', group = ''): VendorGroup {
+  const s = `${code} ${name} ${group}`.toUpperCase();
+  if (/CHECK ?POINT|\bCCSA\b|\bCCSE\b|MAESTRO|QUANTUM|\bGAIA\b/.test(s)) return 'Check Point';
+  if (/\bF5\b|BIG-?IP|\bLTM\b|\bGTM\b|\bAPM\b|\bASM\b/.test(s)) return 'F5';
+  return 'Palo Alto Networks';
+}
+
 export function productLogo(code: string, name = '', group = ''): string {
   const s = `${code} ${name} ${group}`.toUpperCase();
   // Other vendors first (so their codes aren't mistaken for PANW lines).

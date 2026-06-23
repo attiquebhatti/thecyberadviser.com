@@ -63,8 +63,8 @@ export default function JoinPage() {
       </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm text-center">
-        <div className="w-16 h-16 rounded-2xl bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center mx-auto mb-6">
-          <LogIn className="w-8 h-8 text-[#10b981]" />
+        <div className="w-16 h-16 rounded-2xl bg-[#6bd348]/10 border border-[#6bd348]/20 flex items-center justify-center mx-auto mb-6">
+          <LogIn className="w-8 h-8 text-[#6bd348]" />
         </div>
         <h1 className="text-3xl font-black font-display mb-2">Join Session</h1>
         <p className="text-[#94a3b8] mb-10">Enter the 6-digit code from your host</p>
@@ -81,7 +81,7 @@ export default function JoinPage() {
               onChange={e => handleChange(i, e.target.value)}
               onKeyDown={e => handleKeyDown(i, e)}
               className={`w-12 h-14 text-center text-2xl font-bold rounded-xl border-2 bg-[#1a1a2e] text-[#f1f5f9] focus:outline-none transition-all
-                ${d ? 'border-[#10b981] bg-[#10b981]/10' : 'border-[#2d2d44] focus:border-[#10b981]'}`}
+                ${d ? 'border-[#6bd348] bg-[#6bd348]/10' : 'border-[#2d2d44] focus:border-[#6bd348]'}`}
               autoFocus={i === 0}
             />
           ))}

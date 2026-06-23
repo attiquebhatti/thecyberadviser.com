@@ -7,12 +7,12 @@ import { useAuthStore } from '@/lib/cyberquiz/stores/authStore';
 const BASE = '/tools/cyberquiz';
 
 const FEATURES = [
-  { icon: Zap,      color: '#34d399', title: '8 Game Modes',          desc: 'From Classic Blitz to Battle Royale and Gold Rush — every session is unique.' },
-  { icon: Brain,    color: '#5eead4', title: 'AI Quiz Generation',     desc: 'Generate full quizzes in seconds from any topic using Groq AI.' },
-  { icon: Users,    color: '#4ade80', title: 'Live Multiplayer',       desc: 'Real-time Socket.io gameplay. Host or join with a 6-digit code.' },
-  { icon: Shield,   color: '#a3e635', title: 'PANW Question Banks',    desc: 'Curated PCNSE, XDR, XSIAM, Prisma and more — built for cybersecurity pros.' },
-  { icon: BarChart3,color: '#2dd4bf', title: 'Full Analytics',         desc: 'Session heatmaps, performance trends, and per-question accuracy.' },
-  { icon: Trophy,   color: '#86efac', title: 'Live Leaderboards',      desc: 'Dynamic rank changes and real-time score updates keep players engaged.' },
+  { icon: Zap,      color: '#6bd348', title: '8 Game Modes',          desc: 'From Classic Blitz to Battle Royale and Gold Rush — every session is unique.' },
+  { icon: Brain,    color: '#6bd348', title: 'AI Quiz Generation',     desc: 'Generate full quizzes in seconds from any topic using Groq AI.' },
+  { icon: Users,    color: '#6bd348', title: 'Live Multiplayer',       desc: 'Real-time Socket.io gameplay. Host or join with a 6-digit code.' },
+  { icon: Shield,   color: '#6bd348', title: 'PANW Question Banks',    desc: 'Curated PCNSE, XDR, XSIAM, Prisma and more — built for cybersecurity pros.' },
+  { icon: BarChart3,color: '#6bd348', title: 'Full Analytics',         desc: 'Session heatmaps, performance trends, and per-question accuracy.' },
+  { icon: Trophy,   color: '#6bd348', title: 'Live Leaderboards',      desc: 'Dynamic rank changes and real-time score updates keep players engaged.' },
 ];
 
 const STATS = [
@@ -36,12 +36,12 @@ const TIERS = [
     cta: 'Get Started', primary: false,
   },
   {
-    id: 'educator', label: 'Educator', price: '$8/mo', color: '#34d399',
+    id: 'educator', label: 'Educator', price: '$8/mo', color: '#6bd348',
     features: ['500 players', 'Unlimited quizzes', 'All 8 modes', 'Unlimited AI', 'PANW question banks'],
     cta: 'Start Educator', primary: true,
   },
   {
-    id: 'pro', label: 'Pro', price: '$16/mo', color: '#2dd4bf',
+    id: 'pro', label: 'Pro', price: '$16/mo', color: '#6bd348',
     features: ['1,000 players', 'Custom branding', 'Priority support', 'Everything in Educator'],
     cta: 'Go Pro', primary: false,
   },
@@ -57,7 +57,7 @@ export default function CyberQuizLanding() {
       {/* Hero */}
       <section className="cqx-grid relative overflow-hidden px-4 pt-10 pb-16 text-center">
         <div className="relative max-w-4xl mx-auto">
-          <div className="cqx-chip inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm text-[#6ee7b7] mb-6">
+          <div className="cqx-chip inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm text-[#9be072] mb-6">
             <Star className="w-3.5 h-3.5" /> Cybersecurity Quiz Platform
           </div>
           <h1 className="text-5xl md:text-7xl font-black mb-5 leading-tight tracking-tight">
@@ -85,7 +85,7 @@ export default function CyberQuizLanding() {
                 </Link>
                 <Link
                   href={`${BASE}/join`}
-                  className="inline-flex items-center gap-2 bg-white/[0.03] hover:bg-white/[0.08] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#00cc66]/50 font-semibold rounded-xl px-8 py-3 text-base transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-white/[0.03] hover:bg-white/[0.08] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#6bd348]/50 font-semibold rounded-xl px-8 py-3 text-base transition-colors cursor-pointer"
                 >
                   Join a Session
                 </Link>
@@ -180,7 +180,7 @@ export default function CyberQuizLanding() {
               key={tier.id}
               className={`relative rounded-2xl p-6 border transition-all ${
                 tier.primary
-                  ? 'cqx-ring-popular bg-[#00cc66]/[0.06] md:-translate-y-2'
+                  ? 'cqx-ring-popular bg-[#6bd348]/[0.06] md:-translate-y-2'
                   : 'border-[#2d2d44] bg-white/[0.02]'
               }`}
             >
@@ -209,7 +209,7 @@ export default function CyberQuizLanding() {
                 className={`w-full inline-flex items-center justify-center rounded-xl font-semibold py-2.5 text-sm transition-colors cursor-pointer ${
                   tier.primary
                     ? 'cqx-btn text-[#04130c]'
-                    : 'bg-white/[0.04] hover:bg-white/[0.09] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#00cc66]/50'
+                    : 'bg-white/[0.04] hover:bg-white/[0.09] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#6bd348]/50'
                 }`}
               >
                 {tier.cta}
@@ -237,7 +237,7 @@ export default function CyberQuizLanding() {
       </section>
 
       <footer className="border-t border-[#1a1a2e] px-4 py-6 text-center text-sm text-[#6a6a8a]">
-        <p>CyberQuiz — a tool by <Link href="/" className="text-[#34d399] hover:underline">thecyberadviser.com</Link></p>
+        <p>CyberQuiz — a tool by <Link href="/" className="text-[#6bd348] hover:underline">thecyberadviser.com</Link></p>
       </footer>
     </div>
   );

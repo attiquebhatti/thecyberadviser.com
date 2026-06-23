@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "test:unified-migrator": "sucrase-node test/unified-migrator.test.ts",
     "test:scm": "sucrase-node test/scm-migration.harness.ts",
+    "test:targets": "sucrase-node test/migration-targets.harness.ts",
     "test:prisma-sizing": "sucrase-node test/prisma-sizing.test.ts",
     "test:siem-sizing": "sucrase-node test/siem-sizing.test.ts",
     "desktop:dev": "cross-env UNIFIED_MIGRATOR_DESKTOP_URL=http://localhost:3000 electron .",

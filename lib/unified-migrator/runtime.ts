@@ -9,6 +9,7 @@ import { CiscoAsaParser } from '@/lib/unified-migrator/parsers/cisco-asa';
 import { FortigateParser } from '@/lib/unified-migrator/parsers/fortigate';
 import { CheckpointParser } from '@/lib/unified-migrator/parsers/checkpoint';
 import { PanosParser } from '@/lib/unified-migrator/parsers/pan-os';
+import { NetskopeParser, ZscalerParser } from '@/lib/unified-migrator/parsers/sse';
 import { getGenerator } from '@/lib/unified-migrator/generators/index';
 import { PostValidator } from '@/lib/unified-migrator/validators/post-validate';
 import { detectVendor, detectVersion } from '@/lib/unified-migrator/ingestion/detect';
@@ -171,6 +172,10 @@ function dispatchParser(
       return new CheckpointParser(input, versionInfo, profile).parse();
     case 'pan-os':
       return new PanosParser(input, versionInfo, profile).parse();
+    case 'netskope':
+      return new NetskopeParser(input, versionInfo, profile).parse();
+    case 'zscaler':
+      return new ZscalerParser(input, versionInfo, profile).parse();
     default:
       throw new Error(`No parser registered for vendor: ${vendor}`);
   }

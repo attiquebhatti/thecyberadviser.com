@@ -10,7 +10,7 @@ export function CQCard({ className, hover, glass = 'md', children, ...props }: C
   const glassClass = glass === 'sm' ? 'glass-sm' : glass === 'dark' ? 'glass-dark' : 'glass';
   return (
     <div
-      className={cn('rounded-xl p-4', glassClass, hover && 'glass-hover cursor-pointer hover:border-[#10b981]/40 hover:shadow-[#10b981]/10', className)}
+      className={cn('rounded-xl p-4', glassClass, hover && 'glass-hover cursor-pointer hover:border-[#6bd348]/40 hover:shadow-[#6bd348]/10', className)}
       {...props}
     >
       {children}

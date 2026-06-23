@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { runMigration } from '@/lib/unified-migrator/runtime';
 import { runScmMigration } from '@/lib/unified-migrator/scm/runtime';
@@ -44,6 +44,7 @@ export default function MigratorClient() {
   const onSourceChange = useCallback((value: SourceVendor | 'auto' | 'panorama') => {
     setSourceVendor(value);
     if (value === 'panorama') setTargetVendor('scm');
+    else if (value === 'netskope' || value === 'zscaler') setTargetVendor('prisma-access');
     else if (targetVendor === 'scm') setTargetVendor('pan-os');
   }, [targetVendor]);
 
@@ -52,10 +53,26 @@ export default function MigratorClient() {
     if (value === 'scm') setSourceVendor('panorama');
     else if (sourceVendor === 'panorama') setSourceVendor('auto');
   }, [sourceVendor]);
-  const [role, setRole] = useState<AppRole>('admin');
   const [recentProjects, setRecentProjects] = useState<ProjectListItem[]>([]);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Real auth/RBAC via CyberQuiz SSO: owner = admin, everyone else = standard.
+  const [authChecked, setAuthChecked] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const role: AppRole = isAdmin ? 'admin' : 'standard';
+
+  useEffect(() => {
+    const t = typeof window !== 'undefined' ? localStorage.getItem('qa_token') : null;
+    setToken(t);
+    if (!t) { setAuthChecked(true); return; }
+    fetch('/api/admin/check', { headers: { Authorization: `Bearer ${t}` } })
+      .then((r) => r.json())
+      .then((d) => setIsAdmin(!!d.isAdmin))
+      .catch(() => setIsAdmin(false))
+      .finally(() => setAuthChecked(true));
+  }, []);
 
   // Load recent projects in desktop mode
   const refreshProjects = useCallback(async () => {
@@ -113,6 +130,19 @@ export default function MigratorClient() {
     []
   );
 
+  // Record the run for the admin Insights dashboard (who/when/what).
+  const logMigrationRun = useCallback(
+    (sourceVendor: string, target: string, automatedRate?: number, flagged?: number) => {
+      if (!token) return;
+      fetch('/api/migration/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ sourceVendor, targetVendor: target, fileName, automatedRate, flagged }),
+      }).catch(() => {});
+    },
+    [token, fileName]
+  );
+
   // Step 2 — run the migration with the chosen options.
   const runNow = useCallback(
     async () => {
@@ -132,6 +162,7 @@ export default function MigratorClient() {
             flagged: scm.scm.stats.flagged,
             cleanupDuplicates: options.cleanupDuplicates,
           }, role).catch(console.error);
+          logMigrationRun('panorama', 'scm', undefined, scm.scm.stats.flagged);
           setScmResult(scm);
           setState('done');
           return;
@@ -170,6 +201,11 @@ export default function MigratorClient() {
           cleanupDuplicates: options.cleanupDuplicates,
         }, role).catch(console.error);
 
+        logMigrationRun(
+          migrationResult.parseResult.detectedVendor,
+          genericTarget,
+          migrationResult.validationReport.overallAutomatedRate
+        );
         setResult(migrationResult);
         setState('done');
         refreshProjects();
@@ -178,7 +214,7 @@ export default function MigratorClient() {
         setState('error');
       }
     },
-    [pendingContent, fileName, sourceVendor, targetVendor, role, options, refreshProjects]
+    [pendingContent, fileName, sourceVendor, targetVendor, role, options, refreshProjects, logMigrationRun]
   );
 
   const downloadArtifact = useCallback(
@@ -196,6 +232,42 @@ export default function MigratorClient() {
     },
     [result]
   );
+
+  // While the auth check resolves, show a brief loader (avoids flashing the
+  // full tool to a logged-out visitor before the login gate appears).
+  if (!isDesktopMode() && !authChecked) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-24 flex justify-center">
+        <div className="w-8 h-8 border-2 border-[#6bd348]/30 border-t-[#6bd348] rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Gate the tool behind CyberQuiz SSO (so we can enforce admin/standard
+  // roles and log who runs each migration).
+  if (!isDesktopMode() && authChecked && !token) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-16 text-center">
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-8">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6bd348]/15 text-[#6bd348]">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+          <h3 className="text-white text-lg font-semibold mb-2">Sign in to use the Migration tool</h3>
+          <p className="text-white/50 text-sm mb-6">
+            Use your existing site account (the same one as CyberQuiz). Your configs are still processed locally in your browser — sign-in is only used for access control and usage history.
+          </p>
+          <Link
+            href={`/tools/cyberquiz/auth?tab=login&redirect=${encodeURIComponent('/tools/unified-migration')}`}
+            className="inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold text-[#04130c] bg-[#6bd348] hover:brightness-110 transition"
+          >
+            Log in to continue
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -253,15 +325,13 @@ export default function MigratorClient() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <label className="text-xs text-white/50">Simulate Role:</label>
-              <select 
-                value={role} 
-                onChange={(e) => setRole(e.target.value as AppRole)}
-                className="bg-white/[0.04] border border-white/[0.08] rounded-md px-3 py-1.5 text-white text-xs focus:ring-2 focus:ring-blue-500/50"
-              >
-                <option value="admin" className="bg-[#020914] text-white">Full Admin</option>
-                <option value="standard" className="bg-[#020914] text-white">Standard User</option>
-              </select>
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
+                role === 'admin'
+                  ? 'bg-[#6bd348]/15 text-[#6bd348] border-[#6bd348]/30'
+                  : 'bg-white/[0.04] text-white/60 border-white/[0.1]'
+              }`}>
+                {role === 'admin' ? 'Admin' : 'Standard user'}
+              </span>
               {role === 'admin' && (
             <div className="flex items-center gap-2">
               <button 
@@ -303,6 +373,8 @@ export default function MigratorClient() {
                 <option value="checkpoint" className="bg-[#020914] text-white">Check Point</option>
                 <option value="pan-os" className="bg-[#020914] text-white">PAN-OS (single firewall)</option>
                 <option value="panorama" className="bg-[#020914] text-white">Panorama (→ SCM)</option>
+                <option value="netskope" className="bg-[#020914] text-white">Netskope (JSON → Prisma Access)</option>
+                <option value="zscaler" className="bg-[#020914] text-white">Zscaler (JSON → Prisma Access)</option>
               </select>
             </div>
 
@@ -316,7 +388,11 @@ export default function MigratorClient() {
                 className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
               >
                 <option value="pan-os" className="bg-[#020914] text-white">Palo Alto PAN-OS</option>
+                <option value="prisma-access" className="bg-[#020914] text-white">Prisma Access</option>
                 <option value="scm" className="bg-[#020914] text-white">Strata Cloud Manager (SCM)</option>
+                <option value="fortigate" className="bg-[#020914] text-white">FortiGate</option>
+                <option value="cisco-asa" className="bg-[#020914] text-white">Cisco ASA</option>
+                <option value="checkpoint" className="bg-[#020914] text-white">Check Point</option>
               </select>
               {targetVendor === 'scm' && (
                 <p className="mt-1.5 text-[11px] text-blue-300/70">

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import AdminToolsRow from '@/components/tools/AdminToolsRow';
 
 export const metadata: Metadata = {
   title: 'Security Tools | The Cyber Adviser',
@@ -56,7 +57,7 @@ export default function ToolsPage() {
                 Estimate storage, compute, RAM, and architecture requirements for SIEM and SOAR deployments.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button asChild className="bg-[#FFC300] text-black hover:bg-[#FFD54D]">
+                <Button asChild className="bg-[#6bd348] text-black hover:brightness-110">
                   <Link href="/tools/siem-sizing">
                     Open SIEM tool
                   </Link>
@@ -90,7 +91,7 @@ export default function ToolsPage() {
                 Real-time multiplayer quiz platform with AI generation, 8 game modes, and curated PANW question banks — built for cybersecurity professionals.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button asChild className="bg-[#7c3aed] text-white hover:bg-[#6d28d9]">
+                <Button asChild className="bg-[#6bd348] text-black hover:brightness-110">
                   <Link href="/tools/cyberquiz">
                     Open CyberQuiz
                   </Link>
@@ -122,6 +123,8 @@ export default function ToolsPage() {
             </CardContent>
           </Card>
         </div>
+
+        <AdminToolsRow />
       </Section>
     </>
   );

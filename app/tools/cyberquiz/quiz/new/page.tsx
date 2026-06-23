@@ -17,7 +17,7 @@ const QUESTION_TYPES = [{ id: 'multiple_choice', label: 'Multiple Choice' }, { i
 const TIMERS = [5, 10, 20, 30, 60];
 const POINTS = [10, 100, 500, 1000];
 const SUBJECTS = ['Palo Alto Networks', 'Checkpoint', 'F5', 'Other'];
-const COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#2dd4bf', '#f97316'];
+const COLORS = ['#ef4444', '#3b82f6', '#f59e0b', '#6bd348', '#6bd348', '#f97316'];
 const LABELS = ['A', 'B', 'C', 'D', 'E', 'F'];
 type QuestionDraft = Omit<Question, 'created_at'> & { _isNew?: boolean };
 
@@ -29,7 +29,7 @@ function SortableQuestion({ question, index, selected, onClick, onDelete }: { qu
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: question.id });
   const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.5 : 1 };
   return (
-    <div ref={setNodeRef} style={style} className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all group ${selected ? 'bg-[#10b981]/20 border border-[#10b981]/50' : 'bg-[#0f0f1a] border border-[#2d2d44] hover:border-[#3d3d5a]'}`} onClick={onClick}>
+    <div ref={setNodeRef} style={style} className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all group ${selected ? 'bg-[#6bd348]/20 border border-[#6bd348]/50' : 'bg-[#0f0f1a] border border-[#2d2d44] hover:border-[#3d3d5a]'}`} onClick={onClick}>
       <button {...attributes} {...listeners} className="p-1 text-[#4a4a6a] hover:text-[#94a3b8] cursor-grab active:cursor-grabbing"><GripVertical className="w-4 h-4" /></button>
       <span className="text-xs font-bold text-[#94a3b8] w-5 shrink-0">{index + 1}</span>
       <div className="flex-1 min-w-0">
@@ -106,8 +106,8 @@ export default function NewQuizPage() {
       <header className="sticky top-24 z-30 bg-[#1a1a2e] border-b border-[#2d2d44] px-4 py-3">
         <div className="flex items-center gap-3 flex-wrap">
           <button onClick={() => router.push(`${BASE}/dashboard`)} className="p-1.5 rounded-lg hover:bg-white/5 text-[#94a3b8] transition-colors"><ChevronLeft className="w-5 h-5" /></button>
-          <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="flex-1 min-w-0 bg-transparent text-lg font-bold text-[#f1f5f9] focus:outline-none placeholder:text-[#4a4a6a] border-b-2 border-transparent focus:border-[#10b981] transition-colors" placeholder="Quiz title…" />
-          <select value={subject} onChange={e => setSubject(e.target.value)} className="bg-[#0f0f1a] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-2 py-1.5 focus:outline-none focus:border-[#10b981]">
+          <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="flex-1 min-w-0 bg-transparent text-lg font-bold text-[#f1f5f9] focus:outline-none placeholder:text-[#4a4a6a] border-b-2 border-transparent focus:border-[#6bd348] transition-colors" placeholder="Quiz title…" />
+          <select value={subject} onChange={e => setSubject(e.target.value)} className="bg-[#0f0f1a] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-2 py-1.5 focus:outline-none focus:border-[#6bd348]">
             {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
           {savedAt && <span className="text-xs text-[#4a4a6a]">Saved {savedAt.toLocaleTimeString()}</span>}
@@ -134,7 +134,7 @@ export default function NewQuizPage() {
             </DndContext>
           </div>
           <div className="p-3 border-t border-[#2d2d44]">
-            <button onClick={addQ} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 border-dashed border-[#2d2d44] hover:border-[#10b981]/50 text-[#94a3b8] hover:text-[#f1f5f9] text-sm transition-all"><Plus className="w-4 h-4" /> Add Question</button>
+            <button onClick={addQ} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 border-dashed border-[#2d2d44] hover:border-[#6bd348]/50 text-[#94a3b8] hover:text-[#f1f5f9] text-sm transition-all"><Plus className="w-4 h-4" /> Add Question</button>
           </div>
         </aside>
 
@@ -142,12 +142,12 @@ export default function NewQuizPage() {
           {currentQ && (
             <motion.div key={selectedIdx} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="max-w-2xl mx-auto space-y-5">
               <div className="flex flex-wrap gap-3">
-                <select value={currentQ.type} onChange={e => updateQ('type', e.target.value)} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#10b981]">{QUESTION_TYPES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}</select>
-                <select value={currentQ.time_limit_seconds} onChange={e => updateQ('time_limit_seconds', Number(e.target.value))} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#10b981]">{TIMERS.map(t => <option key={t} value={t}>{t}s</option>)}</select>
-                <select value={currentQ.points} onChange={e => updateQ('points', Number(e.target.value))} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#10b981]">{POINTS.map(p => <option key={p} value={p}>{p} pts</option>)}</select>
-                <select value={currentQ.difficulty} onChange={e => updateQ('difficulty', e.target.value)} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#10b981]"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
+                <select value={currentQ.type} onChange={e => updateQ('type', e.target.value)} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#6bd348]">{QUESTION_TYPES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}</select>
+                <select value={currentQ.time_limit_seconds} onChange={e => updateQ('time_limit_seconds', Number(e.target.value))} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#6bd348]">{TIMERS.map(t => <option key={t} value={t}>{t}s</option>)}</select>
+                <select value={currentQ.points} onChange={e => updateQ('points', Number(e.target.value))} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#6bd348]">{POINTS.map(p => <option key={p} value={p}>{p} pts</option>)}</select>
+                <select value={currentQ.difficulty} onChange={e => updateQ('difficulty', e.target.value)} className="bg-[#1a1a2e] border border-[#2d2d44] text-[#94a3b8] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#6bd348]"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
               </div>
-              <textarea value={currentQ.question_text} onChange={e => updateQ('question_text', e.target.value)} rows={3} placeholder="Enter your question…" className="w-full px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors resize-none text-base" />
+              <textarea value={currentQ.question_text} onChange={e => updateQ('question_text', e.target.value)} rows={3} placeholder="Enter your question…" className="w-full px-4 py-3 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors resize-none text-base" />
               {currentQ.type === 'multiple_choice' && (
                 <div className="space-y-2">
                   <label className="text-xs font-medium text-[#94a3b8] uppercase tracking-wide">Answer Options</label>
@@ -159,19 +159,19 @@ export default function NewQuizPage() {
                       {(currentQ.options as QuestionOption[]).length > 2 && <button onClick={() => removeOpt(oi)} className="p-1.5 rounded-lg text-[#4a4a6a] hover:text-[#ef4444] transition-colors"><X className="w-3.5 h-3.5" /></button>}
                     </div>
                   ))}
-                  {(currentQ.options as QuestionOption[]).length < 6 && <button onClick={addOpt} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-dashed border-[#2d2d44] hover:border-[#10b981]/50 text-[#94a3b8] hover:text-[#f1f5f9] text-sm transition-all"><Plus className="w-4 h-4" /> Add Option</button>}
+                  {(currentQ.options as QuestionOption[]).length < 6 && <button onClick={addOpt} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-dashed border-[#2d2d44] hover:border-[#6bd348]/50 text-[#94a3b8] hover:text-[#f1f5f9] text-sm transition-all"><Plus className="w-4 h-4" /> Add Option</button>}
                 </div>
               )}
               {currentQ.type === 'true_false' && (
                 <div><label className="text-xs font-medium text-[#94a3b8] uppercase tracking-wide mb-2 block">Correct Answer</label>
-                  <div className="flex gap-3">{['True', 'False'].map(v => (<button key={v} onClick={() => updateQ('correct_answer', v)} className={`flex-1 py-3 rounded-xl border-2 font-semibold transition-all ${currentQ.correct_answer === v ? 'border-[#22c55e] bg-[#22c55e]/10 text-[#4ade80]' : 'border-[#2d2d44] text-[#94a3b8] hover:border-[#3d3d5a]'}`}>{v}</button>))}</div></div>
+                  <div className="flex gap-3">{['True', 'False'].map(v => (<button key={v} onClick={() => updateQ('correct_answer', v)} className={`flex-1 py-3 rounded-xl border-2 font-semibold transition-all ${currentQ.correct_answer === v ? 'border-[#22c55e] bg-[#22c55e]/10 text-[#6bd348]' : 'border-[#2d2d44] text-[#94a3b8] hover:border-[#3d3d5a]'}`}>{v}</button>))}</div></div>
               )}
               {(currentQ.type === 'short_answer' || currentQ.type === 'fill_blank') && (
                 <div><label className="text-xs font-medium text-[#94a3b8] uppercase tracking-wide mb-2 block">Correct Answer</label>
-                  <input type="text" value={currentQ.correct_answer || ''} onChange={e => updateQ('correct_answer', e.target.value)} placeholder="Enter the correct answer…" className="w-full px-4 py-2.5 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors" /></div>
+                  <input type="text" value={currentQ.correct_answer || ''} onChange={e => updateQ('correct_answer', e.target.value)} placeholder="Enter the correct answer…" className="w-full px-4 py-2.5 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors" /></div>
               )}
               <div><label className="text-xs font-medium text-[#94a3b8] uppercase tracking-wide mb-2 block">Explanation (optional)</label>
-                <textarea value={currentQ.explanation || ''} onChange={e => updateQ('explanation', e.target.value)} rows={2} placeholder="Explain why this is the correct answer…" className="w-full px-4 py-2.5 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#10b981] transition-colors resize-none text-sm" /></div>
+                <textarea value={currentQ.explanation || ''} onChange={e => updateQ('explanation', e.target.value)} rows={2} placeholder="Explain why this is the correct answer…" className="w-full px-4 py-2.5 rounded-xl bg-[#1a1a2e] border border-[#2d2d44] text-[#f1f5f9] placeholder:text-[#4a4a6a] focus:outline-none focus:border-[#6bd348] transition-colors resize-none text-sm" /></div>
             </motion.div>
           )}
         </main>

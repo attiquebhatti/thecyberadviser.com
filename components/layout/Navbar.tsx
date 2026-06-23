@@ -167,7 +167,8 @@ export function Navbar() {
                 <div key={item.label} className="relative group/nav">
                   {item.children ? (
                     <>
-                      <button
+                      <Link
+                        href={item.href}
                         className={cn(
                           'relative flex items-center gap-1.5 whitespace-nowrap px-0 py-2 text-[0.96rem] font-medium tracking-[0.01em] transition-all duration-300',
                           isItemActive(item)
@@ -183,7 +184,7 @@ export function Navbar() {
                             isItemActive(item) ? 'opacity-100' : 'opacity-0 group-hover/nav:opacity-100'
                           )}
                         />
-                      </button>
+                      </Link>
 
                       <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-hover/nav:pointer-events-auto transition-all duration-300 ease-out">
                         <div className="w-80 bg-obsidian-900/80 backdrop-blur-3xl border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2.5 overflow-hidden">
@@ -196,8 +197,8 @@ export function Navbar() {
                               >
                                 <span className={cn(
                                   "text-sm font-bold transition-colors",
-                                  child.label === 'Cortex Operations' 
-                                    ? "text-[#6BD348] group-hover/item:text-[#6BD348]/80" 
+                                  /cortex/i.test(child.label)
+                                    ? "text-[#6BD348] group-hover/item:text-[#6BD348]/80"
                                     : "text-slate-200 group-hover/item:text-[#FFC300]"
                                 )}>
                                   {child.label}
@@ -387,8 +388,8 @@ export function Navbar() {
                                 className={cn(
                                   'px-4 py-3 text-sm font-medium rounded-lg transition-all flex flex-col gap-0.5',
                                   pathname === child.href
-                                    ? (child.label === 'Cortex Operations' ? 'text-[#6BD348] bg-[#6BD348]/10' : 'text-[#FFC300] bg-[#FFC300]/10')
-                                    : (child.label === 'Cortex Operations' ? 'text-[#6BD348]/80 hover:text-[#6BD348] hover:bg-white/5' : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5')
+                                    ? (/cortex/i.test(child.label) ? 'text-[#6BD348] bg-[#6BD348]/10' : 'text-[#FFC300] bg-[#FFC300]/10')
+                                    : (/cortex/i.test(child.label) ? 'text-[#6BD348]/80 hover:text-[#6BD348] hover:bg-white/5' : 'text-slate-400 hover:text-[#FFC300] hover:bg-white/5')
                                 )}
                               >
                                 <span>{child.label}</span>
