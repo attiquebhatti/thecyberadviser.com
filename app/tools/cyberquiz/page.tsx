@@ -51,6 +51,27 @@ export default function CyberQuizLanding() {
   const { user } = useAuthStore();
   const authTarget = user ? `${BASE}/dashboard` : `${BASE}/auth?tab=signup`;
 
+  // Start a Stripe subscription checkout for a paid tier (requires login).
+  const startCheckout = async (tier: 'educator' | 'pro') => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('qa_token') : null;
+    if (!token) {
+      window.location.href = `${BASE}/auth?tab=login&redirect=${encodeURIComponent(`${BASE}#pricing`)}`;
+      return;
+    }
+    try {
+      const res = await fetch('/api/billing/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ tier }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else alert(data.error || 'Could not start checkout. Please try again.');
+    } catch {
+      alert('Could not start checkout. Please try again.');
+    }
+  };
+
   return (
     <div className="cqx-page min-h-screen text-[#f1f5f9]">
 
@@ -204,16 +225,25 @@ export default function CyberQuizLanding() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href={authTarget}
-                className={`w-full inline-flex items-center justify-center rounded-xl font-semibold py-2.5 text-sm transition-colors cursor-pointer ${
-                  tier.primary
-                    ? 'cqx-btn text-[#04130c]'
-                    : 'bg-white/[0.04] hover:bg-white/[0.09] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#6bd348]/50'
-                }`}
-              >
-                {tier.cta}
-              </Link>
+              {tier.id === 'free' ? (
+                <Link
+                  href={authTarget}
+                  className="w-full inline-flex items-center justify-center rounded-xl font-semibold py-2.5 text-sm transition-colors cursor-pointer bg-white/[0.04] hover:bg-white/[0.09] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#6bd348]/50"
+                >
+                  {tier.cta}
+                </Link>
+              ) : (
+                <button
+                  onClick={() => startCheckout(tier.id as 'educator' | 'pro')}
+                  className={`w-full inline-flex items-center justify-center rounded-xl font-semibold py-2.5 text-sm transition-colors cursor-pointer ${
+                    tier.primary
+                      ? 'cqx-btn text-[#04130c]'
+                      : 'bg-white/[0.04] hover:bg-white/[0.09] text-[#f1f5f9] border border-[#2d2d44] hover:border-[#6bd348]/50'
+                  }`}
+                >
+                  {tier.cta}
+                </button>
+              )}
             </div>
           ))}
         </div>

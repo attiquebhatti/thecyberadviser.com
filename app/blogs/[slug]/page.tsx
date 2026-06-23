@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const siteUrl = 'https://thecyberadviser.com';
   const title = article ? `${article.title} | The Cyber Adviser` : 'Article | The Cyber Adviser';
   const description = article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.';
-  const imageUrl = article?.image ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`) : `${siteUrl}/images/og-default.png`;
+  const imageUrl = article?.image ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`) : `${siteUrl}/images/home-architecture.jpg`;
 
   return {
     title,
@@ -845,9 +845,31 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
     ? 'from-emerald-500/5 via-[#000814] to-[#000814]'
     : 'from-amber-500/5 via-[#000814] to-[#000814]';
 
+  // BlogPosting structured data (rich results + AI/LLM citation).
+  const siteUrl = 'https://www.thecyberadviser.com';
+  const articleImage = article?.image
+    ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`)
+    : `${siteUrl}/images/home-architecture.jpg`;
+  const blogJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: (article?.title || formattedTitle).slice(0, 110),
+    description: article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.',
+    image: articleImage,
+    ...(article?.date ? { datePublished: article.date, dateModified: article.date } : {}),
+    author: { '@type': 'Person', name: 'Attique Bhatti', url: `${siteUrl}/about` },
+    publisher: {
+      '@type': 'Organization',
+      name: 'The Cyber Adviser',
+      logo: { '@type': 'ImageObject', url: `${siteUrl}/images/header-logo.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blogs/${currentSlug}` },
+  };
+
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
-      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
+
       {/* BLOG HEADER */}
       <section className={`w-full pt-40 pb-20 px-8 text-center border-b border-white/5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${hasContent ? 'from-amber-500/5' : headerGradient.split(' ')[0]} via-[#000814] to-[#000814]`}>
         <div className="max-w-[1000px] mx-auto">

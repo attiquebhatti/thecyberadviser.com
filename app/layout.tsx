@@ -15,18 +15,27 @@ export const metadata: Metadata = {
   description:
     'Strategic cybersecurity advisory for enterprises navigating Zero Trust adoption, SASE transformation, and security architecture modernization.',
   openGraph: {
-    title: 'TheCyberAdviser | Strategic Cybersecurity Consulting',
+    title: 'The Cyber Adviser | Strategic Cybersecurity Consulting',
     description:
       'Strategic cybersecurity advisory for enterprises navigating Zero Trust adoption, SASE transformation, and security architecture modernization.',
     type: 'website',
     url: 'https://www.thecyberadviser.com',
     siteName: 'The Cyber Adviser',
+    images: [
+      {
+        url: '/images/home-architecture.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'The Cyber Adviser — strategic cybersecurity consulting',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'The Cyber Adviser | Strategic Cybersecurity Consulting',
     description:
       'Strategic cybersecurity advisory for enterprises navigating Zero Trust adoption, SASE transformation, and security architecture modernization.',
+    images: ['/images/home-architecture.jpg'],
   },
   keywords: [
     'cybersecurity consulting',

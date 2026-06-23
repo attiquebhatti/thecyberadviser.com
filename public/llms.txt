@@ -1,0 +1,20 @@
+# The Cyber Adviser
+
+> The Cyber Adviser is a strategic cybersecurity consultancy led by Attique Bhatti, an Enterprise Cloud Security Consultant and certified instructor across Palo Alto Networks, Check Point, and F5. It advises enterprises on Zero Trust adoption, SASE/Prisma Access transformation, NGFW and segmentation, Cortex (XDR/XSOAR/XSIAM) SOC automation, and security architecture modernization, and publishes free interactive security tools and training.
+
+## Services
+- [Services](https://www.thecyberadviser.com/services): Zero Trust architecture, SASE & Prisma Access, NGFW/segmentation, Cortex SOC automation (XSOAR/XSIAM), incident response advisory.
+- [About](https://www.thecyberadviser.com/about): Background and expertise of Attique Bhatti.
+- [Contact](https://www.thecyberadviser.com/contact): Request a consultation.
+
+## Free Tools
+- [Tools](https://www.thecyberadviser.com/tools): Overview of all interactive tools.
+- [Unified Migration](https://www.thecyberadviser.com/tools/unified-migration): Convert firewall configs across vendors (Cisco ASA, FortiGate, Check Point, PAN-OS) and Panorama → Strata Cloud Manager (SCM), plus Netskope/Zscaler → Prisma Access.
+- [Prisma Access Sizing Calculator](https://www.thecyberadviser.com/tools/prisma-access-sizing): Estimate Prisma Access sizing.
+- [SIEM Sizing Calculator](https://www.thecyberadviser.com/tools/siem-sizing): Estimate SIEM/SOAR storage and compute.
+- [CyberQuiz](https://www.thecyberadviser.com/tools/cyberquiz): Real-time multiplayer cybersecurity quiz platform with curated PANW, Check Point, and F5 question banks.
+- [AI Training Chatbot](https://www.thecyberadviser.com/tools/ai-chatbot): Post-training Q&A for course alumni.
+
+## Knowledge
+- [Knowledge Base](https://www.thecyberadviser.com/knowledge-base): Technical guides on Palo Alto Networks, Check Point, Fortinet, and Zero Trust/SASE architecture.
+- [Blog](https://www.thecyberadviser.com/blogs): Articles on Cortex XDR/XSIAM, Prisma SASE, Strata NGFW, and identity security.
