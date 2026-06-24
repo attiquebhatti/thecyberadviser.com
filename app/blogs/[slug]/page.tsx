@@ -3,6 +3,8 @@ import React from 'react';
 import { getArticleBySlug } from '@/data/articles';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import RelatedTools from '@/components/seo/RelatedTools';
 
 // ==========================================
 // DYNAMIC METADATA
@@ -869,6 +871,13 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: siteUrl },
+          { name: 'Blog', url: `${siteUrl}/blogs` },
+          { name: article?.title || formattedTitle, url: `${siteUrl}/blogs/${currentSlug}` },
+        ]}
+      />
 
       {/* BLOG HEADER */}
       <section className={`w-full pt-40 pb-20 px-8 text-center border-b border-white/5 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${hasContent ? 'from-amber-500/5' : headerGradient.split(' ')[0]} via-[#000814] to-[#000814]`}>
@@ -921,6 +930,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
         )}
       </section>
 
+      <RelatedTools topic={article?.category || formattedTitle} />
     </main>
   );
 }

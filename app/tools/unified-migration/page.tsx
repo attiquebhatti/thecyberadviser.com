@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 
 export const metadata: Metadata = {
   title: 'Unified Migration | The Cyber Adviser',
@@ -23,6 +24,13 @@ export const metadata: Metadata = {
 export default function UnifiedMigrationPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: 'https://www.thecyberadviser.com' },
+          { name: 'Tools', url: 'https://www.thecyberadviser.com/tools' },
+          { name: 'Unified Migration', url: 'https://www.thecyberadviser.com/tools/unified-migration' },
+        ]}
+      />
       <Section className="pt-20 pb-3 md:pt-24 md:pb-5 lg:pt-28 lg:pb-6">
         <Breadcrumb className="mb-8">
           <BreadcrumbList className="text-slate-400">

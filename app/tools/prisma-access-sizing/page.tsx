@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { parsePrismaSizingPrefill } from '@/lib/prisma-sizing/query-state';
 import type { SearchParams } from '@/types/prisma-sizing';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 
 export const metadata: Metadata = {
   title: 'Prisma Access Sizing Calculator | The Cyber Adviser',
@@ -31,6 +32,13 @@ export default function PrismaAccessSizingPage({ searchParams }: Props) {
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: 'https://www.thecyberadviser.com' },
+          { name: 'Tools', url: 'https://www.thecyberadviser.com/tools' },
+          { name: 'Prisma Access Sizing Calculator', url: 'https://www.thecyberadviser.com/tools/prisma-access-sizing' },
+        ]}
+      />
       <Section className="pt-20 pb-3 md:pt-24 md:pb-5 lg:pt-28 lg:pb-6 print:hidden">
         <Breadcrumb className="mb-8">
           <BreadcrumbList className="text-slate-400">
