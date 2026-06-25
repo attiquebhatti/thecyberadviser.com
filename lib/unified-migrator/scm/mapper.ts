@@ -144,7 +144,7 @@ export function mapToScm(pan: PanoramaModel): ScmModel {
 
   const stats = computeStats(folders, snippets, global, logicalRouters);
 
-  return { global, folders, snippets, logicalRouters, interfaces, remediations: [], coverage: [], stats };
+  return { global, folders, snippets, logicalRouters, interfaces, prismaAccess: pan.prismaAccess, remediations: [], coverage: [], stats };
 }
 
 function emptyBag(): ScmObjectBag {

@@ -104,6 +104,36 @@
           </pre-rulebase>
         </entry>
       </device-group>
+      <plugins>
+        <cloud_services>
+          <remote-networks>
+            <onboarding>
+              <entry name="RN-NewYork">
+                <region>us-east-1</region>
+                <ipsec-tunnel>NY-Tunnel</ipsec-tunnel>
+                <spn-name>us-east-spn1</spn-name>
+                <subnets><member>10.50.0.0/16</member></subnets>
+                <protocol><bgp><enable>yes</enable></bgp></protocol>
+              </entry>
+            </onboarding>
+          </remote-networks>
+          <service-connection>
+            <onboarding>
+              <entry name="SC-DataCenter">
+                <region>us-east-1</region>
+                <ipsec-tunnel>DC-Tunnel</ipsec-tunnel>
+                <subnets><member>172.16.0.0/12</member></subnets>
+              </entry>
+            </onboarding>
+          </service-connection>
+          <mobile-users>
+            <onboarding>
+              <gateways><entry name="MU-GW-US"><region>us-east-1</region></entry></gateways>
+              <ip-pools><member>100.64.0.0/16</member></ip-pools>
+            </onboarding>
+          </mobile-users>
+        </cloud_services>
+      </plugins>
       <template>
         <entry name="Mobile_User_Template">
           <config><devices><entry name="localhost.localdomain"><vsys><entry name="vsys1">

@@ -17,6 +17,7 @@ import type {
   PanDeviceGroup,
   PanExternalList,
   PanInterface,
+  PrismaAccessConfig,
   PanNatRule,
   PanNatTranslation,
   PanObjectBag,
@@ -572,6 +573,67 @@ export function rawSectionCounts(xml: string): Record<string, number> {
 
 // ── Top-level parse ─────────────────────────────────────────────
 
+// ── Panorama-managed Prisma Access (cloud_services plugin) ──────
+function parsePrismaAccess(root: Element | null): PrismaAccessConfig | undefined {
+  if (!root) return undefined;
+  const cs = findDescendants(root, 'cloud_services')[0] || findDescendants(root, 'cloud-services')[0];
+  if (!cs) return undefined;
+
+  // remote-networks / service-connection(s) onboarding entries.
+  const onboardingEntries = (parentTag: string): Element[] => {
+    const parent = findDescendants(cs, parentTag)[0];
+    if (!parent) return [];
+    const onb = directChild(parent, 'onboarding');
+    return onb ? directChildren(onb, 'entry') : directChildren(parent, 'entry');
+  };
+
+  const remoteNetworks = onboardingEntries('remote-networks').map((e) => ({
+    name: name(e),
+    region: text(e, 'region'),
+    ipsecTunnel: text(e, 'ipsec-tunnel'),
+    subnets: members(e, 'subnets'),
+    spn: text(e, 'spn-name'),
+    bgp: findDescendants(e, 'bgp').length > 0,
+  }));
+
+  const serviceConnections = [
+    ...onboardingEntries('service-connection'),
+    ...onboardingEntries('service-connections'),
+  ].map((e) => ({
+    name: name(e),
+    region: text(e, 'region') || text(e, 'location'),
+    ipsecTunnel: text(e, 'ipsec-tunnel'),
+    subnets: members(e, 'subnets'),
+    bgp: findDescendants(e, 'bgp').length > 0,
+  }));
+
+  const muParent = findDescendants(cs, 'mobile-users')[0];
+  let mobileUsers;
+  if (muParent) {
+    const gws = findDescendants(muParent, 'gateways')[0];
+    const regionSet = new Set(
+      findDescendants(muParent, 'region').map((r) => r.textContent?.trim() || '').filter(Boolean)
+    );
+    const ipPools = findDescendants(muParent, 'ip-pools').flatMap((el) =>
+      directChildren(el, 'member').map((m) => m.textContent?.trim() || '')
+    ).filter(Boolean);
+    mobileUsers = {
+      enabled: true,
+      gateways: gws ? directChildren(gws, 'entry').map(name).filter(Boolean) : [],
+      ipPools,
+      regions: Array.from(regionSet),
+    };
+  }
+
+  const infrastructureSubnet =
+    text(findDescendants(cs, 'network')[0] || cs, 'infrastructure-subnet') ||
+    text(cs, 'infra-subnet') ||
+    undefined;
+
+  if (!remoteNetworks.length && !serviceConnections.length && !mobileUsers) return undefined;
+  return { remoteNetworks, serviceConnections, mobileUsers, infrastructureSubnet };
+}
+
 export function parsePanorama(xml: string): PanoramaModel {
   const doc = getDoc(xml);
   const config = doc.documentElement; // <config>
@@ -594,6 +656,7 @@ export function parsePanorama(xml: string): PanoramaModel {
   const deviceGroups: PanDeviceGroup[] = entries(deviceEntry, 'device-group').map(parseDeviceGroup);
   const templates: PanTemplate[] = entries(deviceEntry, 'template').map(parseTemplate);
   const templateStacks: PanTemplateStack[] = entries(deviceEntry, 'template-stack').map(parseTemplateStack);
+  const prismaAccess = parsePrismaAccess(deviceEntry) || parsePrismaAccess(config);
 
   if (!sharedEl && deviceGroups.length === 0) {
     notes.push(
@@ -608,6 +671,7 @@ export function parsePanorama(xml: string): PanoramaModel {
     deviceGroups,
     templates,
     templateStacks,
+    prismaAccess,
     notes,
   };
 }

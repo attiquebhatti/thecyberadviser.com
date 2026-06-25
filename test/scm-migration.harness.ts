@@ -109,6 +109,18 @@ assert(res.scm.interfaces.some((i) => i.ip === 'dhcp'), 'dhcp interface detected
 // Dedup (opt-in) ran
 assert(res.scm.dedup?.enabled === true, 'dedup enabled when option set');
 
+// Prisma Access (Panorama cloud_services) migration
+assert(!!res.scm.prismaAccess, 'Prisma Access config parsed');
+assert(res.scm.prismaAccess?.remoteNetworks.length === 1, '1 remote network parsed');
+assert(res.scm.prismaAccess?.remoteNetworks[0].region === 'us-east-1', 'remote network region parsed');
+assert(!!res.scm.prismaAccess?.remoteNetworks[0].subnets.includes('10.50.0.0/16'), 'remote network subnet parsed');
+assert(res.scm.prismaAccess?.remoteNetworks[0].bgp === true, 'remote network BGP detected');
+assert(res.scm.prismaAccess?.serviceConnections.length === 1, '1 service connection parsed');
+assert(!!res.scm.prismaAccess?.mobileUsers, 'mobile users parsed');
+assert((res.scm.prismaAccess?.mobileUsers?.ipPools || []).includes('100.64.0.0/16'), 'mobile users IP pool parsed');
+const paArt = res.artifacts.find((a) => a.id === 'scm-prisma-access');
+assert(!!paArt && /RN-NewYork/.test(paArt.content) && /SC-DataCenter/.test(paArt.content), 'Prisma Access artifact generated');
+
 const xmlArt = res.artifacts.find((a) => a.id === 'scm-config-xml');
 assert(!!xmlArt && !/<target>/.test(xmlArt.content), 'output XML contains NO <target> blocks');
 assert(!!xmlArt && !/<group-tag>/.test(xmlArt.content), 'output XML contains NO <group-tag>');

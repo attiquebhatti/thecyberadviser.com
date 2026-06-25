@@ -184,6 +184,31 @@ export default function ScmResultPanel({ result }: { result: ScmMigrationResult 
         </div>
       )}
 
+      {/* Prisma Access (Panorama cloud_services) */}
+      {scm.prismaAccess && (scm.prismaAccess.remoteNetworks.length > 0 || scm.prismaAccess.serviceConnections.length > 0 || scm.prismaAccess.mobileUsers) && (
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
+          <h3 className="text-emerald-300 font-semibold mb-1">Prisma Access (Panorama-managed)</h3>
+          <p className="text-white/45 text-xs mb-4">
+            Migrated from the cloud_services plugin. In SCM, re-create these under Workflows → Prisma Access Setup; IPSec pre-shared keys must be re-entered (not exported).
+          </p>
+          <div className="grid sm:grid-cols-3 gap-4 mb-4">
+            <Stat label="Remote Networks" value={scm.prismaAccess.remoteNetworks.length} />
+            <Stat label="Service Connections" value={scm.prismaAccess.serviceConnections.length} />
+            <Stat label="Mobile Users" value={scm.prismaAccess.mobileUsers ? 1 : 0} hint={scm.prismaAccess.mobileUsers ? 'configured' : 'none'} />
+          </div>
+          {scm.prismaAccess.remoteNetworks.length > 0 && (
+            <ul className="text-xs text-white/60 font-mono space-y-0.5 max-h-44 overflow-y-auto">
+              {scm.prismaAccess.remoteNetworks.slice(0, 60).map((r, i) => (
+                <li key={i}>RN: {r.name} {r.region ? `· ${r.region}` : ''} {r.subnets.length ? `· ${r.subnets.join(', ')}` : ''}{r.bgp ? ' · BGP' : ''}</li>
+              ))}
+              {scm.prismaAccess.serviceConnections.slice(0, 30).map((s, i) => (
+                <li key={`sc${i}`}>SC: {s.name} {s.region ? `· ${s.region}` : ''} {s.subnets.length ? `· ${s.subnets.join(', ')}` : ''}{s.bgp ? ' · BGP' : ''}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       {/* Interfaces */}
       {scm.interfaces.length > 0 && (
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">

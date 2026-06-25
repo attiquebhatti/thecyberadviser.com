@@ -221,6 +221,38 @@ export interface PanClientlessApp {
   template: string;
 }
 
+// ── Panorama-managed Prisma Access (cloud_services plugin) ──────
+export interface PanRemoteNetwork {
+  name: string;
+  region?: string;
+  ipsecTunnel?: string;
+  subnets: string[];
+  spn?: string;
+  bgp: boolean;
+}
+
+export interface PanServiceConnection {
+  name: string;
+  region?: string;
+  ipsecTunnel?: string;
+  subnets: string[];
+  bgp: boolean;
+}
+
+export interface PanMobileUsers {
+  enabled: boolean;
+  gateways: string[];
+  ipPools: string[];
+  regions: string[];
+}
+
+export interface PrismaAccessConfig {
+  remoteNetworks: PanRemoteNetwork[];
+  serviceConnections: PanServiceConnection[];
+  mobileUsers?: PanMobileUsers;
+  infrastructureSubnet?: string;
+}
+
 export interface PanTemplate {
   name: string;
   /** raw network/device config blocks we carry as snippet content. */
@@ -250,6 +282,8 @@ export interface PanoramaModel {
   deviceGroups: PanDeviceGroup[];
   templates: PanTemplate[];
   templateStacks: PanTemplateStack[];
+  /** Panorama-managed Prisma Access (cloud_services plugin), if present. */
+  prismaAccess?: PrismaAccessConfig;
   /** parse-time notes / unrecognized constructs. */
   notes: string[];
 }
@@ -347,6 +381,7 @@ export interface ScmModel {
   logicalRouters: ScmLogicalRouter[];
   interfaces: PanInterface[];
   clientlessVpn?: ScmClientlessVpn;
+  prismaAccess?: PrismaAccessConfig;
   remediations: Remediation[];
   coverage: CoverageRow[];
   dedup?: import('@/lib/unified-migrator/types').DedupReport;

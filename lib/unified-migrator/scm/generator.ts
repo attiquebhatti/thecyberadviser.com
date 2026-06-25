@@ -81,7 +81,51 @@ export function generateScmArtifacts(scm: ScmModel): ScmArtifact[] {
     });
   }
 
+  // Prisma Access (Panorama cloud_services) onboarding worksheet.
+  const pa = scm.prismaAccess;
+  if (pa && (pa.remoteNetworks.length || pa.serviceConnections.length || pa.mobileUsers)) {
+    artifacts.push({
+      id: 'scm-prisma-access',
+      label: 'Prisma Access',
+      mimeType: 'text/plain',
+      fileName: 'scm-prisma-access.txt',
+      content: buildPrismaAccess(pa),
+    });
+  }
+
   return artifacts;
+}
+
+function buildPrismaAccess(pa: NonNullable<ScmModel['prismaAccess']>): string {
+  const out: string[] = [];
+  out.push('# Prisma Access — migrated from Panorama (cloud_services plugin)');
+  out.push('# In SCM, Prisma Access onboarding lives under Workflows → Prisma Access Setup.');
+  out.push('# Re-create each item below; IPSec tunnel pre-shared keys are NOT exported and must be re-entered.');
+  if (pa.infrastructureSubnet) out.push(`\nInfrastructure subnet: ${pa.infrastructureSubnet}`);
+
+  if (pa.remoteNetworks.length) {
+    out.push(`\n## Remote Networks (${pa.remoteNetworks.length})`);
+    out.push('Name | Region | IPSec tunnel | SPN | BGP | Subnets');
+    out.push('-'.repeat(70));
+    for (const r of pa.remoteNetworks) {
+      out.push(`${r.name} | ${r.region || '-'} | ${r.ipsecTunnel || '-'} | ${r.spn || '-'} | ${r.bgp ? 'yes' : 'no'} | ${r.subnets.join(', ') || '-'}`);
+    }
+  }
+  if (pa.serviceConnections.length) {
+    out.push(`\n## Service Connections (${pa.serviceConnections.length})`);
+    out.push('Name | Region | IPSec tunnel | BGP | Subnets');
+    out.push('-'.repeat(70));
+    for (const s of pa.serviceConnections) {
+      out.push(`${s.name} | ${s.region || '-'} | ${s.ipsecTunnel || '-'} | ${s.bgp ? 'yes' : 'no'} | ${s.subnets.join(', ') || '-'}`);
+    }
+  }
+  if (pa.mobileUsers) {
+    out.push(`\n## Mobile Users`);
+    out.push(`Gateways: ${pa.mobileUsers.gateways.join(', ') || '-'}`);
+    out.push(`Regions: ${pa.mobileUsers.regions.join(', ') || '-'}`);
+    out.push(`IP pools: ${pa.mobileUsers.ipPools.join(', ') || '-'}`);
+  }
+  return out.join('\n');
 }
 
 function buildClientless(scm: ScmModel): string {
@@ -430,6 +474,10 @@ function buildReport(scm: ScmModel): string {
   lines.push(`- **Security rules**: ${s.securityRules}  |  **NAT rules**: ${s.natRules}`);
   lines.push(`- **Logical routers**: ${s.logicalRouters}  |  **Static routes migrated**: ${s.staticRoutes}`);
   lines.push(`- **Interfaces (with IP)**: ${scm.interfaces.filter((i) => i.ip).length}  |  **Clientless VPN apps**: ${scm.clientlessVpn?.applications.length || 0}`);
+  if (scm.prismaAccess) {
+    const pa = scm.prismaAccess;
+    lines.push(`- **Prisma Access**: ${pa.remoteNetworks.length} remote network(s) · ${pa.serviceConnections.length} service connection(s)${pa.mobileUsers ? ' · Mobile Users' : ''}`);
+  }
   lines.push(`- **Auto-remapped items**: ${s.autoRemapped}  |  **Flagged for manual step**: ${s.flagged}`);
   if (scm.dedup?.enabled) {
     lines.push(`- **Duplicate cleanup**: ${scm.dedup.objectsMerged} object(s) merged across ${scm.dedup.groups.length} group(s)`);
