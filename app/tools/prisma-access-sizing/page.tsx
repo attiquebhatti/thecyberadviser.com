@@ -16,11 +16,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { parsePrismaSizingPrefill } from '@/lib/prisma-sizing/query-state';
 import type { SearchParams } from '@/types/prisma-sizing';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { webApplicationJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Prisma Access Sizing Calculator | The Cyber Adviser',
+  title: 'Prisma Access Sizing Calculator | SASE Planning Tool',
   description:
-    'Estimate Prisma Access deployment size, regions, resilience, and architecture assumptions inside the main The Cyber Adviser website experience.',
+    'Estimate Prisma Access mobile users, remote networks, service connections, throughput, regions, resilience, and logging assumptions for SASE planning.',
   alternates: { canonical: 'https://www.thecyberadviser.com/tools/prisma-access-sizing' },
 };
 
@@ -33,6 +34,19 @@ export default function PrismaAccessSizingPage({ searchParams }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            webApplicationJsonLd({
+              name: 'Prisma Access Sizing Calculator',
+              description: metadata.description as string,
+              path: '/tools/prisma-access-sizing',
+              features: ['Mobile user sizing', 'Remote network sizing', 'Service connection planning', 'Throughput estimation', 'Regional resilience assumptions'],
+            })
+          ),
+        }}
+      />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: 'https://www.thecyberadviser.com' },

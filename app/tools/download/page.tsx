@@ -2,17 +2,36 @@ import { Metadata } from 'next';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import Link from 'next/link';
 import DownloadButton from '@/components/tools/DownloadButton';
+import { SITE_URL, publisher } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Download UnifiedMigrator Desktop | The Cyber Adviser',
+  title: 'Download UnifiedMigrator Desktop | Offline Firewall Migration',
   description:
-    'Download the UnifiedMigrator desktop application for offline, air-gapped firewall configuration migration. Supports Windows with macOS and Linux coming soon.',
+    'Download UnifiedMigrator Desktop for offline, air-gapped firewall configuration migration with local processing, encrypted storage, and audit logs.',
   alternates: { canonical: 'https://www.thecyberadviser.com/tools/download' },
 };
 
 export default function DownloadPage() {
+  const softwareJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'UnifiedMigrator Desktop',
+    operatingSystem: 'Windows',
+    applicationCategory: 'SecurityApplication',
+    url: `${SITE_URL}/tools/download`,
+    description: metadata.description,
+    publisher,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
       <Section className="pt-24 pb-4 md:pt-28 md:pb-6 lg:pt-32 lg:pb-8">
         <SectionHeader
           eyebrow="Desktop Application"

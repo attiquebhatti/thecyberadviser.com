@@ -14,17 +14,31 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { webApplicationJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Unified Migration | The Cyber Adviser',
+  title: 'Unified Migration Tool | Firewall Config Converter',
   description:
-    'Convert firewall configurations across vendors with confidence scoring and behavioral validation inside the main The Cyber Adviser website experience.',
+    'Convert Cisco ASA, FortiGate, Check Point, PAN-OS, Panorama, Netskope, and Zscaler firewall configs with validation and confidence scoring.',
   alternates: { canonical: 'https://www.thecyberadviser.com/tools/unified-migration' },
 };
 
 export default function UnifiedMigrationPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            webApplicationJsonLd({
+              name: 'Unified Migration Tool',
+              description: metadata.description as string,
+              path: '/tools/unified-migration',
+              features: ['Multi-vendor firewall conversion', 'PAN-OS and Strata Cloud Manager migration support', 'Confidence scoring', 'Behavioral validation', 'Downloadable migration reports'],
+            })
+          ),
+        }}
+      />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: 'https://www.thecyberadviser.com' },

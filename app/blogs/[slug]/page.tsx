@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 import RelatedTools from '@/components/seo/RelatedTools';
+import { SITE_URL, articleImage, articleJsonLd, metaDescription, titleWithBrand } from '@/lib/seo';
 
 // ==========================================
 // DYNAMIC METADATA
@@ -13,11 +14,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const currentSlug = params.slug;
   const article = getArticleBySlug(currentSlug);
   
-  const siteUrl = 'https://www.thecyberadviser.com';
-  const title = article ? `${article.title} | The Cyber Adviser` : 'Article | The Cyber Adviser';
-  const description = article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.';
-  const imageUrl = article?.image ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`) : `${siteUrl}/images/home-architecture.jpg`;
-  const articleUrl = `${siteUrl}/blogs/${currentSlug}`;
+  const title = article ? titleWithBrand(article.title) : 'Article | The Cyber Adviser';
+  const description = metaDescription(article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.');
+  const imageUrl = articleImage(article);
+  const articleUrl = `${SITE_URL}/blogs/${currentSlug}`;
 
   return {
     title,
@@ -849,35 +849,25 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
     ? 'from-emerald-500/5 via-[#000814] to-[#000814]'
     : 'from-amber-500/5 via-[#000814] to-[#000814]';
 
-  // BlogPosting structured data (rich results + AI/LLM citation).
-  const siteUrl = 'https://www.thecyberadviser.com';
-  const articleImage = article?.image
-    ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`)
-    : `${siteUrl}/images/home-architecture.jpg`;
-  const blogJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: (article?.title || formattedTitle).slice(0, 110),
-    description: article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.',
-    image: articleImage,
-    ...(article?.date ? { datePublished: article.date, dateModified: article.date } : {}),
-    author: { '@type': 'Person', name: 'Attique Bhatti', url: `${siteUrl}/about` },
-    publisher: {
-      '@type': 'Organization',
-      name: 'The Cyber Adviser',
-      logo: { '@type': 'ImageObject', url: `${siteUrl}/images/header-logo.png` },
-    },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blogs/${currentSlug}` },
-  };
+  const blogJsonLd = article
+    ? articleJsonLd(article, `/blogs/${currentSlug}`, 'BlogPosting')
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: formattedTitle,
+        description: 'Strategic cybersecurity insights from The Cyber Adviser.',
+        image: articleImage(),
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blogs/${currentSlug}` },
+      };
 
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#FFC300] selection:text-[#000814] pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
       <BreadcrumbJsonLd
         items={[
-          { name: 'Home', url: siteUrl },
-          { name: 'Blog', url: `${siteUrl}/blogs` },
-          { name: article?.title || formattedTitle, url: `${siteUrl}/blogs/${currentSlug}` },
+          { name: 'Home', url: SITE_URL },
+          { name: 'Blog', url: `${SITE_URL}/blogs` },
+          { name: article?.title || formattedTitle, url: `${SITE_URL}/blogs/${currentSlug}` },
         ]}
       />
 

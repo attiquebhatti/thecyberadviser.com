@@ -14,17 +14,31 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { webApplicationJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'SIEM Sizing Calculator | The Cyber Adviser',
+  title: 'SIEM Sizing Calculator | SOC Architecture Tool',
   description:
-    'Estimate SIEM and SOAR architecture, storage, compute, RAM, and infrastructure requirements for SOC deployments.',
+    'Estimate SIEM and SOAR ingestion, EPS, storage retention, compute, RAM, and architecture requirements for SOC platform planning.',
   alternates: { canonical: 'https://www.thecyberadviser.com/tools/siem-sizing' },
 };
 
 export default function SiemSizingPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            webApplicationJsonLd({
+              name: 'SIEM Sizing Calculator',
+              description: metadata.description as string,
+              path: '/tools/siem-sizing',
+              features: ['EPS and ingestion estimation', 'Retention planning', 'Storage sizing', 'Compute and RAM recommendations', 'SIEM and SOAR architecture assumptions'],
+            })
+          ),
+        }}
+      />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: 'https://www.thecyberadviser.com' },

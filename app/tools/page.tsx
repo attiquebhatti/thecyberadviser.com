@@ -6,9 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import AdminToolsRow from '@/components/tools/AdminToolsRow';
 
 export const metadata: Metadata = {
-  title: 'Security Tools | The Cyber Adviser',
+  title: 'Cybersecurity Tools | Prisma, SIEM, Migration & Quiz Apps',
   description:
-    'Interactive tools for Prisma Access sizing, migration planning, and security architecture validation.',
+    'Free cybersecurity tools for Prisma Access sizing, SIEM architecture planning, firewall migration validation, CyberQuiz training, and AI course follow-up.',
   alternates: { canonical: 'https://www.thecyberadviser.com/tools' },
 };
 
