@@ -5,6 +5,7 @@ export const metadata = {
   title: "Consultation | Attique Bhatti",
   description:
     "Schedule a technical deep-dive or architecture review with Attique Bhatti, Enterprise Security Consultant.",
+  alternates: { canonical: "https://www.thecyberadviser.com/contact" },
 };
 
 export default function ContactPage() {

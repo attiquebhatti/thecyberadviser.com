@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large', 'max-video-preview': -1 },
   },
   alternates: {
-    canonical: 'https://www.thecyberadviser.com',
+    canonical: 'https://www.thecyberadviser.com/',
   },
   verification: {
     google: 'EPo_TvNOAQjUTQwoww1V9ndaICBnWOPO0QXVexIq8dw',

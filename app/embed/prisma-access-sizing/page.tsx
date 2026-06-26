@@ -6,6 +6,7 @@ import type { SearchParams } from '@/types/prisma-sizing';
 export const metadata: Metadata = {
   title: 'Prisma Access Sizing Calculator Embed | The Cyber Adviser',
   description: 'Embeddable Prisma Access sizing calculator for iframe integration.',
+  alternates: { canonical: 'https://www.thecyberadviser.com/embed/prisma-access-sizing' },
 };
 
 type Props = {

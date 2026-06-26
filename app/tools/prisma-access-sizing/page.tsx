@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   title: 'Prisma Access Sizing Calculator | The Cyber Adviser',
   description:
     'Estimate Prisma Access deployment size, regions, resilience, and architecture assumptions inside the main The Cyber Adviser website experience.',
+  alternates: { canonical: 'https://www.thecyberadviser.com/tools/prisma-access-sizing' },
 };
 
 type Props = {

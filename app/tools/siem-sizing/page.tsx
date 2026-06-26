@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title: 'SIEM Sizing Calculator | The Cyber Adviser',
   description:
     'Estimate SIEM and SOAR architecture, storage, compute, RAM, and infrastructure requirements for SOC deployments.',
+  alternates: { canonical: 'https://www.thecyberadviser.com/tools/siem-sizing' },
 };
 
 export default function SiemSizingPage() {

@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'Download UnifiedMigrator Desktop | The Cyber Adviser',
   description:
     'Download the UnifiedMigrator desktop application for offline, air-gapped firewall configuration migration. Supports Windows with macOS and Linux coming soon.',
+  alternates: { canonical: 'https://www.thecyberadviser.com/tools/download' },
 };
 
 export default function DownloadPage() {

@@ -1,5 +1,37 @@
 import Link from 'next/link';
 import React from 'react';
+import { Metadata } from 'next';
+import { getAllArticles, getArticleBySlug } from '@/data/articles';
+
+function titleFromSlug(slug: string) {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const article = getArticleBySlug(params.slug);
+  const title = `${article?.title ?? titleFromSlug(params.slug)} | The Cyber Adviser`;
+  const description =
+    article?.excerpt ||
+    'Technical cybersecurity guide from The Cyber Adviser covering enterprise architecture, operations, and implementation patterns.';
+  const articleUrl = `https://www.thecyberadviser.com/knowledge-base/${params.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: articleUrl },
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: articleUrl,
+      siteName: 'The Cyber Adviser',
+    },
+  };
+}
 
 // ==========================================
 // THE CONTENT DICTIONARY
@@ -82,11 +114,7 @@ const articleContent: Record<string, React.ReactNode> = {
 };
 
 export async function generateStaticParams() {
-  return [
-    { slug: 'hybrid-cloud-connectivity' },
-    { slug: 'prisma-split-tunneling' },
-    { slug: 'phishing-triage-playbook' },
-  ];
+  return getAllArticles().map((article) => ({ slug: article.slug }));
 }
 
 // ==========================================

@@ -13,18 +13,20 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const currentSlug = params.slug;
   const article = getArticleBySlug(currentSlug);
   
-  const siteUrl = 'https://thecyberadviser.com';
+  const siteUrl = 'https://www.thecyberadviser.com';
   const title = article ? `${article.title} | The Cyber Adviser` : 'Article | The Cyber Adviser';
   const description = article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.';
   const imageUrl = article?.image ? (article.image.startsWith('http') ? article.image : `${siteUrl}${article.image}`) : `${siteUrl}/images/home-architecture.jpg`;
+  const articleUrl = `${siteUrl}/blogs/${currentSlug}`;
 
   return {
     title,
     description,
+    alternates: { canonical: articleUrl },
     openGraph: {
       title,
       description,
-      url: `${siteUrl}/blogs/${currentSlug}`,
+      url: articleUrl,
       siteName: 'The Cyber Adviser',
       images: [
         {

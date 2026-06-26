@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title: 'Unified Migration | The Cyber Adviser',
   description:
     'Convert firewall configurations across vendors with confidence scoring and behavioral validation inside the main The Cyber Adviser website experience.',
+  alternates: { canonical: 'https://www.thecyberadviser.com/tools/unified-migration' },
 };
 
 export default function UnifiedMigrationPage() {

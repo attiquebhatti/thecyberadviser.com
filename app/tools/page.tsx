@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Security Tools | The Cyber Adviser',
   description:
     'Interactive tools for Prisma Access sizing, migration planning, and security architecture validation.',
+  alternates: { canonical: 'https://www.thecyberadviser.com/tools' },
 };
 
 export default function ToolsPage() {
