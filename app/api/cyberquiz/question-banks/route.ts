@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { pool } from '@/lib/cyberquiz/db';
 import { getLocalQuestionBanks } from '@/lib/cyberquiz/local-question-bank';
 
+export const dynamic = 'force-dynamic';
+
 const COURSE_META: Record<string, object> = {
   'EDU210':         { label: 'Network Security Professional',        code: 'EDU-210',  color: '#ef4444', icon: 'shield',  group: 'Palo Alto Networks' },
   'EDU220':         { label: 'Next Generation Firewall Engineer',     code: 'EDU-220',  color: '#f97316', icon: 'flame',   group: 'Palo Alto Networks' },
