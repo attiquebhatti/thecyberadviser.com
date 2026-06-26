@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { pool } from '@/lib/cyberquiz/db';
 import { requireAuthUser } from '@/lib/cyberquiz/auth';
+import { getLocalRowsByCourse } from '@/lib/cyberquiz/local-question-bank';
 
 export async function GET(req: NextRequest, { params }: { params: { courseCode: string; moduleNum: string } }) {
   const auth = requireAuthUser(req);
@@ -20,7 +21,26 @@ export async function GET(req: NextRequest, { params }: { params: { courseCode: 
       [code, moduleNum]
     ) as any[];
 
-    if (!questions.length) return NextResponse.json({ error: 'No questions found for this module' }, { status: 404 });
+    if (!questions.length) {
+      const localQuestions = getLocalRowsByCourse(code)
+        .filter((row) => row.module_num === moduleNum)
+        .map((row, index) => ({
+          id: index + 1,
+          module_num: row.module_num,
+          module_name: row.module_name,
+          difficulty: row.difficulty,
+          question_text: row.question_text,
+          option_a: row.option_a,
+          option_b: row.option_b,
+          option_c: row.option_c,
+          option_d: row.option_d,
+          correct_letter: row.correct_letter,
+          explanation: row.explanation,
+        }));
+
+      if (!localQuestions.length) return NextResponse.json({ error: 'No questions found for this module' }, { status: 404 });
+      return NextResponse.json({ questions: localQuestions, module_name: localQuestions[0].module_name });
+    }
     return NextResponse.json({ questions, module_name: questions[0].module_name });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

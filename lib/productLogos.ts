@@ -9,22 +9,25 @@ const STRATA     = '/logos/Strata_Tagline_Logo_RGB_KO.png';
 const PANW       = '/logos/PANW_Parent_Brand_Primary_Logo_RGB_Red_White.png';
 const CHECKPOINT = '/logos/checkpoint.png';
 const F5         = '/logos/f5.png';
+const CYBERARK   = '/logos/CyberQuiz.png';
 
-export type VendorGroup = 'Palo Alto Networks' | 'Check Point' | 'F5';
+export type VendorGroup = 'Palo Alto Networks' | 'Check Point' | 'F5' | 'CyberArk';
 
 /** Classify a course/quiz into one of the three training vendors. */
 export function productVendor(code: string, name = '', group = ''): VendorGroup {
   const s = `${code} ${name} ${group}`.toUpperCase();
-  if (/CHECK ?POINT|\bCCSA\b|\bCCSE\b|MAESTRO|QUANTUM|\bGAIA\b/.test(s)) return 'Check Point';
+  if (/CHECK ?POINT|\bCCSA\b|\bCCSE\b|\bCCTA\b|\bCCTE\b|MAESTRO|QUANTUM|\bGAIA\b/.test(s)) return 'Check Point';
   if (/\bF5\b|BIG-?IP|\bLTM\b|\bGTM\b|\bAPM\b|\bASM\b/.test(s)) return 'F5';
+  if (/CYBERARK|\bPAM\b|\bEPM\b|SECRETS? MANAGER|CONJUR/.test(s)) return 'CyberArk';
   return 'Palo Alto Networks';
 }
 
 export function productLogo(code: string, name = '', group = ''): string {
   const s = `${code} ${name} ${group}`.toUpperCase();
   // Other vendors first (so their codes aren't mistaken for PANW lines).
-  if (/CHECK ?POINT|\bCCSA\b|\bCCSE\b|MAESTRO|QUANTUM|\bGAIA\b/.test(s)) return CHECKPOINT;
+  if (/CHECK ?POINT|\bCCSA\b|\bCCSE\b|\bCCTA\b|\bCCTE\b|MAESTRO|QUANTUM|\bGAIA\b/.test(s)) return CHECKPOINT;
   if (/\bF5\b|BIG-?IP|\bLTM\b|\bGTM\b|\bAPM\b|\bASM\b/.test(s)) return F5;
+  if (/CYBERARK|\bPAM\b|\bEPM\b|SECRETS? MANAGER|CONJUR/.test(s)) return CYBERARK;
   // Palo Alto Networks product lines.
   if (/\b(XDR|XSOAR|XSIAM|CORTEX)\b/.test(s)) return CORTEX;
   if (/PRISMA|SD-?WAN|\bSASE\b|\bSSE\b/.test(s)) return PRISMA;

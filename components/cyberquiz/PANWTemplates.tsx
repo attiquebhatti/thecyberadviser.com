@@ -16,6 +16,12 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?:
   cpu: Cpu, eye: Eye, bot: Bot, zap: Zap, search: Search,
 };
 
+interface CourseModule {
+  module_num: number;
+  module_name: string;
+  total_questions: number;
+}
+
 const COURSE_MODULES: Record<string, string[]> = {
   'EDU210': [
     'Palo Alto Networks Portfolio and Architecture','Configuring Initial Firewall Settings','Managing Firewall Configurations',
@@ -61,6 +67,37 @@ const COURSE_MODULES: Record<string, string[]> = {
     'Overview of Cortex XSIAM','Software Components','XQL Query Language','Detection Engineering',
     'Integrations','Automation','Threat Intel Management','Attack Surface Management','UI Customizations',
   ],
+  'CCSA': [
+    'Introduction to Quantum Security',
+    'Administrator Account Management',
+    'Object Management',
+    'Security Policy Management',
+    'Policy Layers',
+    'Security Operations Monitoring',
+    'Identity Awareness',
+    'HTTPS Inspection',
+    'Application Control and URL Filtering',
+    'Threat Prevention Fundamentals',
+  ],
+  'CCSE': [
+    'Management High Availability',
+    'Advanced Policy Management',
+    'Site-to-Site VPN',
+    'Advanced Security Monitoring',
+    'Upgrades',
+    'Advanced Upgrades and Migrations',
+    'ElasticXL Cluster',
+  ],
+  'CCTA': [
+    'Methodology','Logs','Packet Capture','SIC','Policy Install','Routing','NAT','Anti-Spoofing',
+    'Topology','Identity Awareness','Threat Prevention','VPN','Cluster','Performance','Processes',
+    'Services','Change Control','Licensing','DNS','Validation','Escalation',
+  ],
+  'CCTE': [
+    'Advanced Methodology','Kernel Debug','User Mode','Management DB','Logs','Packet Flow','Acceleration',
+    'CoreXL','Performance','VPN','Remote Access','Identity','Access Control','Threat Prevention',
+    'Cluster','Escalation','Root Cause',
+  ],
 };
 
 interface GroupConfig {
@@ -71,14 +108,15 @@ interface GroupConfig {
 
 const GROUPS: GroupConfig[] = [
   { groupKey: 'Palo Alto Networks', label: 'Palo Alto Networks', tagline: 'NSP · SSE · XDR · XSIAM · XSOAR role-based certs', accent: '#fa5c2f', accent2: '#ff8c5a', logo: '/logos/panw.png', fallbackIcon: Shield },
-  { groupKey: 'Checkpoint', label: 'Check Point', tagline: 'CCSA · CCSE · Maestro certifications', accent: '#e91e8c', accent2: '#ff6ec7', logo: '/logos/checkpoint.png', fallbackIcon: Shield },
-  { groupKey: 'F5', label: 'F5 Networks', tagline: 'BIG-IP · LTM · GTM certifications', accent: '#c0203c', accent2: '#e84060', logo: '/logos/f5.png', fallbackIcon: Shield },
+  { groupKey: 'Check Point', label: 'Check Point', tagline: 'CCSA · CCSE · CCTA · CCTE exam practice', accent: '#e91e8c', accent2: '#ff6ec7', logo: '/logos/checkpoint.png', fallbackIcon: Shield },
+  { groupKey: 'F5', label: 'F5 Networks', tagline: 'BIG-IP · LTM · DNS · APM · AWAF · CSE practice', accent: '#c0203c', accent2: '#e84060', logo: '/logos/f5.png', fallbackIcon: Shield },
+  { groupKey: 'CyberArk', label: 'CyberArk', tagline: 'PAM · EPM · Secrets Manager practice', accent: '#06b6d4', accent2: '#22c55e', logo: '', fallbackIcon: Lock },
 ];
 
 interface CourseBank {
   course_code: string; course_name: string; total_questions: number;
   by_difficulty: { Foundational: number; Intermediate: number; Advanced: number };
-  label: string; code: string; color: string; icon: string; group?: string;
+  label: string; code: string; color: string; icon: string; group?: string; module_count?: number;
 }
 
 function VendorLogo({ g }: { g: GroupConfig }) {
@@ -253,11 +291,19 @@ export function CQPANWTemplates() {
   const [activeCourse, setActiveCourse] = useState<CourseBank | null>(null);
   const [fullCourseModal, setFullCourseModal] = useState<CourseBank | null>(null);
   const [moduleModal, setModuleModal]   = useState<{ module: string; idx: number; course: CourseBank } | null>(null);
+  const [courseModules, setCourseModules] = useState<Record<string, CourseModule[]>>({});
   const [showUpgrade, setShowUpgrade]   = useState(false);
 
   useEffect(() => {
     cqApi.getQuestionBanks().then(data => setBanks(data as CourseBank[])).catch(console.error).finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!activeCourse || courseModules[activeCourse.course_code]) return;
+    cqApi.getModules(activeCourse.course_code)
+      .then((modules) => setCourseModules((prev) => ({ ...prev, [activeCourse.course_code]: modules })))
+      .catch(console.error);
+  }, [activeCourse, courseModules]);
 
   const statsByGroup = GROUPS.reduce<Record<string, { courses: number; questions: number }>>((acc, g) => {
     const cards = banks.filter(b => (b.group || 'Other') === g.groupKey);
@@ -266,7 +312,9 @@ export function CQPANWTemplates() {
   }, {});
 
   const coursesForGroup   = activeGroup  ? banks.filter(b => (b.group || 'Other') === activeGroup.groupKey) : [];
-  const modulesForCourse  = activeCourse ? (COURSE_MODULES[activeCourse.course_code] || []) : [];
+  const modulesForCourse  = activeCourse
+    ? (courseModules[activeCourse.course_code]?.map((mod) => mod.module_name) || COURSE_MODULES[activeCourse.course_code] || [])
+    : [];
   const goBack = () => { setActiveCourse(null); setActiveGroup(null); };
 
   return (
@@ -283,7 +331,7 @@ export function CQPANWTemplates() {
           ) : activeGroup ? (
             <><h2 className="font-bold text-[#f1f5f9]">{activeGroup.label}</h2><p className="text-xs text-[#94a3b8]">{activeGroup.tagline}</p></>
           ) : (
-            <><h2 className="font-bold text-[#f1f5f9]">Quiz Templates</h2><p className="text-xs text-[#94a3b8]">Pick a course from Palo Alto Networks, Check Point, or F5 — then practice the full course or individual modules</p></>
+            <><h2 className="font-bold text-[#f1f5f9]">Quiz Templates</h2><p className="text-xs text-[#94a3b8]">Pick a course from Palo Alto Networks, Check Point, F5, or CyberArk — then practice the full course or individual modules</p></>
           )}
         </div>
       </div>
@@ -316,7 +364,8 @@ export function CQPANWTemplates() {
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                       {groupCourses.map((bank, i) => {
-                        const hasModules = !!(COURSE_MODULES[bank.course_code]?.length);
+                        const moduleCount = bank.module_count || COURSE_MODULES[bank.course_code]?.length || 0;
+                        const hasModules = moduleCount > 0;
                         const logo = productLogo(bank.course_code, bank.label);
                         return (
                           <motion.button key={bank.course_code} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -333,7 +382,7 @@ export function CQPANWTemplates() {
                             <div className="flex items-center justify-between">
                               <div className="flex flex-col gap-0.5">
                                 <span className="text-xs text-[#94a3b8]">{bank.total_questions} questions</span>
-                                {hasModules && <span className="text-[10px] text-[#64748b]">{COURSE_MODULES[bank.course_code].length} modules</span>}
+                                {hasModules && <span className="text-[10px] text-[#64748b]">{moduleCount} modules</span>}
                               </div>
                               <span className="flex items-center gap-0.5 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: bank.color }}>Select <ChevronRight className="w-3 h-3" /></span>
                             </div>
@@ -359,7 +408,8 @@ export function CQPANWTemplates() {
           <motion.div key={activeGroup.groupKey} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {coursesForGroup.map((bank, i) => {
-              const hasModules = !!(COURSE_MODULES[bank.course_code]?.length);
+              const moduleCount = bank.module_count || COURSE_MODULES[bank.course_code]?.length || 0;
+              const hasModules = moduleCount > 0;
               const logo = productLogo(bank.course_code, bank.label);
               return (
                 <motion.button key={bank.course_code} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
@@ -376,7 +426,7 @@ export function CQPANWTemplates() {
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-0.5">
                       <span className="text-xs text-[#94a3b8]">{bank.total_questions} questions</span>
-                      {hasModules && <span className="text-[10px] text-[#64748b]">{COURSE_MODULES[bank.course_code].length} modules</span>}
+                      {hasModules && <span className="text-[10px] text-[#64748b]">{moduleCount} modules</span>}
                     </div>
                     <span className="flex items-center gap-0.5 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: bank.color }}>Select <ChevronRight className="w-3 h-3" /></span>
                   </div>

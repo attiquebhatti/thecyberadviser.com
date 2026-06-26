@@ -8,7 +8,19 @@ const COURSE_META: Record<string, { code?: string }> = {
   'PRISMA-ACCESS': { code: 'PRISMA' }, 'PRISMA-SDWAN': { code: 'SD-WAN' },
   'XDR-ENGINEER': { code: 'XDR-ENG' }, 'XDR-ANALYST': { code: 'XDR-ANL' },
   'XSOAR': { code: 'XSOAR' }, 'XSIAM-ENGINEER': { code: 'XSIAM-E' }, 'XSIAM-ANALYST': { code: 'XSIAM-A' },
+  'CCSA': { code: 'CCSA' }, 'CCSE': { code: 'CCSE' }, 'CCTA': { code: 'CCTA' }, 'CCTE': { code: 'CCTE' },
+  'F5-BIGIP-ADMIN': { code: 'BIG-IP' }, 'F5-LTM': { code: 'LTM' }, 'F5-DNS': { code: 'DNS' },
+  'F5-APM': { code: 'APM' }, 'F5-ASM-AWAF': { code: 'AWAF' }, 'F5-CSE-CLOUD': { code: 'CSE' },
+  'CYBERARK-PAM-ADMIN': { code: 'PAM-A' }, 'CYBERARK-PAM-INSTALL': { code: 'PAM-I' },
+  'CYBERARK-EPM-ADMIN': { code: 'EPM' }, 'CYBERARK-SM-K8S': { code: 'SM-K8S' }, 'CYBERARK-SM-SAAS': { code: 'SM-SaaS' },
 };
+
+function subjectForCourse(courseName = '') {
+  if (courseName.startsWith('Check Point')) return 'Check Point';
+  if (courseName.startsWith('F5')) return 'F5';
+  if (courseName.startsWith('CyberArk')) return 'CyberArk';
+  return 'Palo Alto Networks';
+}
 
 export async function POST(req: NextRequest, { params }: { params: { courseCode: string } }) {
   const auth = requireAuthUser(req);
@@ -36,7 +48,13 @@ export async function POST(req: NextRequest, { params }: { params: { courseCode:
 
     await pool.query(
       'INSERT INTO quizzes (id, host_id, title, subject, grade_level, is_public) VALUES (?, ?, ?, ?, ?, 0)',
-      [quizId, auth.user.id, quizTitle, 'Palo Alto Networks', allQs[0]?.course_name || courseCode]
+      [
+        quizId,
+        auth.user.id,
+        quizTitle,
+        subjectForCourse(allQs[0]?.course_name),
+        allQs[0]?.course_name || courseCode,
+      ]
     );
 
     for (let i = 0; i < allQs.length; i++) {

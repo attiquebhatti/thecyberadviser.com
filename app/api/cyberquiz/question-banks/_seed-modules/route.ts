@@ -11,10 +11,16 @@ export async function POST(req: NextRequest) {
 
   let questions: any[];
   let truncate = true;
+  let truncateCourseCodes: string[] = [];
   try {
     const body = await req.json();
     questions = body.questions;
     if (body.truncate === false) truncate = false;
+    if (Array.isArray(body.truncateCourseCodes)) {
+      truncateCourseCodes = body.truncateCourseCodes
+        .filter((code: unknown): code is string => typeof code === 'string')
+        .map((code: string) => code.toUpperCase());
+    }
     if (!Array.isArray(questions)) throw new Error('questions must be an array');
   } catch (e: any) {
     return NextResponse.json({ error: e.message || 'Provide { questions: [...] } in the request body' }, { status: 400 });
@@ -55,8 +61,18 @@ export async function POST(req: NextRequest) {
       await pool.query(`ALTER TABLE question_banks ADD INDEX idx_module_num (module_num)`);
     }
 
-    // Delete only module rows on first chunk (keep existing whole-course questions)
-    if (truncate) await pool.query('DELETE FROM question_banks WHERE module_num IS NOT NULL');
+    // Delete only module rows on first chunk (keep existing whole-course questions).
+    // When course codes are supplied, only refresh those courses.
+    if (truncate) {
+      if (truncateCourseCodes.length > 0) {
+        await pool.query(
+          'DELETE FROM question_banks WHERE module_num IS NOT NULL AND course_code IN (?)',
+          [truncateCourseCodes]
+        );
+      } else {
+        await pool.query('DELETE FROM question_banks WHERE module_num IS NOT NULL');
+      }
+    }
 
     const BATCH = 50;
     let inserted = 0;
