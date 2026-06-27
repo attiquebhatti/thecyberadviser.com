@@ -574,6 +574,44 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Integrated IoT Security:</strong> Automatic discovery and risk assessment of unmanaged devices across the network.</li>
         <li><strong className="text-white">Advanced URL Filtering:</strong> Real-time analysis of web traffic to block malicious domains and phishing attempts before they reach the user.</li>
       </ul>
+            <h3 className="text-2xl font-bold text-white mt-12 mb-4">Reference Architecture</h3>
+      <p>
+        A mature Strata deployment starts with control placement. Internet edge, data center, campus, cloud ingress, and segmentation firewalls should each have a clear security objective. The design should document which traffic is inspected at each layer, where decryption is allowed, how high availability is built, and how logs reach the SOC without packet loss or blind spots.
+      </p>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li><strong className="text-white">Internet edge:</strong> enforce inbound publishing, outbound URL control, DNS security, threat prevention, and SaaS access policy.</li>
+        <li><strong className="text-white">Data center segmentation:</strong> separate production, development, management, backup, and regulated-data zones with explicit App-ID allow rules.</li>
+        <li><strong className="text-white">Cloud ingress:</strong> protect workload entry points, east-west cloud traffic, and hybrid connectivity to transit gateways or virtual WAN hubs.</li>
+        <li><strong className="text-white">Operational layer:</strong> forward traffic, threat, URL, WildFire, decryption, and system logs to Panorama, SIEM, and incident response workflows.</li>
+      </ul>
+
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Policy Design Methodology</h3>
+      <p>
+        The highest-value Strata projects replace broad port-based access with application, user, device, and content-aware rules. Start by baselining traffic, grouping applications by business function, and removing unused rules before enforcing strict policy. Each rule should have an owner, business justification, source identity, destination zone, App-ID, security profiles, logging, and review date.
+      </p>
+      <p>
+        For Zero Trust alignment, avoid rules that allow any application over common ports. Use App-ID with service-default wherever possible, attach threat prevention profiles to allowed traffic, and log at session end for every meaningful rule. Exceptions should expire automatically or return to review after a defined business period.
+      </p>
+
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Decryption and Inspection Planning</h3>
+      <p>
+        SSL decryption is where many NGFW programs either mature or stall. Build a phased decryption plan instead of enabling inspection everywhere at once. Begin with lower-risk outbound categories, exclude regulated or privacy-sensitive destinations where required, and test application behavior before expanding to more critical user groups.
+      </p>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li>Define certificate authority ownership, endpoint trust deployment, and break-glass procedures.</li>
+        <li>Measure firewall capacity impact before and after decryption so inspection does not create a performance bottleneck.</li>
+        <li>Document no-decrypt categories such as healthcare, banking, legal, and pinned-certificate applications.</li>
+        <li>Use decryption logs and URL logs to tune policy without exposing unnecessary sensitive content.</li>
+      </ul>
+
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Operational Validation</h3>
+      <p>
+        A Strata deployment is not complete when policy is committed. Validate that the controls work under real operating conditions. Test failover, rule hit counts, user mapping, log forwarding, WildFire verdicts, URL category enforcement, DNS security, and incident workflows. The SOC should be able to trace a blocked session from firewall log to SIEM alert to response action without manual stitching.
+      </p>
+      <p>
+        Track measurable outcomes: rulebase reduction, percentage of rules with App-ID enforcement, decryption coverage by risk category, mean time to investigate firewall alerts, number of unused rules removed, and the percentage of critical zones protected by strict threat prevention profiles.
+      </p>
+
       <div className="bg-[#FFC300]/10 p-6 border-l-4 border-[#FFC300] mt-8">
         <h4 className="text-[#FFC300] font-bold uppercase tracking-widest text-sm mb-2">Expert Insight</h4>
         <p className="text-base">"The shift from traditional Layer 4 firewalls to Strata NGFWs is the single most impactful move an organization can make to transition toward a Zero Trust maturity model."</p>
