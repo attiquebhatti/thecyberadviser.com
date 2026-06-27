@@ -206,6 +206,79 @@ const blogContent: Record<string, React.ReactNode> = {
         </div>
       </section>
 
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">What Security Teams Should Inventory First</h3>
+        <p>A useful post-quantum readiness program starts with a cryptographic bill of materials. Do not limit the review to internet-facing certificates. The highest-risk dependencies are often buried inside infrastructure, identity, backup, and machine-to-machine workflows.</p>
+        <div className="grid gap-4 md:grid-cols-2">
+          {[
+            'TLS certificates, public certificate authorities, private CAs, and automated renewal jobs.',
+            'IPsec tunnels, SSL VPN portals, Prisma Access connections, and partner remote access paths.',
+            'SAML signing certificates, OAuth flows, privileged access systems, and hardware security modules.',
+            'Code signing, endpoint agent updates, CI/CD artifacts, desktop installers, and mobile releases.',
+            'Encrypted databases, object storage, legal archives, healthcare records, financial records, and backups.',
+            'Machine-to-machine trust between APIs, service accounts, appliances, and cloud workloads.',
+          ].map((item) => (
+            <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm text-slate-300">
+              {item}
+            </div>
+          ))}
+        </div>
+        <p>For each item, record the algorithm, key length, owner, renewal process, vendor dependency, and the business impact if the control must be replaced quickly. This gives the architecture team a factual migration map instead of a generic upgrade-encryption project.</p>
+      </section>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">Which Algorithms Are at Risk?</h3>
+        <p>The main quantum risk is not that every cryptographic primitive disappears overnight. Symmetric encryption and hashing are affected differently than public key cryptography.</p>
+        <p>Public key algorithms such as RSA, Diffie-Hellman, and elliptic curve cryptography are the priority because Shor&apos;s algorithm targets the math behind factoring and discrete logarithms. These systems are used for key exchange, digital signatures, VPN negotiation, TLS handshakes, and certificate trust.</p>
+        <p>Symmetric algorithms such as AES and hash functions such as SHA-256 are more resilient, but they still need review. Grover&apos;s algorithm can reduce the effective security margin, which is why many organizations standardize on stronger key sizes such as AES-256 for long-life data.</p>
+      </section>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">Practical Migration Roadmap</h3>
+        <div className="space-y-4">
+          {[
+            ['Discovery and classification', 'Build the cryptographic inventory, identify internet-facing and partner-facing dependencies, and flag data with a confidentiality lifetime longer than five years.'],
+            ['Vendor readiness review', 'Ask firewall, SASE, cloud, identity, HSM, EDR, SIEM, and certificate authority vendors which NIST-standard post-quantum algorithms they plan to support.'],
+            ['Lab validation', 'Test post-quantum or hybrid cryptography in non-production environments. Validate TLS negotiation, VPN tunnel stability, inspection behavior, logging, renewal, monitoring, and rollback.'],
+            ['Crypto-agile deployment', 'Update architectures so algorithms can be changed without redesigning applications. Central certificate management and policy-driven TLS profiles matter here.'],
+            ['Production prioritization', 'Migrate systems that protect long-life sensitive data first, then public-facing services, partner connections, privileged access workflows, and internal machine-to-machine trust.'],
+          ].map(([title, detail]) => (
+            <div key={title} className="rounded-2xl border border-white/10 bg-[#001D3D]/30 p-6">
+              <h4 className="text-lg font-semibold text-white mb-2">{title}</h4>
+              <p className="text-sm text-slate-300">{detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">What This Means for Network and SASE Architecture</h3>
+        <p>For enterprise security architects, quantum readiness is closely tied to network modernization. Remote access, branch connectivity, cloud transit, and inspection platforms all depend on cryptographic negotiation.</p>
+        <ul className="space-y-3 list-disc list-inside">
+          <li>Review which tunnels and portals rely on RSA or ECC certificates.</li>
+          <li>Confirm whether certificate lifecycles are automated or still manually renewed.</li>
+          <li>Test how TLS decryption policies handle hybrid or post-quantum handshakes.</li>
+          <li>Check whether legacy appliances can support larger certificates, signatures, and updated cipher suites.</li>
+          <li>Track cryptographic posture in SIEM, asset management, and architecture review workflows.</li>
+        </ul>
+        <p>This is also a governance problem. Security architecture, network engineering, cloud engineering, application teams, and compliance owners need a shared migration backlog. Without that ownership model, post-quantum readiness becomes another spreadsheet that ages faster than the infrastructure it describes.</p>
+      </section>
+
+      <section className="space-y-6">
+        <h3 className="text-3xl font-bold text-[#FFC300]">Readiness Checklist</h3>
+        <div className="rounded-2xl border border-[#FFC300]/20 bg-[#FFC300]/5 p-6">
+          <ul className="space-y-3 list-disc list-inside text-slate-200">
+            <li>Create a cryptographic asset inventory and update it quarterly.</li>
+            <li>Tag data sets by confidentiality lifetime: under 1 year, 1-5 years, 5-10 years, and 10+ years.</li>
+            <li>Identify every RSA, ECC, and Diffie-Hellman dependency in VPN, TLS, PKI, code signing, identity, and backup workflows.</li>
+            <li>Require vendors to document PQC support, hybrid-mode support, firmware requirements, and deprecation timelines.</li>
+            <li>Test ML-KEM based key exchange and post-quantum signature options in a lab before production rollout.</li>
+            <li>Add PQC readiness to security architecture reviews, cloud landing zone reviews, and third-party risk assessments.</li>
+            <li>Define rollback procedures before changing production TLS, VPN, or certificate authority settings.</li>
+          </ul>
+        </div>
+      </section>
+
       <section id="final-take" className="space-y-6">
         <h3 className="text-3xl font-bold text-[#FFC300]">🏁 Bottom Line</h3>
         <p>Quantum computing isn&apos;t just a &quot;future problem.&quot; The cryptographic transition is a multi-year journey that needs to start <strong>now.</strong> Is your security roadmap quantum-ready? ⚛️</p>
