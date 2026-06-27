@@ -177,6 +177,7 @@ export function ServicesContent() {
           title="Strategic Security Expertise"
           description="Comprehensive advisory services spanning architecture, transformation, and executive alignment for enterprises navigating complex security challenges."
           className="max-w-4xl"
+          headingLevel="h1"
         />
       </Section>
 

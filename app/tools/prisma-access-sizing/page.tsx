@@ -81,6 +81,7 @@ export default function PrismaAccessSizingPage({ searchParams }: Props) {
           description="Estimate regions, resilience, throughput, remote network scale, and mobile user assumptions without leaving the website experience."
           className="max-w-4xl text-left !mx-0"
           align="left"
+          headingLevel="h1"
         />
       </Section>
 

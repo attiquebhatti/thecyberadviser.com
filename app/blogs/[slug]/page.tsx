@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 import { getArticleBySlug } from '@/data/articles';
+import type { Article } from '@/data/articles';
+import { blogSlugs, getBlogSeoEntry } from '@/lib/blog-seo';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
@@ -13,10 +15,11 @@ import { SITE_URL, articleImage, articleJsonLd, metaDescription, titleWithBrand 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const currentSlug = params.slug;
   const article = getArticleBySlug(currentSlug);
-  
-  const title = article ? titleWithBrand(article.title) : 'Article | The Cyber Adviser';
-  const description = metaDescription(article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser.');
-  const imageUrl = articleImage(article);
+  const seoEntry = getBlogSeoEntry(currentSlug);
+
+  const title = seoEntry ? titleWithBrand(seoEntry.metaTitle) : article ? titleWithBrand(article.title) : 'Cybersecurity Article | The Cyber Adviser';
+  const description = metaDescription(seoEntry?.excerpt || article?.excerpt || 'Strategic cybersecurity insights from The Cyber Adviser covering enterprise architecture, SASE, SOC automation, and cloud security.');
+  const imageUrl = articleImage(seoEntry?.image ? { image: seoEntry.image } : article);
   const articleUrl = `${SITE_URL}/blogs/${currentSlug}`;
 
   return {
@@ -33,11 +36,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: seoEntry?.title || title,
         },
       ],
       type: 'article',
-      publishedTime: article?.date,
+      publishedTime: seoEntry?.date || article?.date,
     },
     twitter: {
       card: 'summary_large_image',
@@ -806,26 +809,7 @@ const blogContent: Record<string, React.ReactNode> = {
 // GENERATE STATIC PARAMS
 // ==========================================
 export async function generateStaticParams() {
-  return [
-    { slug: 'cortex-xsoar-transforming-soc-operations' },
-    { slug: 'securing-agentic-endpoint-cortex-xdr' },
-    { slug: 'quantum-computing-cybersecurity-readiness' },
-    { slug: 'what-is-palo-alto-networks-cortex-cloud' },
-    { slug: 'strata-next-gen-firewalls' },
-    { slug: 'prisma-access-sase-revolution' },
-    { slug: 'cortex-xdr-ai-defense' },
-    { slug: 'automating-soc-xsoar' },
-    { slug: 'panorama-centralized-mastery' },
-    { slug: 'prisma-sd-wan-cloud-gen' },
-    { slug: 'future-secops-xsiam' },
-    { slug: 'prisma-sase-convergence' },
-    { slug: 'hybrid-cloud-connectivity' },
-    { slug: 'prisma-split-tunneling' },
-    { slug: 'phishing-triage-playbook' },
-    { slug: 'legacy-vpn-to-ztna-the-migration-plan' },
-    { slug: 'cloud-security-posture-management' },
-    { slug: 'security-architecture-review-methodology' },
-  ];
+  return blogSlugs.map((slug) => ({ slug }));
 }
 
 // ==========================================
@@ -838,24 +822,35 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
     'quantum-computing-cybersecurity-readiness': '⚛️ Quantum Computing is Coming: Why Most Security Teams Aren’t Ready',
     'what-is-palo-alto-networks-cortex-cloud': 'What Is Palo Alto Networks Cortex Cloud? A Technical Guide',
   };
-  const formattedTitle = blogTitles[currentSlug] ?? currentSlug.replace(/-/g, ' ').toUpperCase();
-  
+  const seoEntry = getBlogSeoEntry(currentSlug);
+  const formattedTitle = seoEntry?.title || blogTitles[currentSlug] || currentSlug.replace(/-/g, ' ').toUpperCase();
+
   const hasContent = blogContent[currentSlug] !== undefined;
   const article = !hasContent ? getArticleBySlug(currentSlug) : null;
+  const schemaArticle = article || (seoEntry ? {
+    slug: seoEntry.slug,
+    title: seoEntry.title,
+    excerpt: seoEntry.excerpt,
+    category: seoEntry.category,
+    date: seoEntry.date,
+    readTime: seoEntry.readTime,
+    image: seoEntry.image,
+    content: '',
+  } as Article : null);
 
-  const isCortexFallback = article ? ['CORTEX XDR', 'CORTEX CLOUD', 'XSOAR', 'XSIAM'].includes(article.category) : false;
+  const isCortexFallback = schemaArticle ? ['CORTEX XDR', 'CORTEX CLOUD', 'XSOAR', 'XSIAM'].includes(schemaArticle.category) : false;
   const fallbackAccentColor = isCortexFallback ? '#6BD348' : '#FFC300';
   const headerGradient = isCortexFallback
     ? 'from-emerald-500/5 via-[#000814] to-[#000814]'
     : 'from-amber-500/5 via-[#000814] to-[#000814]';
 
-  const blogJsonLd = article
-    ? articleJsonLd(article, `/blogs/${currentSlug}`, 'BlogPosting')
+  const blogJsonLd = schemaArticle
+    ? articleJsonLd(schemaArticle, `/blogs/${currentSlug}`, 'BlogPosting')
     : {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: formattedTitle,
-        description: 'Strategic cybersecurity insights from The Cyber Adviser.',
+        description: 'Strategic cybersecurity insights from The Cyber Adviser covering enterprise architecture, SASE, SOC automation, and cloud security.',
         image: articleImage(),
         mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blogs/${currentSlug}` },
       };
@@ -877,16 +872,16 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
           <Link href="/blogs" className="text-[#FFC300] font-mono text-xs font-bold uppercase tracking-widest mb-8 inline-block hover:text-white transition-colors">
             ← Back to Blog
           </Link>
-          {article && (
+          {schemaArticle && (
             <p className="font-mono text-xs font-black uppercase tracking-[0.3em] mb-4" style={{ color: fallbackAccentColor }}>
-              {article.category} · {article.readTime}
+              {schemaArticle.category} ? {schemaArticle.readTime}
             </p>
           )}
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tighter mb-8 leading-tight">
-            {article ? article.title : formattedTitle}
+            {formattedTitle}
           </h1>
-          {article && (
-            <p className="text-slate-500 font-mono text-sm">{article.date}</p>
+          {schemaArticle && (
+            <p className="text-slate-500 font-mono text-sm">{schemaArticle.date}</p>
           )}
         </div>
       </section>
@@ -922,7 +917,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
         )}
       </section>
 
-      <RelatedTools topic={article?.category || formattedTitle} />
+      <RelatedTools topic={schemaArticle?.category || formattedTitle} />
     </main>
   );
 }

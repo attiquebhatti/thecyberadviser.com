@@ -21,6 +21,7 @@ export default function ToolsPage() {
           title="Interactive Security Tools"
           description="Specialized tools for architecture planning, migration, and design validation."
           className="max-w-4xl"
+          headingLevel="h1"
         />
       </Section>
 

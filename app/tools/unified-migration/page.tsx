@@ -73,6 +73,7 @@ export default function UnifiedMigrationPage() {
           description="Convert firewall configurations across vendors with confidence scoring, validation insight, and a cleaner dedicated migration workspace."
           className="max-w-4xl text-left !mx-0"
           align="left"
+          headingLevel="h1"
         />
       </Section>
 

@@ -26,6 +26,7 @@ interface SectionHeaderProps {
   description?: string;
   className?: string;
   align?: 'left' | 'center';
+  headingLevel?: 'h1' | 'h2';
 }
 
 export function SectionHeader({
@@ -34,7 +35,9 @@ export function SectionHeader({
   description,
   className,
   align = 'center',
+  headingLevel = 'h2',
 }: SectionHeaderProps) {
+  const Heading = headingLevel;
   return (
     <div
       className={cn(
@@ -48,7 +51,7 @@ export function SectionHeader({
           {eyebrow}
         </p>
       )}
-      <h2 className="text-white">{title}</h2>
+      <Heading className="text-white">{title}</Heading>
       {description && (
         <p className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed">{description}</p>
       )}

@@ -1400,6 +1400,30 @@ Track these metrics to validate split tunneling decisions:
 - **Security event correlation** between excluded traffic and incidents
 - **Helpdesk ticket volume** related to connectivity issues
 
+## Implementation Checklist for Prisma Access Teams
+
+A production Prisma Access split-tunnel design should be handled as a controlled architecture change, not as a helpdesk workaround for performance complaints. Before changing the gateway configuration, document the business owner, the application category, the risk rating, the expected traffic volume, and the rollback condition for every exclusion. This gives the security team a defensible record when auditors or incident responders ask why a traffic class bypassed cloud inspection.
+
+### Baseline Before Exclusion
+
+Capture at least one normal business cycle of telemetry before exclusions are enabled. Useful baseline evidence includes GlobalProtect gateway utilization, Prisma Access bandwidth consumption, user experience reports, packet loss, SaaS application latency, and the top application categories crossing the service. Without this baseline, it is difficult to prove whether split tunneling improved the user experience or simply moved visibility away from the security platform.
+
+### Prefer Application and Domain Controls
+
+Where possible, avoid broad subnet exclusions. SaaS providers change IP ranges frequently, and large address blocks can accidentally bypass traffic that should remain inspected. A better design is to combine App-ID, verified domains, SaaS provider guidance, and explicit business justification. For Microsoft 365 and real-time collaboration tools, document whether the exclusion covers optimize endpoints only or a broader set of default or allow endpoints.
+
+### Validate the User Path
+
+After deployment, validate from the endpoint, not only from the Prisma Access console. Confirm the GlobalProtect client route table, DNS resolution path, application behavior, and traffic logs. For excluded traffic, the expected result is direct access with no Prisma Access traffic log entry. For non-excluded traffic, the expected result is continued inspection, logging, and policy enforcement through the nearest service edge.
+
+### Risk Controls for Excluded Traffic
+
+Every exclusion should have compensating controls. Common examples include endpoint protection, browser security, CASB controls, SaaS tenant restrictions, device posture checks, and identity conditional access. The goal is not to avoid inspection entirely; the goal is to inspect in the most effective control plane for that traffic type while preserving performance for latency-sensitive applications.
+
+### Change Review Cadence
+
+Review split-tunnel exclusions quarterly and after major SaaS provider changes. Remove exclusions that no longer have a clear owner or measurable performance benefit. Add monitoring for sudden increases in direct traffic volume, unusual destinations, and endpoint posture failures. This keeps split tunneling aligned with Zero Trust principles instead of becoming an undocumented bypass list.
+
 The goal is demonstrable improvement in user experience with no degradation in security posture.
     `,
   },

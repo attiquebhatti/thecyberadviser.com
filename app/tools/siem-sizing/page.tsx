@@ -73,6 +73,7 @@ export default function SiemSizingPage() {
           description="Estimate storage, compute, RAM, and infrastructure sizing for SIEM and SOAR deployments using a clean architecture-first workflow."
           className="max-w-4xl text-left !mx-0"
           align="left"
+          headingLevel="h1"
         />
       </Section>
 

@@ -6,6 +6,8 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 // THE MASSIVE ENTERPRISE ARTICLE DATABASE (55 Articles)
+const publishedKnowledgeBaseSlugs = new Set(['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook']);
+
 const articles = [
   // --- PRISMA ACCESS (5) ---
   { category: 'PRISMA ACCESS', title: 'Prisma Access: Optimizing Split-Tunneling', description: 'A deep dive into latency reduction for global remote workforces using Strata and Prisma Access integrations.', date: '2026-02-15', slug: 'prisma-split-tunneling' },
@@ -101,7 +103,7 @@ function KnowledgeBaseContent() {
     }
   }, [searchParams]);
 
-  const filteredArticles = articles.filter(article => {
+  const filteredArticles = articles.filter((article) => publishedKnowledgeBaseSlugs.has(article.slug)).filter(article => {
     if (activeTab === 'ALL ARTICLES') return true;
     if (activeTab === 'PALO ALTO') {
       return ['PRISMA ACCESS', 'PRISMA SD-WAN', 'CORTEX XSOAR', 'CORTEX XDR', 'STRATA NGFW'].includes(article.category);

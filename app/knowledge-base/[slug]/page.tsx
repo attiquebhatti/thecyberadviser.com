@@ -4,11 +4,23 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 import RelatedTools from '@/components/seo/RelatedTools';
-import { getAllArticles, getArticleBySlug } from '@/data/articles';
+import { getArticleBySlug } from '@/data/articles';
 import { SITE_URL, articleJsonLd, metaDescription, titleWithBrand } from '@/lib/seo';
 
+const publishedKnowledgeBaseSlugs = ['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook'];
+
+const knowledgeBaseMetaTitles: Record<string, string> = {
+  'hybrid-cloud-connectivity': 'Hybrid Cloud Security Architecture | The Cyber Adviser',
+  'prisma-split-tunneling': 'Prisma Split Tunneling Guide | The Cyber Adviser',
+  'phishing-triage-playbook': 'Phishing Triage Playbook | The Cyber Adviser',
+};
+
+function isPublishedKnowledgeBaseSlug(slug: string) {
+  return publishedKnowledgeBaseSlugs.includes(slug);
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const article = getArticleBySlug(params.slug);
+  const article = isPublishedKnowledgeBaseSlug(params.slug) ? getArticleBySlug(params.slug) : undefined;
 
   if (!article) {
     return {
@@ -20,7 +32,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const title = titleWithBrand(article.title);
+  const title = knowledgeBaseMetaTitles[params.slug] || titleWithBrand(article.title);
   const articleUrl = `${SITE_URL}/knowledge-base/${params.slug}`;
 
   return {
@@ -139,11 +151,11 @@ function MarkdownRenderer({ content }: { content: string }) {
 }
 
 export async function generateStaticParams() {
-  return getAllArticles().map((article) => ({ slug: article.slug }));
+  return publishedKnowledgeBaseSlugs.map((slug) => ({ slug }));
 }
 
 export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug);
+  const article = isPublishedKnowledgeBaseSlug(params.slug) ? getArticleBySlug(params.slug) : undefined;
 
   if (!article) {
     notFound();
