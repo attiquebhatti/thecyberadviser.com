@@ -12,9 +12,43 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+
+const securityHeaders = {
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+  'Content-Security-Policy': "frame-ancestors 'self'; upgrade-insecure-requests",
+};
+
+function shouldUseSeoCachePolicy(req) {
+  const path = parse(req.url || '/', true).pathname || '/';
+  if (path.startsWith('/_next/static/') || path.startsWith('/_next/image')) return false;
+  if (/\.(?:js|css|png|jpg|jpeg|gif|svg|webp|avif|ico|woff2?|ttf|map)$/i.test(path)) return false;
+  return req.method === 'GET' || req.method === 'HEAD';
+}
+
+function applySeoHeaders(req, res) {
+  for (const [key, value] of Object.entries(securityHeaders)) {
+    res.setHeader(key, value);
+  }
+
+  if (shouldUseSeoCachePolicy(req)) {
+    res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=60');
+  }
+}
+
 app.prepare().then(() => {
   const httpServer = createServer((req, res) => {
     const parsedUrl = parse(req.url, true);
+    const writeHead = res.writeHead.bind(res);
+
+    res.writeHead = function patchedWriteHead(...args) {
+      applySeoHeaders(req, res);
+      return writeHead(...args);
+    };
+
+    applySeoHeaders(req, res);
     handle(req, res, parsedUrl);
   });
 
