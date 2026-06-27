@@ -688,6 +688,38 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Template Stacks:</strong> Modularize configuration components like network settings and UI preferences for rapid deployment of new firewalls.</li>
         <li><strong className="text-white">Centralized Logging:</strong> Aggregate logs from across the fleet for unified reporting and forensic analysis.</li>
       </ul>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Device Group and Template Stack Design</h3>
+      <p>
+        A mature Panorama design starts with a device group hierarchy that mirrors how policy is governed, not simply how the network is drawn. Shared and parent device groups should hold security controls that are common across the estate, such as baseline outbound filtering, threat prevention profiles, DNS security, URL filtering, and default logging behavior. Child groups should introduce location, environment, or business-unit rules only where those exceptions are justified.
+      </p>
+      <p>
+        Use pre-rules for controls that local firewall administrators should inherit consistently, and reserve post-rules for cleanup, broad deny, and governance controls that must remain at the end of the rulebase. Avoid duplicating address objects, service objects, and tags across device groups because duplicates make audits slower and increase the risk of policy drift during incident response.
+      </p>
+      <p>
+        Template stacks should separate reusable platform settings from site-specific configuration. A common base template can define DNS, NTP, log forwarding, authentication profiles, content update schedules, and device telemetry. Site templates can then own interfaces, routing, zones, high availability settings, and local management access. For multi-vsys or mixed hardware estates, keep stack order explicit so overrides are easy to review before commit.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Commit Governance and Change Control</h3>
+      <p>
+        Panorama becomes the control plane for security change, so commit governance matters as much as the rule design itself. Administrators should use config locks, named candidate changes, change-ticket references in rule descriptions, and peer review before pushing to production device groups. Large environments should stage commit-all operations by region, firewall pair, or service tier rather than pushing every change to every firewall at once.
+      </p>
+      <p>
+        Before committing, review the preview diff for object changes, NAT order, security policy order, and template overrides. Export named configuration snapshots before major migrations, and document rollback criteria so operations teams know when to revert, when to troubleshoot locally, and when to pause the deployment. This discipline prevents Panorama from becoming a fast way to distribute bad policy everywhere.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Logging and Panorama Operations</h3>
+      <p>
+        Centralized management is only valuable when telemetry is also centralized. Panorama should be configured with log collectors, Collector Groups, Cortex Data Lake, or SIEM forwarding patterns that match the organization&apos;s detection and retention requirements. Security rules should forward traffic, threat, URL, file, and wildfire logs consistently so SOC teams can investigate across branches, data centers, and cloud firewalls from one evidence trail.
+      </p>
+      <p>
+        Operational teams should review rule hit counts, unused objects, shadowed rules, threat trends, and administrative activity logs on a defined cadence. The best Panorama programs treat cleanup as continuous maintenance: retire stale rules, tag temporary access with expiry dates, validate content updates, and confirm that HA firewalls receive the same policy and template state after every commit.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Migration and Scale Checklist</h3>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li><strong className="text-white">Inventory first:</strong> Document firewall models, PAN-OS versions, zones, virtual systems, HA pairs, routing dependencies, and existing local-only rules before importing devices.</li>
+        <li><strong className="text-white">Normalize naming:</strong> Standardize tags, object names, service groups, and rule descriptions so audits and automation remain predictable.</li>
+        <li><strong className="text-white">Define RBAC:</strong> Assign Panorama roles by operational responsibility, separating policy authors, network template administrators, auditors, and read-only SOC users.</li>
+        <li><strong className="text-white">Test failover:</strong> Validate HA sync, routing failover, log forwarding, and commit behavior before moving critical firewalls into centralized management.</li>
+        <li><strong className="text-white">Automate backups:</strong> Schedule configuration exports and keep recovery documentation current for Panorama, log collectors, and managed firewall pairs.</li>
+      </ul>
     </div>
   ),
 
