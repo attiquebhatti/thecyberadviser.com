@@ -1872,6 +1872,81 @@ Refine and enhance ZTNA deployment:
 3. Automate onboarding processes
 4. Establish continuous improvement practices
 
+## Technical Design Workstreams
+
+A successful VPN-to-ZTNA migration is not just a product rollout. It is a set of technical workstreams that replace network-level trust with identity, device posture, application segmentation, and continuous monitoring.
+
+### Application Discovery and Dependency Mapping
+
+Start by building an application inventory that is specific enough for migration engineering. A spreadsheet with application names is not enough.
+
+Capture these fields for each application:
+- Business owner and technical owner
+- User groups, admin groups, and third-party access requirements
+- Protocols, ports, and authentication method
+- Data sensitivity and compliance requirements
+- Current VPN profile, firewall rule, and source network dependency
+- Backend dependencies such as databases, file shares, APIs, and jump hosts
+- Required DNS names, certificates, and split-horizon resolution behavior
+- Peak usage windows and acceptable maintenance periods
+
+Use VPN logs, firewall logs, DNS logs, endpoint telemetry, and SSO reports to validate the inventory. Interview data alone will miss hidden dependencies.
+
+### ZTNA Policy Mapping
+
+ZTNA policy should be based on application access, not broad network reachability. Convert legacy VPN groups into explicit access policies.
+
+A practical policy model includes:
+- **User identity**: group membership, role, employment status, and privileged access requirements
+- **Device posture**: managed device, encryption status, EDR health, OS version, patch state, and certificate presence
+- **Location and risk**: impossible travel, risky sign-in, anonymous network, and geo-risk signals
+- **Application sensitivity**: normal business app, administrative app, regulated-data app, or crown-jewel system
+- **Session controls**: re-authentication, step-up MFA, clipboard restrictions, file download controls, and session recording where appropriate
+
+Do not copy VPN access groups directly into ZTNA. VPN groups often contain years of accumulated exceptions. Use the migration as a chance to remove stale access.
+
+### Connector and Enforcement Placement
+
+Connector placement determines performance, resilience, and blast radius. Place connectors close to the applications they publish, not simply where the old VPN concentrator lived.
+
+Design considerations:
+- Deploy connectors in each major data center, cloud VPC/VNet, or application hosting zone.
+- Use multiple connectors per critical site or zone for high availability.
+- Avoid routing all ZTNA traffic through one shared connector if it creates a new choke point.
+- Separate production, development, management, and third-party access paths where possible.
+- Confirm connectors can resolve internal DNS names and reach only the applications they publish.
+- Monitor connector CPU, memory, tunnel state, latency, and failed application requests.
+
+A good design limits what a compromised connector path can reach. ZTNA should shrink the accessible network, not rebuild the same flat VPN path through a new product.
+
+### Legacy Protocol Handling
+
+Many VPN migrations slow down because of legacy protocols. RDP, SSH, SMB, thick clients, database consoles, and vendor tools often assume network adjacency.
+
+Handle these patterns explicitly:
+- Replace broad RDP/SSH access with privileged access workflows or browser-based access where possible.
+- Publish specific administrative apps instead of entire management subnets.
+- Move file access to managed collaboration platforms or brokered file access patterns.
+- For database clients, validate authentication, TLS, DNS, and source restrictions before migration.
+- For vendor access, require named accounts, MFA, session recording where possible, and expiration dates.
+
+If a protocol truly requires network-level access, keep it as a documented exception with owner approval, compensating controls, and a target retirement date.
+
+## Decommission Criteria
+
+VPN deprecation should be based on evidence, not optimism. Before retiring a VPN profile or concentrator, confirm that business-critical paths have been migrated and monitored through at least one normal business cycle.
+
+Minimum retirement criteria:
+- 95 percent or more of normal user sessions no longer require VPN.
+- All critical applications have a tested ZTNA path and rollback path.
+- Helpdesk ticket volume has returned to baseline after migration waves.
+- Security logging, identity logs, and application access logs are visible in SIEM.
+- Privileged access and third-party access have documented ZTNA or exception workflows.
+- Remaining VPN exceptions have owners, expiration dates, and compensating controls.
+- Disaster recovery and emergency administration paths are tested without relying on undocumented VPN access.
+
+When these criteria are met, remove VPN access in stages: disable unused profiles, reduce allowed groups, shut down inactive gateways, then retire infrastructure and firewall rules. Keep a final rollback window, but do not leave unused VPN access available indefinitely.
+
 ## Managing Risks
 
 ### Rollback Capability
