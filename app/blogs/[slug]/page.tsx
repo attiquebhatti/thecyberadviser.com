@@ -767,6 +767,35 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Simplified Branch:</strong> Decommission legacy routers and firewalls at the branch by integrating security and networking into ION devices.</li>
         <li><strong className="text-white">Cloud Integration:</strong> Seamlessly extend your SD-WAN fabric into AWS, Azure, and Google Cloud for consistent performance and visibility.</li>
       </ul>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">ION Deployment and Branch Topology</h3>
+      <p>
+        A strong Prisma SD-WAN deployment starts with a clear branch model. ION devices should be mapped to the circuits, VLANs, zones, and business applications they protect before templates are applied. Small branches may only need dual internet links and secure service insertion, while larger sites often require MPLS coexistence, LAN segmentation, high availability pairs, and explicit routing handoff to campus or data center networks.
+      </p>
+      <p>
+        Treat each branch as an application delivery point rather than a router replacement. Define which SaaS, private, voice, collaboration, payment, and operational technology traffic matters to the business. That application inventory becomes the basis for path selection policy, brownout detection, failover behavior, and reporting.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Application Probes and Path Policy</h3>
+      <p>
+        Prisma SD-WAN can make better forwarding decisions when it understands real application experience. Configure application probes, performance thresholds, and service-level objectives for the traffic classes that actually matter: collaboration platforms, ERP, contact center voice, VDI, cloud security tunnels, and private APIs. Packet loss, latency, jitter, transaction response, and app reachability should all influence path selection.
+      </p>
+      <p>
+        Path policy should be written in business language. Critical real-time traffic may prefer the lowest-jitter circuit, SaaS traffic may break out locally through Prisma Access, and bulk backup traffic may use a lower-cost path. During brownouts, the platform should move users before they notice a major outage, but engineers should still be able to explain why a path changed and which SLA triggered the decision.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Cloud Connectivity and Security Service Insertion</h3>
+      <p>
+        Modern SD-WAN designs need cloud adjacency. Prisma SD-WAN should be planned alongside AWS, Azure, Google Cloud, Prisma Access, and data center connectivity so branch traffic reaches applications through the shortest secure path. Cloud ION or virtual branch designs can reduce backhaul, improve resilience, and give operations teams a consistent policy model across physical sites and cloud-hosted workloads.
+      </p>
+      <p>
+        Security service insertion is a key design decision. Internet-bound traffic may route to Prisma Access, private applications may traverse data center firewalls, and sensitive segments may require additional inspection. Document the intended traffic path for each application class so routing, security policy, and troubleshooting runbooks stay aligned.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Operational Metrics for SD-WAN Success</h3>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li><strong className="text-white">Application experience:</strong> Track transaction time, availability, packet loss, jitter, and brownout events for critical applications, not just circuit uptime.</li>
+        <li><strong className="text-white">Path changes:</strong> Review why traffic moved between circuits and confirm policy decisions match business priority.</li>
+        <li><strong className="text-white">Branch readiness:</strong> Validate circuit diversity, HA state, LTE backup, local breakout, and cloud tunnel health before cutover.</li>
+        <li><strong className="text-white">Template consistency:</strong> Audit branch profiles, application definitions, security insertion, and routing policies for drift.</li>
+        <li><strong className="text-white">User impact:</strong> Correlate help desk tickets, call quality, SaaS errors, and site performance with SD-WAN telemetry.</li>
+      </ul>
     </div>
   ),
 
