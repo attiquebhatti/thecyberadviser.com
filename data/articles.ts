@@ -1608,6 +1608,89 @@ Notify affected users through verified channels:
 - Avoid creating panic while ensuring compliance
 - Document all communications
 
+## Evidence Preservation and Chain of Custody
+
+Phishing investigations often fail because the original evidence is altered, forwarded without headers, or deleted during cleanup. Preserve evidence before broad remediation whenever business risk allows.
+
+Minimum evidence to preserve:
+- Original message with full headers and envelope data
+- Message ID, sender, reply-to, return-path, and authentication results
+- URLs, redirect chains, landing page screenshots, and resolved IP addresses
+- Attachment hashes, file names, macros, and sandbox detonation reports
+- Recipient list, delivery status, user reports, and quarantine actions
+- Click telemetry, proxy logs, DNS logs, and endpoint browser history where available
+- Authentication logs for affected users before and after the suspected click
+
+Store evidence in the case record before blocking or deleting messages. If legal, HR, finance, or executive users are involved, confirm whether the incident needs legal hold or privacy review before collecting endpoint artifacts.
+
+## XSOAR Playbook Design
+
+A Cortex XSOAR phishing playbook should automate repeatable enrichment while keeping analyst decision points visible. Do not fully automate destructive actions such as mailbox purge, account disablement, or tenant-wide blocking without approval gates.
+
+A practical playbook flow:
+1. Ingest user report, email security alert, or SIEM correlation event.
+2. Normalize headers, sender, subject, URLs, attachments, and recipient data.
+3. Enrich URLs, domains, IPs, file hashes, and sender reputation from threat intelligence sources.
+4. Detonate attachments and URLs in a sandbox where policy allows.
+5. Search mailboxes for matching message IDs, sender patterns, subjects, and URL indicators.
+6. Check click logs, DNS logs, proxy logs, and endpoint telemetry for user interaction.
+7. Query identity logs for impossible travel, MFA fatigue, new device registration, token replay, and suspicious OAuth consent.
+8. Score the incident using severity, recipient privilege, credential exposure, and observed user action.
+9. Present containment choices to the analyst or incident commander.
+10. Execute approved actions, document results, and produce the executive summary.
+
+Use playbook tasks to separate enrichment, scope, containment, communication, and closure. This makes the workflow easier to tune as new mail security tools, identity providers, and endpoint controls are added.
+
+## Log Sources to Correlate
+
+Triage quality depends on whether the team can prove what happened after delivery. At minimum, correlate mail, identity, network, and endpoint evidence.
+
+For Microsoft 365 environments, review:
+- Exchange message trace and advanced hunting results
+- Defender for Office 365 URL click events and Safe Links verdicts
+- Entra ID sign-in logs, risky users, risky sign-ins, and MFA events
+- Audit logs for inbox rules, forwarding, OAuth consent, device registration, and password changes
+- Defender for Endpoint browser, process, file, and network events
+
+For Google Workspace environments, review:
+- Gmail message logs and investigation tool results
+- Security center alerts and phishing classification events
+- Login audit logs, OAuth app grants, and 2-Step Verification changes
+- Drive sharing events if credential theft may have led to data access
+- Endpoint or Chrome telemetry where managed browsers are deployed
+
+For network and SASE environments, review proxy logs, DNS security logs, firewall traffic logs, CASB events, and ZTNA session data. The key question is whether the user reached the phishing infrastructure and whether any follow-on access occurred after credential exposure.
+
+## Decision Gates for Leadership
+
+Executives do not need every indicator, but they do need clear decision gates. Define these gates before a major phishing event so leadership can approve actions quickly.
+
+Escalate to executive incident leadership when:
+- A privileged, finance, HR, legal, or executive account entered credentials.
+- The phishing page captured MFA codes, session cookies, or OAuth consent.
+- Mailbox forwarding, inbox rules, or delegated access were created.
+- The campaign reached a large percentage of the workforce.
+- Evidence suggests business email compromise, payment fraud, or data access.
+- The response requires tenant-wide password resets, legal notification, or external communications.
+
+For each gate, present three choices: contain immediately, monitor with enhanced controls, or accept residual risk with a named business owner. This keeps decision-making fast and auditable.
+
+## Containment Validation
+
+Containment is not complete when the message is deleted. Validate that attacker access paths are closed.
+
+Validation checks should include:
+- Password reset completed and active sessions revoked
+- MFA methods reviewed for attacker-added devices or phone numbers
+- OAuth grants and suspicious application consents removed
+- Inbox rules, forwarding, and delegated permissions inspected
+- Endpoint scan completed for users who opened attachments
+- Malicious domains, URLs, hashes, and sender patterns blocked across controls
+- No successful suspicious sign-ins after containment time
+- No new mailbox access, file access, or payment workflow activity tied to the incident
+
+Document the exact containment timestamp. It becomes the reference point for reviewing follow-on activity.
+
 ## Post-Incident Activities
 
 ### Root Cause Analysis
