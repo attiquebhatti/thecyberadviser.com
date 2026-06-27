@@ -2125,6 +2125,78 @@ Map capabilities to maturity levels:
 - Automation and innovation
 - Strategic alignment
 
+## Evidence Model for Architecture Reviews
+
+A strong review is evidence-led. Each finding should trace back to a diagram, configuration sample, policy, log source, interview statement, traffic path, or control test. This avoids opinion-driven recommendations and gives implementation teams a clear path to remediation.
+
+Useful evidence sources include:
+- Network and cloud architecture diagrams with trust boundaries marked
+- Identity provider settings, conditional access policies, and privileged access workflows
+- Firewall, SASE, WAF, and segmentation policy exports
+- Endpoint protection coverage and response telemetry
+- SIEM log source inventory and detection rule coverage
+- Vulnerability management reports and patch SLA history
+- Incident records, post-incident reviews, and recurring root causes
+- Data classification, encryption, backup, and retention standards
+- Third-party integration diagrams and API authentication patterns
+
+For every major observation, capture the evidence source, the risk it supports, the affected business process, and the owner who can approve remediation. This makes the review defensible and easier to turn into a funded roadmap.
+
+## Architecture Decision Review
+
+Security architecture reviews should evaluate not only whether controls exist, but why the architecture was designed that way. Many environments contain old decisions that made sense at the time but no longer fit the threat model, cloud operating model, or business scale.
+
+Review these decisions explicitly:
+- **Trust boundaries**: Where does the architecture assume a user, workload, network, or third party is trusted?
+- **Control placement**: Are controls deployed close enough to the asset or identity they protect?
+- **Inspection depth**: Is traffic inspected at the right layer, or are encrypted and east-west paths invisible?
+- **Identity dependency**: Does authorization rely on group membership, device posture, risk signals, or static network location?
+- **Operational ownership**: Which team tunes, monitors, and validates each control after deployment?
+- **Failure behavior**: Does the architecture fail open, fail closed, degrade gracefully, or create business outage risk?
+
+This decision review is where the architecture team separates accidental complexity from deliberate design. It also identifies which weaknesses require redesign rather than another compensating control.
+
+## Attack Path Validation
+
+A modern architecture review should include attack path thinking. The question is not simply whether each control passes a checklist. The better question is whether an attacker can move from an initial foothold to a critical business impact despite the controls that exist.
+
+Validate at least these paths:
+1. Internet-exposed application to cloud workload compromise
+2. Phished user account to privileged access escalation
+3. Compromised endpoint to lateral movement across internal segments
+4. SaaS token theft to data exfiltration
+5. Third-party VPN or partner connection to sensitive systems
+6. Misconfigured cloud identity to cross-account access
+7. Backup compromise to ransomware recovery failure
+
+For each path, document preventive controls, detective controls, response actions, and remaining gaps. This gives executives a clear view of business risk and gives engineers a practical control validation checklist.
+
+## Scoring Findings Consistently
+
+Use a consistent scoring model so different reviewers do not produce different priority levels for the same weakness. The score should combine technical risk, business impact, and remediation complexity.
+
+A practical scoring model includes:
+- **Exposure**: internet-facing, partner-facing, internal, or isolated
+- **Asset criticality**: business process, revenue dependency, regulated data, or operational dependency
+- **Control weakness**: missing, partially implemented, poorly monitored, or operationally immature
+- **Exploit path**: direct exploit, chained exploit, insider misuse, or configuration drift
+- **Detection confidence**: high-fidelity alerting, weak telemetry, or no monitoring
+- **Remediation effort**: quick configuration change, process change, architecture redesign, or vendor replacement
+
+This helps prevent every finding from becoming critical. It also helps leadership understand why one identity gap may outrank ten lower-impact configuration issues.
+
+## Remediation Sequencing
+
+Architecture findings often depend on each other. A roadmap should not list thirty projects without sequencing. Group remediation into foundations, risk reducers, and strategic transformations.
+
+**Foundation items** usually come first because other improvements depend on them. Examples include asset inventory, identity cleanup, logging coverage, tagging, network diagrams, and control ownership.
+
+**Risk reducers** address high-impact paths quickly. Examples include closing public exposure, enforcing MFA for privileged access, tightening remote access, enabling critical logging, and isolating sensitive systems.
+
+**Strategic transformations** require more planning and funding. Examples include SASE migration, zero trust segmentation, cloud landing zone redesign, SIEM modernization, SOC automation, and data security program maturity.
+
+A useful roadmap should show dependency, expected risk reduction, business owner, implementation effort, and the validation test that proves the item worked.
+
 ## Deliverables
 
 ### Executive Summary
