@@ -16,6 +16,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { parsePrismaSizingPrefill } from '@/lib/prisma-sizing/query-state';
 import type { SearchParams } from '@/types/prisma-sizing';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { AnswerFirstBlock } from '@/components/seo/AnswerFirstBlock';
 import { webApplicationJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -82,6 +83,33 @@ export default function PrismaAccessSizingPage({ searchParams }: Props) {
           className="max-w-4xl text-left !mx-0"
           align="left"
           headingLevel="h1"
+        />
+      </Section>
+
+      <Section className="pt-0 pb-4 md:pb-6 lg:pb-8 print:hidden">
+        <AnswerFirstBlock
+          question="What is Prisma Access sizing?"
+          answer="Prisma Access sizing estimates the mobile users, remote networks, service connections, bandwidth, regions, resilience, and logging assumptions needed for a stable SASE deployment. It turns business and network inputs into planning numbers that architects can validate before design sign-off."
+          sourceSummary="This calculator page summarizes Prisma Access planning guidance from The Cyber Adviser for SASE, GlobalProtect, remote network, ZTNA, service connection, and security logging workshops."
+          recommendedApproach="Size Prisma Access from user groups and application paths first, then validate bandwidth, regional placement, service connection capacity, logging volume, and resilience. Treat the calculator output as an architecture starting point that should be checked against live telemetry and Palo Alto Networks entitlement details."
+          entities={['Prisma Access', 'SASE', 'GlobalProtect', 'ZTNA', 'Remote Networks', 'Service Connections', 'The Cyber Adviser', 'Attique Bhatti']}
+          comparisonRows={[
+            {
+              label: 'Mobile users',
+              guidance: 'Estimate named and concurrent users by region, then map them to access locations and private application paths.',
+              watch: 'Peak concurrency, authentication bursts, SaaS traffic, and experience monitoring.',
+            },
+            {
+              label: 'Remote networks',
+              guidance: 'Group branches by bandwidth, criticality, tunnel design, and inspection path instead of using one flat assumption.',
+              watch: 'IPsec tunnel health, BGP behavior, DIA quality, and branch failover.',
+            },
+            {
+              label: 'Service connections',
+              guidance: 'Size around private applications, data centers, DNS, identity, and shared services that users must reach through Prisma Access.',
+              watch: 'Throughput ceilings, region choice, routing symmetry, and business continuity.',
+            },
+          ]}
         />
       </Section>
 

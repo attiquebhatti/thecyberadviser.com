@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (shouldUseSeoCachePolicy(request)) {
-    response.headers.set('Cache-Control', 's-maxage=600, stale-while-revalidate=60');
+    response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=600, stale-while-revalidate=60, must-revalidate');
   }
 
   return response;

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Section, SectionHeader } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
+import { AnswerFirstBlock } from '@/components/seo/AnswerFirstBlock';
 import {
   Shield,
   Network,
@@ -181,8 +182,35 @@ export function ServicesContent() {
         />
       </Section>
 
+      <Section className="pt-0 pb-8 md:pb-10 lg:pb-12">
+        <AnswerFirstBlock
+          question="What is Cortex XDR architecture?"
+          answer="Cortex XDR architecture connects endpoint, network, identity, cloud, and firewall telemetry into one detection and response model. The goal is to give analysts a single investigation timeline, clearer incident scope, and response actions that are tied to the evidence behind each alert."
+          sourceSummary="Service guidance is based on enterprise security architecture work across Palo Alto Networks Cortex, Prisma Access, SIEM, SOAR, firewall, cloud, and Zero Trust programs."
+          recommendedApproach="Start with telemetry coverage and incident workflow design before tuning detections. Confirm endpoint coverage, identity signals, firewall and cloud logs, SIEM forwarding, response permissions, and analyst handoff points so Cortex XDR improves investigation quality instead of becoming another isolated alert queue."
+          entities={['Cortex XDR', 'Cortex XSOAR', 'Cortex XSIAM', 'SIEM', 'SOAR', 'Palo Alto Networks', 'Zero Trust', 'SASE', 'The Cyber Adviser', 'Attique Bhatti']}
+          comparisonRows={[
+            {
+              label: 'Prisma Access and SASE',
+              guidance: 'Design remote users, branches, service connections, and private app access around user location, identity, application path, and inspection requirements.',
+              watch: 'Region placement, tunnel health, DNS path, bandwidth, and policy parity.',
+            },
+            {
+              label: 'Cortex XDR architecture',
+              guidance: 'Unify endpoint, network, identity, firewall, cloud, and SaaS telemetry so incidents show process, user, device, and network context together.',
+              watch: 'Agent coverage, causality chains, false positives, response guardrails, and MITRE mapping.',
+            },
+            {
+              label: 'SIEM and SOC automation',
+              guidance: 'Send high-value logs into correlation and use XSOAR-style playbooks for enrichment, evidence collection, and repeatable response.',
+              watch: 'EPS growth, retention, enrichment latency, case ownership, and audit trail quality.',
+            },
+          ]}
+        />
+      </Section>
+
       <Section className="pt-0 pb-12 md:pb-14 lg:pb-16">
-        <motion.div 
+        <motion.div
           variants={{
             hidden: { opacity: 0 },
             show: {

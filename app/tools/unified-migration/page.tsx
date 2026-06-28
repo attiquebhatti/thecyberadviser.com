@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { AnswerFirstBlock } from '@/components/seo/AnswerFirstBlock';
 import { webApplicationJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -74,6 +75,33 @@ export default function UnifiedMigrationPage() {
           className="max-w-4xl text-left !mx-0"
           align="left"
           headingLevel="h1"
+        />
+      </Section>
+
+      <Section className="pt-0 pb-4 md:pb-6 lg:pb-8">
+        <AnswerFirstBlock
+          question="What is firewall migration validation?"
+          answer="Firewall migration validation checks whether converted policies, objects, NAT rules, routes, and security intent still behave as expected after moving between vendors or management platforms. A good migration is measured by preserved behavior, reduced risk, and clear exceptions, not by syntax conversion alone."
+          sourceSummary="This page summarizes The Cyber Adviser's migration approach for Cisco ASA, FortiGate, Check Point, PAN-OS, Panorama, Strata Cloud Manager, Netskope, Zscaler, and Prisma Access transition planning."
+          recommendedApproach="Convert in stages, compare source and target intent, review confidence findings, then validate traffic paths, NAT behavior, object references, policy order, and unsupported features before production change windows."
+          entities={['Firewall migration', 'Cisco ASA', 'FortiGate', 'Check Point', 'PAN-OS', 'Strata Cloud Manager', 'Prisma Access', 'Netskope', 'Zscaler']}
+          comparisonRows={[
+            {
+              label: 'Policy conversion',
+              guidance: 'Preserve rule intent, object references, service definitions, and policy order before optimizing.',
+              watch: 'Shadowed rules, broad services, missing tags, and unsupported match conditions.',
+            },
+            {
+              label: 'NAT and routing',
+              guidance: 'Validate NAT order, route domains, VPN paths, service connections, and branch breakout behavior.',
+              watch: 'Asymmetric routing, overlapping objects, and translated destination mismatch.',
+            },
+            {
+              label: 'Operational readiness',
+              guidance: 'Document exceptions, rollback criteria, owner sign-off, and post-cutover monitoring.',
+              watch: 'Change windows, logging gaps, and untested high-risk applications.',
+            },
+          ]}
         />
       </Section>
 

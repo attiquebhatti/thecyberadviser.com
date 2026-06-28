@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { AnswerFirstBlock } from '@/components/seo/AnswerFirstBlock';
 import { webApplicationJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -74,6 +75,33 @@ export default function SiemSizingPage() {
           className="max-w-4xl text-left !mx-0"
           align="left"
           headingLevel="h1"
+        />
+      </Section>
+
+      <Section className="pt-0 pb-4 md:pb-6 lg:pb-8">
+        <AnswerFirstBlock
+          question="How do you size SIEM ingestion?"
+          answer="SIEM ingestion is sized by estimating events per second, daily gigabytes, source mix, parsing overhead, retention period, search concurrency, and growth. The practical target is not only storage; it is a platform that can ingest, correlate, search, and retain evidence during real investigations."
+          sourceSummary="This page summarizes SOC architecture planning for SIEM, SOAR, XDR, log retention, compute, RAM, storage tiers, and investigation workflows."
+          recommendedApproach="Inventory high-value log sources first, measure or estimate EPS and average event size, then model retention and search workload. Keep noisy sources separate from detection-critical sources so cost control does not remove the evidence analysts need."
+          entities={['SIEM', 'SOAR', 'SOC', 'XDR', 'Cortex XDR', 'Cortex XSOAR', 'Log retention', 'The Cyber Adviser', 'Attique Bhatti']}
+          comparisonRows={[
+            {
+              label: 'Ingestion',
+              guidance: 'Estimate EPS and GB/day by source type, then add growth and parsing overhead.',
+              watch: 'Burst traffic, duplicate logs, verbose cloud events, and normalization failures.',
+            },
+            {
+              label: 'Retention',
+              guidance: 'Separate hot searchable data, warm investigation data, and cold compliance storage.',
+              watch: 'Regulatory minimums, incident lookback needs, and restore time.',
+            },
+            {
+              label: 'Compute',
+              guidance: 'Model correlation, dashboards, searches, and report generation against analyst concurrency.',
+              watch: 'Slow searches, dropped events, queue depth, and peak-hour alert delays.',
+            },
+          ]}
         />
       </Section>
 

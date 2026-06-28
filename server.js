@@ -35,7 +35,7 @@ function applySeoHeaders(req, res) {
   }
 
   if (shouldUseSeoCachePolicy(req)) {
-    res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=60');
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=600, stale-while-revalidate=60, must-revalidate');
   }
 }
 

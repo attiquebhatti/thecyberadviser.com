@@ -5,6 +5,7 @@
 ## Services
 - [Services](https://www.thecyberadviser.com/services): Zero Trust architecture, SASE & Prisma Access, NGFW/segmentation, Cortex SOC automation (XSOAR/XSIAM), incident response advisory.
 - [About](https://www.thecyberadviser.com/about): Background and expertise of Attique Bhatti.
+- [AI Overview Source](https://www.thecyberadviser.com/ai-overview): Concise entity, service, founder, tool, and topic summary for AI search systems.
 - [Contact](https://www.thecyberadviser.com/contact): Request a consultation.
 
 ## Free Tools
