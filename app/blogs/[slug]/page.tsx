@@ -652,6 +652,35 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Accelerated Investigation:</strong> Provide full causality chains for every alert, showing exactly how an attack started and spread.</li>
         <li><strong className="text-white">Automated Response:</strong> Create custom rules to automatically take action—like isolating a host or killing a process—when specific threats are detected.</li>
       </ul>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Telemetry Onboarding and Data Quality</h3>
+      <p>
+        Cortex XDR performs best when endpoint, network, identity, cloud, and firewall telemetry are normalized before detections are tuned. Start by confirming agent coverage on workstations, servers, VDI images, and high-risk endpoints. Then connect firewall, identity, cloud workload, and SaaS signals so investigations show user, device, process, network, and application context in one timeline.
+      </p>
+      <p>
+        Data quality should be measured deliberately. Missing hostnames, stale agents, untagged assets, unmanaged servers, incomplete user mappings, and noisy network zones all weaken analytics. Build dashboards for coverage gaps and assign owners for endpoint health, log source stability, and identity enrichment so XDR is not treated as a passive alert feed.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Behavioral Analytics and Detection Tuning</h3>
+      <p>
+        AI-driven detection needs operational tuning. Baseline normal behavior for administrative tools, remote management software, PowerShell activity, developer workstations, privileged users, and service accounts before enabling aggressive response actions. This prevents noisy detections from eroding analyst trust and helps the SOC separate malicious behavior from known business activity.
+      </p>
+      <p>
+        Map Cortex XDR analytics to MITRE ATT&CK techniques, then validate high-risk detections through controlled tests. Credential dumping, lateral movement, suspicious child processes, command-and-control callbacks, privilege escalation, and unusual cloud access should each have documented evidence requirements and response expectations. Tuning should reduce false positives without suppressing the behaviors that matter.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Investigation Workflow and Response Guardrails</h3>
+      <p>
+        A mature Cortex XDR workflow defines how incidents move from alert grouping to root-cause analysis. Analysts should review causality chains, parent-child process relationships, user activity, network connections, file reputation, and affected assets before declaring scope. Incident severity should reflect business impact, asset criticality, confidence level, and evidence of lateral movement.
+      </p>
+      <p>
+        Automated response should be governed by risk. Killing a process, quarantining a file, isolating a host, blocking an IP, or disabling a user can reduce dwell time, but each action needs approval rules, rollback steps, and exception handling. For production servers and executive devices, use confirmation gates unless the detection confidence and blast radius justify immediate containment.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">XDR Metrics That Prove Value</h3>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li><strong className="text-white">Telemetry coverage:</strong> Track agent health, log source availability, asset tagging, and identity enrichment across endpoint, network, and cloud sources.</li>
+        <li><strong className="text-white">Detection fidelity:</strong> Monitor true positive rate, repeat false positives, suppressed rules, and MITRE technique coverage.</li>
+        <li><strong className="text-white">Investigation speed:</strong> Measure time from alert creation to root-cause identification, scope confirmation, and containment decision.</li>
+        <li><strong className="text-white">Response effectiveness:</strong> Review whether isolation, quarantine, process termination, or block actions stopped attacker behavior without disrupting critical systems.</li>
+        <li><strong className="text-white">Control improvement:</strong> Feed incident lessons back into prevention profiles, endpoint policy, identity hardening, and SOC playbooks.</li>
+      </ul>
     </div>
   ),
 
