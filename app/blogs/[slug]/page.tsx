@@ -872,6 +872,35 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Continuous Attack Surface Management (ASM):</strong> Discovery and monitoring of all internet-facing assets to eliminate blind spots.</li>
         <li><strong className="text-white">Unified Data Lake:</strong> Ingest and normalize massive volumes of data at a fraction of the cost of traditional SIEMs.</li>
       </ul>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">XSIAM Data Onboarding Architecture</h3>
+      <p>
+        A Cortex XSIAM program succeeds or fails on data architecture. Before migration, teams should inventory endpoint, identity, firewall, cloud, email, vulnerability, attack surface, and business-context sources. Each source needs an owner, retention expectation, parser validation, normalization plan, and detection use case so the platform receives useful security data rather than raw log volume.
+      </p>
+      <p>
+        Start with high-value telemetry that improves incident correlation: Cortex XDR endpoint data, firewall threat and traffic logs, identity events, cloud audit logs, and internet-facing asset context. Then layer in additional sources based on investigation value. This sequence lets the SOC prove better detection and response before attempting a large SIEM replacement migration.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Detection Engineering and Incident Correlation</h3>
+      <p>
+        XSIAM changes detection engineering from writing isolated correlation rules to building incident logic across normalized datasets. Analysts should map priority threats to MITRE ATT&CK, required telemetry, expected evidence, response actions, and validation tests. Credential theft, lateral movement, cloud account abuse, external exposure, malware execution, and data exfiltration should each have clear coverage goals.
+      </p>
+      <p>
+        Incident grouping should reduce noise while preserving investigative context. Tune rules so related alerts, assets, users, and attack surface findings collapse into a single story. The objective is not fewer alerts for its own sake; it is fewer disconnected work items and faster confidence about root cause, scope, and containment.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Automation Governance for the Autonomous SOC</h3>
+      <p>
+        Autonomous response needs governance. XSIAM can accelerate containment, enrichment, escalation, and ticketing, but each automated action should have defined confidence thresholds, approvals, rollback paths, and exception handling. Enriching an alert is low risk; disabling a privileged user, isolating a production server, or blocking a business-critical domain requires stricter control.
+      </p>
+      <p>
+        Build playbooks around analyst decision points. The platform should collect evidence, recommend next actions, document response activity, and escalate uncertainty. Over time, repeatable analyst decisions can become automated steps, while high-impact decisions remain under human approval until detection confidence and operational trust are proven.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Migration Metrics and Operating Model</h3>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li><strong className="text-white">Data readiness:</strong> Track source onboarding, parser quality, identity enrichment, asset tagging, and retention alignment.</li>
+        <li><strong className="text-white">Detection coverage:</strong> Measure MITRE technique coverage, validated threat scenarios, true positives, false positives, and rule tuning backlog.</li>
+        <li><strong className="text-white">Incident efficiency:</strong> Compare alert grouping, time to triage, time to scope, and time to containment against the legacy SIEM process.</li>
+        <li><strong className="text-white">Automation maturity:</strong> Report which response actions are manual, approval-based, or fully automated, and review exceptions after every major incident.</li>
+        <li><strong className="text-white">SOC adoption:</strong> Validate analyst workflows, dashboards, case queues, escalation paths, and management reporting before retiring legacy tooling.</li>
+      </ul>
     </div>
   ),
 
