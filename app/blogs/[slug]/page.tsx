@@ -832,6 +832,35 @@ const blogContent: Record<string, React.ReactNode> = {
         <li><strong className="text-white">Optimized Performance:</strong> Use intelligent path selection to route traffic over the most efficient path, reducing latency and improving user experience.</li>
         <li><strong className="text-white">Reduced Operational Complexity:</strong> Manage your entire network and security infrastructure from one console.</li>
       </ul>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Prisma SASE Reference Architecture</h3>
+      <p>
+        A practical Prisma SASE architecture combines Prisma Access, Prisma SD-WAN, identity context, device posture, and centralized security policy into one operating model. The design should define how users, branches, cloud workloads, and private applications reach inspection points without recreating the old data center backhaul pattern in the cloud.
+      </p>
+      <p>
+        Start by mapping user groups, branch types, applications, data sensitivity, and regional connectivity needs. Remote users may connect through GlobalProtect and Prisma Access service connections, while branches may use Prisma SD-WAN to steer application traffic toward the right security enforcement point. The goal is not just consolidation; it is consistent policy with lower latency and clearer operations.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Identity-Aware Policy and Device Posture</h3>
+      <p>
+        SASE policy should be based on identity, application, device health, location, and risk. Integrate identity providers, endpoint posture signals, MFA, user groups, and security profiles so access decisions are more precise than IP address or network location. Contractors, administrators, unmanaged devices, and high-risk geographies should each receive policies that reflect their actual risk.
+      </p>
+      <p>
+        For private applications, define least-privilege access by application segment rather than broad network reachability. For internet and SaaS traffic, apply URL filtering, DNS security, threat prevention, file analysis, data controls, and CASB signals consistently. This gives the business one policy language across remote users, offices, and cloud-hosted workloads.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Traffic Steering and SD-WAN Handoff</h3>
+      <p>
+        Traffic steering determines whether SASE improves the user experience or simply moves complexity somewhere else. Branch traffic should be classified by application, destination, sensitivity, and performance requirement. Real-time collaboration may need low-latency paths, SaaS traffic may use local internet breakout through Prisma Access, and private applications may route through service connections or data center firewalls.
+      </p>
+      <p>
+        Prisma SD-WAN and Prisma Access should be designed together so path selection, tunnel health, security policy, and troubleshooting evidence line up. Operations teams need to know where traffic is inspected, which policy allowed it, which path carried it, and what user or device context influenced the decision. Without that visibility, convergence can make incidents harder to investigate.
+      </p>
+      <h3 className="text-2xl font-bold text-white mt-12 mb-4">Rollout Validation Checklist</h3>
+      <ul className="space-y-4 list-disc pl-6 text-slate-400">
+        <li><strong className="text-white">Application inventory:</strong> Classify SaaS, internet, private, voice, VDI, and administrative traffic before migrating policy.</li>
+        <li><strong className="text-white">Identity mapping:</strong> Confirm user groups, device posture, MFA rules, and privileged access flows match the intended policy model.</li>
+        <li><strong className="text-white">Tunnel and region design:</strong> Validate service connections, remote networks, region selection, bandwidth, and failover behavior before cutover.</li>
+        <li><strong className="text-white">Security parity:</strong> Compare legacy firewall controls with Prisma Access security profiles so the migration does not weaken inspection.</li>
+        <li><strong className="text-white">Experience metrics:</strong> Monitor latency, authentication failures, SaaS performance, help desk tickets, and blocked traffic patterns during phased rollout.</li>
+      </ul>
     </div>
   ),
 
