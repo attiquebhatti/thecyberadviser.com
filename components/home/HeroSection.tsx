@@ -7,50 +7,50 @@ import { CTAButton } from '@/components/shared/CTAButton';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
-  { 
-    src: '/images/home-architecture2.jpg', 
+  {
+    src: '/images/optimized/home-architecture2-1200.webp',
     title: 'Enterprise Security Reference Design',
     focus: 'Enterprise Sec',
     platforms: 'Multi-Vendor',
     strategy: 'Zero Trust'
   },
-  { 
-    src: '/images/slides/slide-1.png', 
+  {
+    src: '/images/optimized/slides/slide-1-1200.webp',
     title: 'Cortex XSOAR: Unified Security Orchestration',
     focus: 'Automation',
     platforms: 'Cortex XSOAR',
     strategy: 'SOC Ops'
   },
-  { 
-    src: '/images/slides/slide-2.png', 
+  {
+    src: '/images/optimized/slides/slide-2-1200.webp',
     title: 'Intelligent WAN Resilience',
     focus: 'Networking',
     platforms: 'Prisma SD-WAN',
     strategy: 'WAN Resilience'
   },
-  { 
-    src: '/images/slides/slide-3.png', 
+  {
+    src: '/images/optimized/slides/slide-3-900.webp',
     title: 'SASE Architecture Design',
     focus: 'Cloud Security',
     platforms: 'Prisma Access',
     strategy: 'SASE Adoption'
   },
-  { 
-    src: '/images/slides/slide-4.png', 
+  {
+    src: '/images/optimized/slides/slide-4-1200.webp',
     title: 'Cortex XDR Visibility',
     focus: 'Detection',
     platforms: 'Cortex XDR',
     strategy: 'XDR Evolution'
   },
-  { 
-    src: '/images/slides/slide-5.png', 
+  {
+    src: '/images/optimized/slides/slide-5-1200.webp',
     title: 'Advanced Network Telemetry',
     focus: 'Visibility',
     platforms: 'Network Ops',
     strategy: 'Deep Analysis'
   },
-  { 
-    src: '/images/slides/slide-6.png', 
+  {
+    src: '/images/optimized/slides/slide-6-1200.webp',
     title: 'Prisma Access Workflow',
     focus: 'Edge Security',
     platforms: 'SASE / Cloud',
@@ -82,7 +82,7 @@ export function HeroSection() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           variants={{
             hidden: { opacity: 0 },
             show: {
@@ -98,7 +98,7 @@ export function HeroSection() {
           className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14"
         >
           <div className="max-w-4xl">
-            <motion.div 
+            <motion.div
               variants={{
                 hidden: { opacity: 0, x: -20 },
                 show: { opacity: 1, x: 0 }
@@ -111,7 +111,7 @@ export function HeroSection() {
               </span>
             </motion.div>
 
-            <motion.h1 
+            <motion.h1
               variants={{
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0 }
@@ -130,7 +130,7 @@ export function HeroSection() {
               <span className="text-slate-400">for the Modern Era</span>
             </motion.h1>
 
-            <motion.p 
+            <motion.p
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 show: { opacity: 1, y: 0 }
@@ -142,7 +142,7 @@ export function HeroSection() {
               transformation, SASE architecture, and security modernization at scale.
             </motion.p>
 
-            <motion.div 
+            <motion.div
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 show: { opacity: 1, y: 0 }
@@ -164,7 +164,7 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 40, scale: 0.95 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -188,10 +188,10 @@ export function HeroSection() {
             </motion.div>
 
             <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#FFC300]/8 via-transparent to-[#FFC300]/4 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            
+
             <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-obsidian-900/40 backdrop-blur-xl p-1 shadow-2xl transition-all duration-500 group-hover:border-[#FFC300]/40 group-hover:shadow-[#FFC300]/5 group-hover:scale-[1.01]">
               <div className="absolute top-0 left-0 w-full h-1.5 bg-[#FFC300]/20 group-hover:bg-[#FFC300] transition-colors duration-500 z-20" />
-              
+
               <div className="overflow-hidden rounded-[calc(1rem+4px)] bg-obsidian-950">
                 <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-4 py-3">
                   <div className="flex-1">
@@ -199,7 +199,7 @@ export function HeroSection() {
                       Technical Architecture Preview
                     </p>
                     <AnimatePresence mode="wait">
-                      <motion.p 
+                      <motion.p
                         key={currentSlide}
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -248,7 +248,7 @@ export function HeroSection() {
                           src={slides[currentSlide].src}
                           alt={slides[currentSlide].title}
                           fill
-                          priority
+                          priority={currentSlide === 0}
                           sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.03]"
                         />

@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/home/HeroSection';
 import { TrustStrip } from '@/components/home/TrustStrip';

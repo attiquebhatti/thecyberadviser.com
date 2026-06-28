@@ -103,7 +103,7 @@ export function ServicesGrid() {
               <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1rem]">
                   <Image
-                    src="/images/slides/slide-3.png"
+                    src="/images/optimized/slides/slide-3-900.webp"
                     alt="SASE architecture design"
                     fill
                     className="object-cover object-center"
@@ -114,7 +114,7 @@ export function ServicesGrid() {
                 <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-[1rem]">
                     <Image
-                      src="/images/slides/slide-4.png"
+                      src="/images/optimized/slides/slide-4-1200.webp"
                       alt="Cortex XDR visibility"
                       fill
                       className="object-cover object-center"
