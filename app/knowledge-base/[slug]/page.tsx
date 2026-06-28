@@ -7,6 +7,9 @@ import RelatedTools from '@/components/seo/RelatedTools';
 import { getArticleBySlug } from '@/data/articles';
 import { SITE_URL, articleJsonLd, metaDescription, titleWithBrand } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 600;
+
 const publishedKnowledgeBaseSlugs = ['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook'];
 
 const knowledgeBaseMetaTitles: Record<string, string> = {

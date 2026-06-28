@@ -9,6 +9,9 @@ import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 import RelatedTools from '@/components/seo/RelatedTools';
 import { SITE_URL, articleImage, articleJsonLd, metaDescription, titleWithBrand } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 600;
+
 // ==========================================
 // DYNAMIC METADATA
 // ==========================================

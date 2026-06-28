@@ -5,6 +5,9 @@ import Script from 'next/script';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 600;
+
 const GA_ID = 'G-G9MVKYGSN4';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
