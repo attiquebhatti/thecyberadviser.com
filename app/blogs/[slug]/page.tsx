@@ -1101,6 +1101,28 @@ const blogContent: Record<string, React.ReactNode> = {
       </section>
 
       <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">Agentic Endpoint Control Architecture</h3>
+        <p>Security teams need a control model for AI agents before those agents become normal endpoint workloads. Start by inventorying local copilots, automation runners, browser agents, developer assistants, scheduled scripts, and workflow tools that can read files, call APIs, run commands, or move data. Each agent should have an owner, business purpose, identity boundary, data access scope, and approved execution environment.</p>
+        <p>Cortex XDR should be tuned to monitor the behaviors that make agentic endpoints different from traditional user activity: unusual parent-child process chains, scripted credential access, abnormal file reads, unexpected command interpreters, API token use, lateral movement attempts, and automated data staging. These signals should be correlated with user identity, device posture, network destination, and cloud activity so analysts can distinguish useful automation from compromised automation.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">Cortex XDR Policy and Response Design</h3>
+        <p>Prevention policy should separate trusted automation from unknown autonomous behavior. Approved agents can be allowlisted with tight path, signer, hash, and privilege controls, while unknown tools should face stricter behavioral inspection. For high-risk endpoints, add controls for script execution, credential access, privilege escalation, network connections, and sensitive file movement.</p>
+        <p>Response rules should match the blast radius. Killing a suspicious process may be safe on a workstation, but isolating a production automation host can interrupt business workflows. Define when Cortex XDR can automatically terminate processes, quarantine files, isolate endpoints, or require analyst approval. Every automated response should produce an evidence trail that shows which behavior triggered the action and how to roll it back.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h3 className="text-3xl font-bold text-[#6BD348]">Operational Metrics for AI Endpoint Security</h3>
+        <ul className="space-y-3 list-disc pl-6 text-slate-400">
+          <li><strong className="text-white">Agent inventory coverage:</strong> Track known AI tools, automation identities, execution hosts, and unmanaged agent activity.</li>
+          <li><strong className="text-white">Behavioral detection quality:</strong> Measure true positives, false positives, and validated detections for script abuse, credential access, and autonomous data movement.</li>
+          <li><strong className="text-white">Containment time:</strong> Monitor how quickly Cortex XDR can stop suspicious autonomous activity without disrupting trusted workflows.</li>
+          <li><strong className="text-white">Policy drift:</strong> Review new AI tools, updated agent permissions, bypass requests, and endpoint exceptions every month.</li>
+        </ul>
+      </section>
+
+      <section className="space-y-5">
         <h3 className="text-3xl font-bold text-[#6BD348]">The Future of Endpoint Security</h3>
         <p>The future endpoint is autonomous, intelligent, AI-powered, and self-executing. Security must evolve accordingly.</p>
         <p>Because the future attack is not manual. It&apos;s <strong>Autonomous vs Autonomous</strong>.</p>
