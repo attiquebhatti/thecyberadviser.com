@@ -8,7 +8,7 @@ const SITE = 'https://www.thecyberadviser.com';
 export const metadata: Metadata = {
   title: 'Student Reviews & Testimonials | The Cyber Adviser',
   description:
-    'What students and clients say about Attique Bhatti — 5-star feedback from Palo Alto Networks, Prisma SD-WAN, and SASE instructor-led training delivered worldwide.',
+    'What students and clients say about Attique Bhatti: 5-star feedback from Palo Alto Networks, Prisma SD-WAN, and SASE instructor-led training worldwide.',
   alternates: { canonical: `${SITE}/testimonials` },
   openGraph: {
     title: 'Student Reviews & Testimonials | The Cyber Adviser',
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
       'Verified 5-star feedback from Attique Bhatti’s instructor-led cybersecurity training (Palo Alto Networks, Prisma SD-WAN, SASE).',
     type: 'website',
     url: `${SITE}/testimonials`,
+    images: [`${SITE}/images/home-architecture.jpg`],
   },
 };
 

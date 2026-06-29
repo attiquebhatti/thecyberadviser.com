@@ -341,9 +341,15 @@ export function PrismaAccessSizingEmbed({ initialValues, variant = 'embed' }: Pr
                         Smart interactive estimator
                       </Badge>
                       <div className="space-y-2">
-                        <h1 className="text-3xl font-semibold tracking-tight text-white">
-                          Prisma Access Sizing Calculator
-                        </h1>
+                        {isSiteVariant ? (
+                          <h2 className="text-3xl font-semibold tracking-tight text-white">
+                            Prisma Access Sizing Calculator
+                          </h2>
+                        ) : (
+                          <h1 className="text-3xl font-semibold tracking-tight text-white">
+                            Prisma Access Sizing Calculator
+                          </h1>
+                        )}
                         <p className="max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">
                           Enter the few planning inputs that matter most. The calculator will estimate
                           logging storage, per-branch SPN bandwidth, and an architectural recommendation.

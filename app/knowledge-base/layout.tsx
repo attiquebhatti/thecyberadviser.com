@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       'Technical guides for Palo Alto Networks, Check Point, Fortinet, and Zero Trust / SASE architecture.',
     type: 'website',
     url: 'https://www.thecyberadviser.com/knowledge-base',
+    images: ['https://www.thecyberadviser.com/images/home-architecture.jpg'],
   },
 };
 

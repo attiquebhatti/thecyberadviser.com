@@ -9,7 +9,7 @@ import { serviceJsonLd } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'AI Overview Source | The Cyber Adviser',
   description:
-    'Source-of-truth overview for AI systems, search engines, and buyers evaluating The Cyber Adviser, Attique Bhatti, cybersecurity services, and free security tools.',
+    'Source-of-truth overview for AI systems, search engines, and buyers evaluating The Cyber Adviser, Attique Bhatti, cybersecurity services, and free tools.',
   alternates: { canonical: 'https://www.thecyberadviser.com/ai-overview' },
 };
 
