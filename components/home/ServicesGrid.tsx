@@ -1,9 +1,6 @@
-'use client';
-
 import Image from 'next/image';
 import serviceSaseImage from '@/public/images/optimized/slides/slide-3-900.webp';
 import serviceXdrImage from '@/public/images/optimized/slides/slide-4-1200.webp';
-import { motion } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
 import { Shield, Network, Cloud, Users, Workflow } from 'lucide-react';
@@ -136,30 +133,9 @@ export function ServicesGrid() {
           </div>
         </div>
 
-        <motion.div
-          variants={{
-            hidden: { opacity: 0 },
-            show: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.05
-              }
-            }
-          }}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <motion.div
-              key={service.title}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                show: { opacity: 1, y: 0 }
-              }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            >
+            <div key={service.title} className="transition-transform duration-300 hover:-translate-y-2">
               <Link
                 href={service.href}
                 className={`group relative block overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] p-7 backdrop-blur-xl transition-all duration-500 ${service.border} ${service.glow}`}
@@ -209,9 +185,9 @@ export function ServicesGrid() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         <div className="mt-16 flex justify-center">
           <CTAButton href="/services" variant="secondary" showArrow>

@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { VendorIcon } from '@/components/shared/VendorLogos';
 import Link from 'next/link';
 
@@ -112,30 +109,9 @@ export function TrustStrip() {
           </p>
         </div>
 
-        <motion.div 
-          variants={{
-            hidden: { opacity: 0 },
-            show: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.05
-              }
-            }
-          }}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {platforms.map((platform) => (
-            <motion.div
-              key={platform.name}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                show: { opacity: 1, y: 0 }
-              }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            >
+            <div key={platform.name} className="transition-transform duration-300 hover:-translate-y-2">
               <Link
                 href={platform.href}
                 className={`group relative block overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02] p-7 backdrop-blur-xl transition-all duration-500 ${platform.border} ${platform.glow}`}
@@ -178,9 +154,9 @@ export function TrustStrip() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
