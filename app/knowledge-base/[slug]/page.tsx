@@ -10,12 +10,15 @@ import { SITE_URL, articleJsonLd, metaDescription, titleWithBrand } from '@/lib/
 export const dynamic = 'force-dynamic';
 export const revalidate = 600;
 
-const publishedKnowledgeBaseSlugs = ['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook'];
+const publishedKnowledgeBaseSlugs = ['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook', 'integrating-sdwan-prisma-access', 'scaling-mobile-user-gateways', 'mpls-to-broadband-sdwan'];
 
 const knowledgeBaseMetaTitles: Record<string, string> = {
   'hybrid-cloud-connectivity': 'Hybrid Cloud Security Architecture | The Cyber Adviser',
   'prisma-split-tunneling': 'Prisma Split Tunneling Guide | The Cyber Adviser',
   'phishing-triage-playbook': 'Phishing Triage Playbook | The Cyber Adviser',
+  'integrating-sdwan-prisma-access': 'Integrating Prisma SD-WAN with Prisma Access | The Cyber Adviser',
+  'scaling-mobile-user-gateways': 'Scaling Prisma Access Mobile User Gateways | The Cyber Adviser',
+  'mpls-to-broadband-sdwan': 'MPLS to Broadband SD-WAN Migration | The Cyber Adviser',
 };
 
 function isPublishedKnowledgeBaseSlug(slug: string) {

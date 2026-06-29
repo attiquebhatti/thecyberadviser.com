@@ -7,6 +7,9 @@ const knowledgeBaseSlugs = [
   'hybrid-cloud-connectivity',
   'prisma-split-tunneling',
   'phishing-triage-playbook',
+  'integrating-sdwan-prisma-access',
+  'scaling-mobile-user-gateways',
+  'mpls-to-broadband-sdwan',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

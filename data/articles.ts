@@ -2480,6 +2480,187 @@ Avoid these mistakes:
 The goal is practical improvement in security posture, not documentation for its own sake.
     `,
   },
+  {
+    slug: 'integrating-sdwan-prisma-access',
+    title: 'Integrating SD-WAN with Prisma Access',
+    excerpt: 'How to converge Prisma SD-WAN branches with Prisma Access into one SASE fabric: traffic steering, service connections, routing, and clean security policy ownership.',
+    category: 'PRISMA SD-WAN',
+    date: '2026-01-15',
+    readTime: '10 min read',
+    content: `
+# Why Converge SD-WAN and Prisma Access
+
+For years, branch networking and branch security were two separate projects with two separate teams. SD-WAN solved transport: it made cheap broadband behave like an expensive MPLS circuit. Secure access service edge (SASE) solves the other half by moving inspection, threat prevention, and access control into a cloud that sits close to the user.
+
+Converging **Prisma SD-WAN** with **Prisma Access** lets a branch send internet- and SaaS-bound traffic to the nearest cloud gateway for full inspection, while still using application-aware path selection across its local circuits. The result is one operating model instead of two stacks bolted together.
+
+# Reference Architecture
+
+At a high level the design has three moving parts:
+
+- **ION devices** at each branch running Prisma SD-WAN, selecting paths per application based on live SLA telemetry.
+- **Prisma Access** providing the cloud security layer, reached over standard IPsec tunnels.
+- A **controller plane** (the Strata Cloud Manager / CloudGenix controller) that pushes policy and collects analytics.
+
+## Remote Networks vs. Automatic Onboarding
+
+There are two ways to connect a branch ION to Prisma Access. The first is the classic **remote network**: you define the IPsec tunnel, peer addresses, and the branch subnets in the Prisma Access configuration. The second is **automated onboarding**, where the SD-WAN controller programs the tunnel for you and keeps the routing in sync.
+
+Automated onboarding is the right default for greenfield deployments because it removes the most common source of outages — drift between what the branch advertises and what the cloud expects. Use manual remote networks only when you need an explicit design the automation cannot express.
+
+## Service Connections for Private Apps
+
+Internet and SaaS traffic exits through the SD-WAN-to-Prisma-Access tunnel. Private application traffic — data centers, internal DNS, identity services — should reach Prisma Access through a **service connection**, not through the branch tunnels. Keeping private-app reachability on service connections gives you symmetric routing and a single, predictable path for east-west traffic between mobile users, branches, and private apps.
+
+# Designing the Integration
+
+## Traffic Steering Decisions
+
+Decide, per application class, where inspection happens:
+
+- **Internet and SaaS:** steer to Prisma Access for full security inspection.
+- **Branch-to-branch:** keep on the SD-WAN fabric where latency matters and the traffic is already trusted.
+- **Branch-to-data-center:** usually via service connection, so the same security policy applies as for mobile users.
+
+## Routing and BGP
+
+Run **BGP** between the ION and Prisma Access rather than static routes wherever possible. Dynamic routing lets the branch withdraw a prefix the moment a circuit fails, so the cloud stops sending return traffic down a dead path. Watch for asymmetry: traffic that leaves through one tunnel and tries to return through another will be dropped by stateful inspection.
+
+## Security Policy Ownership
+
+The single biggest operational win of convergence is deciding, deliberately, **who owns which policy**. App-path and QoS decisions belong to the SD-WAN policy. Threat prevention, URL filtering, decryption, and access control belong to Prisma Access. Do not try to recreate firewall policy on the branch — let the cloud be the enforcement point and keep the branch focused on transport quality.
+
+# Operational Considerations
+
+- **Capacity:** size the branch tunnels for the inspected throughput, not just the raw circuit speed. Encryption and the cloud round trip both add overhead.
+- **Resilience:** terminate to two Prisma Access compute locations where availability requirements justify it, and let BGP handle failover.
+- **Visibility:** correlate SD-WAN path analytics with Prisma Access logs. A "slow application" complaint is usually either a path problem (SD-WAN) or an inspection/decryption problem (Prisma Access), and you want both views in one timeline.
+
+# Common Pitfalls
+
+- Sending private-app traffic over the internet tunnels instead of a service connection, creating asymmetric routing.
+- Leaving static routes in place after enabling BGP, which masks failover problems until a real outage.
+- Duplicating security policy on the branch and in the cloud, which doubles the change workload and guarantees drift.
+
+# Summary
+
+Converging Prisma SD-WAN and Prisma Access is less about a single feature and more about discipline: let the fabric own transport quality, let the cloud own security, connect them with dynamic routing, and keep private apps on service connections. Done that way, a branch turn-up becomes a templated, low-risk change instead of a bespoke project.
+    `,
+  },
+  {
+    slug: 'scaling-mobile-user-gateways',
+    title: 'Scaling Mobile User Gateways (MUG)',
+    excerpt: 'Capacity, autoscale behavior, IP pool sizing, gateway placement, and onboarding patterns for scaling Prisma Access mobile user gateways without outages.',
+    category: 'PRISMA ACCESS',
+    date: '2026-02-01',
+    readTime: '9 min read',
+    content: `
+# What a Mobile User Gateway Does
+
+In Prisma Access, remote users connect through **GlobalProtect** to a mobile user gateway — a cloud security stack in the region nearest the user. The gateway terminates the tunnel, applies the full security policy (threat prevention, URL filtering, decryption, DLP), and forwards traffic to the internet, SaaS, or private apps. Scaling mobile users well is mostly about three things: capacity, addressing, and placement.
+
+# Capacity and Autoscale Behavior
+
+Prisma Access autoscales mobile user capacity per location based on demand, but autoscale is not instant. It reacts to sustained load, so a sharp spike — a whole region coming online at 9:00 a.m., or a sudden shift to full remote work — can briefly outrun it.
+
+Plan for the **peak concurrent** user count per region, not the named-user total. Pre-warm capacity ahead of known events (a return-to-office reversal, a large onboarding) rather than relying on reactive scaling during the spike itself.
+
+# IP Pool Planning
+
+Every connected user consumes an address from the **mobile user IP pool**. This is the single most common scaling mistake: pools sized for today's headcount that exhaust during growth or a failover event, leaving users connected but unable to route.
+
+- Size pools for peak concurrency **plus headroom** for failover, when users from one location may be served from another.
+- Keep the mobile user pools **non-overlapping** with branch subnets, data center ranges, and service-connection routes. Overlap causes silent, hard-to-debug routing failures.
+- Make sure the pools are **advertised** consistently toward private apps so return traffic knows the way back.
+
+# Gateway Placement and Performance
+
+Users should land on a gateway close to them. Misplacement shows up as latency and decryption overhead stacked on top of an already long path.
+
+- Enable the locations that match where your users actually are, not just where headquarters is.
+- For global organizations, accept that a user traveling will be served by a different region — design IP pools and private-app routing so that still works.
+- Watch **digital experience metrics**. A rise in latency to a specific app is often a placement or path problem, not a capacity one.
+
+# Authentication and Onboarding at Scale
+
+At scale, authentication is where login storms hurt most.
+
+1. Use **SAML/IdP-based authentication** so the gateway is not the bottleneck for credential checks.
+2. Cache and reuse authentication where policy allows, to avoid re-authenticating thousands of users simultaneously after a brief network blip.
+3. Stage GlobalProtect agent rollouts in waves. A fleet-wide forced upgrade that reconnects every user at once is a self-inflicted spike.
+
+# Monitoring and Troubleshooting
+
+- Track **concurrent users per location** against pool size and watch the trend, not just the instantaneous number.
+- Alert on **IP pool utilization** well before exhaustion (for example, at 80 percent).
+- When users report "connected but nothing works," suspect IP pool exhaustion or a routing overlap before suspecting the security policy.
+- Use experience monitoring to separate "slow tunnel" from "slow application."
+
+# Summary
+
+Scaling Prisma Access mobile users is a capacity-planning exercise more than a configuration one. Size IP pools for peak concurrency plus failover headroom, keep them clear of every other range, place gateways where users actually are, and lean on an IdP so authentication never becomes the ceiling. Get those right and autoscale handles the rest.
+    `,
+  },
+  {
+    slug: 'mpls-to-broadband-sdwan',
+    title: 'Seamless Migration from MPLS to Broadband',
+    excerpt: 'A phased, zero-downtime plan for overlaying Prisma SD-WAN on MPLS, shifting to broadband with app-defined path selection, and decommissioning circuits safely.',
+    category: 'PRISMA SD-WAN',
+    date: '2026-02-20',
+    readTime: '10 min read',
+    content: `
+# Why Migrate from MPLS
+
+MPLS delivers predictable performance, but it is expensive, slow to provision, and rigid — adding bandwidth or a new site can take weeks. **Prisma SD-WAN** lets you treat commodity broadband and LTE/5G as first-class transport by measuring each path continuously and steering applications over whichever circuit currently meets their SLA. The goal of a migration is to capture that flexibility and cost saving **without** a risky flag-day cutover.
+
+# A Phased Migration Strategy
+
+The safe pattern is to introduce SD-WAN alongside MPLS, prove it, then shift dependence gradually.
+
+## Phase 1: Overlay in Analytics Mode
+
+Install ION devices at the branch and bring up broadband as a second path, but keep production traffic on MPLS. Run the fabric in a measurement posture so it builds a baseline of latency, jitter, and loss per application across both circuits. You learn how broadband actually behaves for your apps before a single user depends on it.
+
+## Phase 2: Active/Backup
+
+Begin steering **non-critical** applications (general web, software updates, backups) onto broadband while keeping latency-sensitive traffic on MPLS. This validates real user experience with a safety net: if a path degrades, SD-WAN moves the affected app back automatically.
+
+## Phase 3: Broadband Primary
+
+Once analytics confirm broadband meets SLAs, flip the priority so broadband carries the bulk of traffic and MPLS becomes the backup for the most sensitive flows. At this point most sites are running on commodity transport with MPLS held only as insurance.
+
+## Phase 4: Decommission MPLS
+
+For sites that have run stably on broadband through a full business cycle, drop the MPLS circuit — or downgrade it to a small backup. Do this site by site, never fleet-wide, and only after the data supports it.
+
+# App-Defined Path Selection
+
+The engine that makes this safe is **application-aware routing**. Instead of routing by destination prefix, Prisma SD-WAN classifies traffic by application and applies a per-app SLA policy:
+
+- Real-time apps (voice, video, virtual desktop) get the path with the lowest jitter and loss.
+- Bulk transfers get whatever path has spare capacity.
+- If a circuit's measured SLA falls below the app's threshold, traffic moves **mid-session** to a better path.
+
+Define policies around **application classes and business intent**, not individual IPs. That keeps the policy small, readable, and stable as applications change.
+
+# Resilience and Failover
+
+- Provision **two diverse circuits** per site (for example broadband plus LTE) so a single ISP failure does not isolate the branch.
+- For critical branches, deploy ION devices in an **HA pair** to remove the device itself as a single point of failure.
+- Test failover deliberately: pull a circuit during a maintenance window and confirm sessions survive and recover.
+
+# Pitfalls to Avoid
+
+- **Skipping the analytics phase.** Cutting straight to broadband-primary without a baseline is how you discover, in production, that an ISP path is unfit.
+- **Migrating the whole estate at once.** Go site by site; the blast radius of a mistake should be one branch.
+- **Forgetting security.** Broadband means the branch now touches the internet directly. Pair the migration with cloud inspection (Prisma Access) so you are not trading cost savings for exposure.
+- **Policy by IP address.** It does not survive contact with changing applications; model intent instead.
+
+# Summary
+
+Moving from MPLS to broadband is a confidence exercise. Overlay SD-WAN first, let it measure, shift non-critical apps, then critical ones, and decommission MPLS only where the data earns it. Application-defined path selection and diverse circuits give you MPLS-grade experience on commodity transport — and a per-site rollback at every step.
+    `,
+  },
 ];
 
 export function getArticleBySlug(slug: string): Article | undefined {

@@ -161,6 +161,31 @@ const blogs = [
   },
 ];
 
+const BLOG_SITE = 'https://www.thecyberadviser.com';
+const blogCollectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Cybersecurity Insights & Blog',
+  url: `${BLOG_SITE}/blogs`,
+  isPartOf: { '@type': 'WebSite', name: 'The Cyber Adviser', url: BLOG_SITE },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: BLOG_SITE },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BLOG_SITE}/blogs` },
+    ],
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: blogs.map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${BLOG_SITE}/blogs/${b.slug}`,
+      name: b.title,
+    })),
+  },
+};
+
 function BlogsContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState('ALL BLOGS');
@@ -194,6 +219,7 @@ function BlogsContent() {
 
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] selection:bg-[#6BD348] selection:text-[#000814] pb-24">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogCollectionJsonLd) }} />
       <section className="w-full pt-32 pb-14 px-8 text-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-500/5 via-[#000814] to-[#000814]">
         <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tighter mb-6">
           Security <span className="text-[#6BD348]">Insights Blog</span>

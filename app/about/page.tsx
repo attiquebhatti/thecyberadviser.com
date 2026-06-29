@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { AboutContent } from './AboutContent';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 import { SITE_URL, publisher } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -49,6 +50,12 @@ export default function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(profileJsonLd) }}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: SITE_URL },
+          { name: 'About', url: `${SITE_URL}/about` },
+        ]}
       />
       <AboutContent />
     </>

@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 // THE MASSIVE ENTERPRISE ARTICLE DATABASE (55 Articles)
-const publishedKnowledgeBaseSlugs = new Set(['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook']);
+const publishedKnowledgeBaseSlugs = new Set(['hybrid-cloud-connectivity', 'prisma-split-tunneling', 'phishing-triage-playbook', 'integrating-sdwan-prisma-access', 'scaling-mobile-user-gateways', 'mpls-to-broadband-sdwan']);
 
 const articles = [
   // --- PRISMA ACCESS (5) ---
@@ -86,6 +86,33 @@ const isCortexCategory = (category: string): boolean => {
   return ['CORTEX XSOAR', 'CORTEX XDR', 'CORTEX XSIAM'].includes(category);
 };
 
+const KB_SITE = 'https://www.thecyberadviser.com';
+const kbCollectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Technical Knowledge Base',
+  url: `${KB_SITE}/knowledge-base`,
+  isPartOf: { '@type': 'WebSite', name: 'The Cyber Adviser', url: KB_SITE },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: KB_SITE },
+      { '@type': 'ListItem', position: 2, name: 'Knowledge Base', item: `${KB_SITE}/knowledge-base` },
+    ],
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: articles
+      .filter((a) => publishedKnowledgeBaseSlugs.has(a.slug))
+      .map((a, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${KB_SITE}/knowledge-base/${a.slug}`,
+        name: a.title,
+      })),
+  },
+};
+
 function KnowledgeBaseContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState('ALL ARTICLES');
@@ -113,6 +140,7 @@ function KnowledgeBaseContent() {
 
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-[#000814] pb-24" style={{ WebkitTextFillColor: 'white' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(kbCollectionJsonLd) }} />
       <style>{`
         main::selection {
           background-color: #6BD348;

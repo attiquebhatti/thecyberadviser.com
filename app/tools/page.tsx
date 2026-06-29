@@ -12,9 +12,41 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.thecyberadviser.com/tools' },
 };
 
+const TOOLS_SITE = 'https://www.thecyberadviser.com';
+const toolsCollectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Interactive Security Tools',
+  url: `${TOOLS_SITE}/tools`,
+  isPartOf: { '@type': 'WebSite', name: 'The Cyber Adviser', url: TOOLS_SITE },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: TOOLS_SITE },
+      { '@type': 'ListItem', position: 2, name: 'Tools', item: `${TOOLS_SITE}/tools` },
+    ],
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: [
+      { name: 'Prisma Access Sizing Calculator', path: '/tools/prisma-access-sizing' },
+      { name: 'SIEM Sizing Calculator', path: '/tools/siem-sizing' },
+      { name: 'Unified Migration', path: '/tools/unified-migration' },
+      { name: 'CyberQuiz', path: '/tools/cyberquiz' },
+      { name: 'AI Training Chatbot', path: '/tools/ai-chatbot' },
+    ].map((t, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${TOOLS_SITE}${t.path}`,
+      name: t.name,
+    })),
+  },
+};
+
 export default function ToolsPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsCollectionJsonLd) }} />
       <Section className="pt-24 pb-4 md:pt-28 md:pb-6 lg:pt-32 lg:pb-8">
         <SectionHeader
           eyebrow="Tools"

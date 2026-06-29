@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Star, Quote } from 'lucide-react';
 import { FEATURED_TESTIMONIALS, TESTIMONIAL_IMAGES } from '@/data/testimonials';
 import { productLogo } from '@/lib/productLogos';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
 
 const SITE = 'https://www.thecyberadviser.com';
 
@@ -55,6 +56,12 @@ export default function TestimonialsPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: SITE },
+          { name: 'Testimonials', url: `${SITE}/testimonials` },
+        ]}
+      />
 
       {/* Header */}
       <header className="text-center max-w-3xl mx-auto">

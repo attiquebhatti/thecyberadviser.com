@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { ServicesContent } from './ServicesContent';
-import { serviceJsonLd } from '@/lib/seo';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import { SITE_URL, serviceJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Cybersecurity Advisory Services | The Cyber Adviser',
@@ -13,6 +14,12 @@ export default function ServicesPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd()) }} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: SITE_URL },
+          { name: 'Services', url: `${SITE_URL}/services` },
+        ]}
+      />
       <ServicesContent />
     </>
   );
