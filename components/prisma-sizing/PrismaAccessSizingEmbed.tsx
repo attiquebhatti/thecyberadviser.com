@@ -399,7 +399,7 @@ export function PrismaAccessSizingEmbed({ initialValues, variant = 'embed' }: Pr
                             </div>
                             <div className="pt-1">
                               <Image
-                                src="/images/header-logo.png"
+                                src="/images/header-logo.webp"
                                 alt="The Cyber Adviser"
                                 width={44}
                                 height={48}

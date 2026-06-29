@@ -137,7 +137,7 @@ export function Navbar() {
             >
               <div className="flex items-center py-1">
                 <Image
-                  src="/images/header-logo.png"
+                  src="/images/header-logo.webp"
                   alt="The Cyber Adviser"
                   width={430}
                   height={465}
@@ -153,7 +153,7 @@ export function Navbar() {
               className="group lg:hidden flex min-w-0 items-center gap-3 text-white transition-all duration-300 hover:opacity-90"
             >
               <Image
-                src="/images/header-logo.png"
+                src="/images/header-logo.webp"
                 alt="The Cyber Adviser"
                 width={430}
                 height={465}

@@ -58,7 +58,7 @@ export default function TestimonialsPage() {
       {/* Header */}
       <header className="text-center max-w-3xl mx-auto">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/header-logo.png" alt="The Cyber Adviser" className="h-16 w-auto mx-auto mb-6 drop-shadow-[0_4px_24px_rgba(255,195,0,0.25)]" />
+        <img src="/images/header-logo.webp" alt="The Cyber Adviser" className="h-16 w-auto mx-auto mb-6 drop-shadow-[0_4px_24px_rgba(255,195,0,0.25)]" />
         <p className="text-[#FFC300] text-sm font-semibold uppercase tracking-[0.2em] mb-3">Testimonials</p>
         <h1 className="text-white text-4xl md:text-5xl font-black tracking-tight">What students &amp; clients say</h1>
         <p className="mt-4 text-base md:text-lg text-slate-400 leading-relaxed">
