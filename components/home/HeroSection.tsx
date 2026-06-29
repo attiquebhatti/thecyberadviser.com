@@ -1,6 +1,13 @@
 'use client';
 
 import Image from 'next/image';
+import homeArchitectureImage from '@/public/images/optimized/home-architecture2-1200.webp';
+import slide1Image from '@/public/images/optimized/slides/slide-1-1200.webp';
+import slide2Image from '@/public/images/optimized/slides/slide-2-1200.webp';
+import slide3Image from '@/public/images/optimized/slides/slide-3-900.webp';
+import slide4Image from '@/public/images/optimized/slides/slide-4-1200.webp';
+import slide5Image from '@/public/images/optimized/slides/slide-5-1200.webp';
+import slide6Image from '@/public/images/optimized/slides/slide-6-1200.webp';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { CTAButton } from '@/components/shared/CTAButton';
@@ -8,49 +15,49 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
   {
-    src: '/images/optimized/home-architecture2-1200.webp',
+    src: homeArchitectureImage,
     title: 'Enterprise Security Reference Design',
     focus: 'Enterprise Sec',
     platforms: 'Multi-Vendor',
     strategy: 'Zero Trust'
   },
   {
-    src: '/images/optimized/slides/slide-1-1200.webp',
+    src: slide1Image,
     title: 'Cortex XSOAR: Unified Security Orchestration',
     focus: 'Automation',
     platforms: 'Cortex XSOAR',
     strategy: 'SOC Ops'
   },
   {
-    src: '/images/optimized/slides/slide-2-1200.webp',
+    src: slide2Image,
     title: 'Intelligent WAN Resilience',
     focus: 'Networking',
     platforms: 'Prisma SD-WAN',
     strategy: 'WAN Resilience'
   },
   {
-    src: '/images/optimized/slides/slide-3-900.webp',
+    src: slide3Image,
     title: 'SASE Architecture Design',
     focus: 'Cloud Security',
     platforms: 'Prisma Access',
     strategy: 'SASE Adoption'
   },
   {
-    src: '/images/optimized/slides/slide-4-1200.webp',
+    src: slide4Image,
     title: 'Cortex XDR Visibility',
     focus: 'Detection',
     platforms: 'Cortex XDR',
     strategy: 'XDR Evolution'
   },
   {
-    src: '/images/optimized/slides/slide-5-1200.webp',
+    src: slide5Image,
     title: 'Advanced Network Telemetry',
     focus: 'Visibility',
     platforms: 'Network Ops',
     strategy: 'Deep Analysis'
   },
   {
-    src: '/images/optimized/slides/slide-6-1200.webp',
+    src: slide6Image,
     title: 'Prisma Access Workflow',
     focus: 'Edge Security',
     platforms: 'SASE / Cloud',

@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import serviceSaseImage from '@/public/images/optimized/slides/slide-3-900.webp';
+import serviceXdrImage from '@/public/images/optimized/slides/slide-4-1200.webp';
 import { motion } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
@@ -103,7 +105,7 @@ export function ServicesGrid() {
               <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1rem]">
                   <Image
-                    src="/images/optimized/slides/slide-3-900.webp"
+                    src={serviceSaseImage}
                     alt="SASE architecture design"
                     fill
                     className="object-cover object-center"
@@ -114,7 +116,7 @@ export function ServicesGrid() {
                 <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-2">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-[1rem]">
                     <Image
-                      src="/images/optimized/slides/slide-4-1200.webp"
+                      src={serviceXdrImage}
                       alt="Cortex XDR visibility"
                       fill
                       className="object-cover object-center"
