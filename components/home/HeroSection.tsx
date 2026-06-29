@@ -100,7 +100,7 @@ export function HeroSection() {
               }
             }
           }}
-          initial="hidden"
+          initial={false}
           animate="show"
           className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14"
         >
@@ -172,15 +172,13 @@ export function HeroSection() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, x: 40, scale: 0.95 }}
+            initial={false}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="relative group"
           >
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55 }}
               className="mb-5 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-5 py-4 backdrop-blur-xl"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#FFC300]">
@@ -205,7 +203,7 @@ export function HeroSection() {
                     <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#FFC300]">
                       Technical Architecture Preview
                     </p>
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence mode="wait" initial={false}>
                       <motion.p
                         key={currentSlide}
                         initial={{ opacity: 0, y: 5 }}
@@ -241,7 +239,7 @@ export function HeroSection() {
                 </div>
 
                 <div className="relative aspect-[16/10] bg-black">
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={currentSlide}
                       initial={{ opacity: 0 }}
@@ -265,7 +263,7 @@ export function HeroSection() {
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 border-t border-white/[0.06] bg-white/[0.01] px-5 py-4">
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={`meta-${currentSlide}`}
                       initial={{ opacity: 0, y: 10 }}
