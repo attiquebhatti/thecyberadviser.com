@@ -134,7 +134,7 @@ export function HeroSection() {
                 </span>
               </span>
               <br />
-              <span className="text-slate-400">for the Modern Era</span>
+              <span className="text-slate-300">for the Modern Era</span>
             </motion.h1>
 
             <motion.p
@@ -143,7 +143,7 @@ export function HeroSection() {
                 show: { opacity: 1, y: 0 }
               }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-6 max-w-2xl text-xl font-light leading-relaxed text-slate-400 md:text-2xl"
+              className="mt-6 max-w-2xl text-xl font-light leading-relaxed text-slate-300 md:text-2xl"
             >
               Strategic advisory for global enterprises navigating Zero Trust
               transformation, SASE architecture, and security modernization at scale.
@@ -189,7 +189,7 @@ export function HeroSection() {
               <p className="mt-2 text-sm font-medium text-slate-200 md:text-[15px]">
                 Network Security | Cloud Security | Cyber Security
               </p>
-              <p className="mt-1 text-sm text-slate-400 md:text-[15px]">
+              <p className="mt-1 text-sm text-slate-300 md:text-[15px]">
                 Attique Bhatti | Enterprise Security Consultant
               </p>
             </motion.div>
@@ -218,11 +218,11 @@ export function HeroSection() {
                     </AnimatePresence>
                   </div>
 
-                  <div className="flex gap-2 items-center ml-4">
-                    <button onClick={prevSlide} aria-label="Previous slide" className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
+                  <div className="ml-4 flex items-center gap-2">
+                    <button onClick={prevSlide} aria-label="Previous slide" className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-300 transition-all hover:bg-white/5 hover:text-white">
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <div className="flex gap-1.5 px-1" role="tablist" aria-label="Slide navigation">
+                    <div className="flex items-center gap-1 px-1" role="tablist" aria-label="Slide navigation">
                       {slides.map((slide, i) => (
                         <button
                           key={i}
@@ -230,11 +230,11 @@ export function HeroSection() {
                           aria-label={`Slide ${i + 1}: ${slide.title}`}
                           aria-selected={i === currentSlide}
                           onClick={() => setCurrentSlide(i)}
-                          className={`h-2 rounded-full transition-all duration-500 ${i === currentSlide ? 'w-5 bg-[#FFC300]' : 'w-2 bg-[#FFC300]/20'}`}
+                          className={`flex h-11 items-center justify-center rounded-full transition-all duration-500 ${i === currentSlide ? 'w-8 bg-[#FFC300]' : 'w-6 bg-[#FFC300]/30'}`}
                         />
                       ))}
                     </div>
-                    <button onClick={nextSlide} aria-label="Next slide" className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-all">
+                    <button onClick={nextSlide} aria-label="Next slide" className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-300 transition-all hover:bg-white/5 hover:text-white">
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -275,15 +275,15 @@ export function HeroSection() {
                       className="contents"
                     >
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b38a00]">Focus</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Focus</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].focus}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b38a00]">Platforms</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Platforms</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].platforms}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b38a00]">Strategy</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Strategy</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">{slides[currentSlide].strategy}</p>
                       </div>
                     </motion.div>

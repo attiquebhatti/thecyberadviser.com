@@ -39,7 +39,7 @@ export function CTASection() {
           </div>
 
           <div className="mt-16 pt-16 border-t border-white/[0.04]">
-            <p className="text-slate-500 text-sm mb-6">
+            <p className="text-slate-400 text-sm mb-6">
               Typical engagement areas
             </p>
             <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">

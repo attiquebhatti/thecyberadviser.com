@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import metricsImage from '@/public/images/optimized/slides/slide-1-1200.webp';
 import { Section } from '@/components/layout/Section';
 
 export function MetricsSection() {
@@ -33,7 +34,7 @@ export function MetricsSection() {
                 <div className="relative overflow-hidden rounded-[1rem] border border-white/[0.05]">
                   <div className="relative aspect-[16/10]">
                     <Image
-                      src="/images/slides/slide-1.png"
+                      src={metricsImage}
                       alt="Enterprise security reference design"
                       fill
                       className="object-cover object-center"
@@ -41,15 +42,15 @@ export function MetricsSection() {
                   </div>
                   <div className="grid grid-cols-3 gap-3 border-t border-white/[0.06] bg-obsidian-950/90 px-4 py-4">
                     <div>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Scope</p>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Scope</p>
                       <p className="mt-1 text-xs font-semibold text-slate-300">Enterprise</p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Pattern</p>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Pattern</p>
                       <p className="mt-1 text-xs font-semibold text-slate-300">Zero Trust</p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Mode</p>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Mode</p>
                       <p className="mt-1 text-xs font-semibold text-slate-300">Operational</p>
                     </div>
                   </div>

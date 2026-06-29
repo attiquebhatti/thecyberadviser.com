@@ -171,7 +171,7 @@ export function TrustStrip() {
 
                   {/* Footer status */}
                   <div className="mt-8 flex items-center justify-between border-t border-white/[0.06] pt-5">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
                       In Active Practice
                     </span>
                     <div className="h-2 w-2 rounded-full bg-[#FFC300]/70 shadow-[0_0_18px_rgba(255,195,0,0.45)] transition-all duration-500 group-hover:scale-125" />

@@ -190,10 +190,10 @@ export function ServicesGrid() {
 
                   {/* Vendor Logos */}
                   <div className="mt-6 flex items-center gap-3 border-t border-white/[0.06] pt-5">
-                    <span className="text-[10px] uppercase font-bold tracking-[0.22em] text-slate-600">Powered By</span>
+                    <span className="text-[10px] uppercase font-bold tracking-[0.22em] text-slate-400">Powered By</span>
                     <div className="flex items-center gap-2">
                       {service.vendors.map((vendor) => (
-                        <div key={vendor} className="w-5 h-5 text-slate-500 group-hover:text-slate-300 transition-colors" title={vendor}>
+                        <div key={vendor} className="w-5 h-5 text-slate-400 group-hover:text-slate-300 transition-colors" title={vendor}>
                           <VendorIcon name={vendor} className="w-full h-full" />
                         </div>
                       ))}
@@ -202,7 +202,7 @@ export function ServicesGrid() {
 
                   {/* Footer status */}
                   <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-5">
-                    <span className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                    <span className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
                       In Active Practice
                     </span>
                     <div className="h-2 w-2 rounded-full bg-[#FFC300]/70 shadow-[0_0_18px_rgba(255,195,0,0.45)] transition-all duration-500 group-hover:scale-125" />

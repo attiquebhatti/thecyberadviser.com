@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Shield, Linkedin, Twitter, Mail } from 'lucide-react';
+import { Shield, Linkedin, Mail } from 'lucide-react';
 
 const footerLinks = {
   navigation: [
@@ -55,13 +55,6 @@ export function Footer() {
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
-                href="#"
-                className="w-10 h-10 flex items-center justify-center rounded-lg bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] text-slate-400 hover:text-white hover:border-white/20 transition-all duration-300 shadow-lg"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
                 href="mailto:info@thecyberadviser.com"
                 className="w-10 h-10 flex items-center justify-center rounded-lg bg-obsidian-900/40 backdrop-blur-xl border border-white/[0.08] text-slate-400 hover:text-[#FFC300] hover:border-[#FFC300]/40 transition-all duration-300 shadow-lg"
                 aria-label="Email"
@@ -72,9 +65,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
+            <p className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
               Navigation
-            </h4>
+            </p>
             <ul className="space-y-3.5">
               {footerLinks.navigation.map((link) => (
                 <li key={link.href}>
@@ -90,9 +83,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
+            <p className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
               Resources
-            </h4>
+            </p>
             <ul className="space-y-3.5">
               {footerLinks.resources.map((link) => (
                 <li key={link.href}>
@@ -108,12 +101,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
+            <p className="text-xs font-bold text-[#FFC300] uppercase tracking-[0.25em] mb-6">
               Expertise
-            </h4>
+            </p>
             <ul className="space-y-3.5">
               {footerLinks.expertise.map((item) => (
-                <li key={item} className="text-[15px] text-slate-500">
+                <li key={item} className="text-[15px] text-slate-400">
                   {item}
                 </li>
               ))}
@@ -123,23 +116,9 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-white/[0.04]">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-400">
               &copy; {new Date().getFullYear()} The Cyber Adviser. All rights reserved.
             </p>
-            <div className="flex items-center gap-8">
-              <Link
-                href="#"
-                className="text-sm text-slate-500 hover:text-white transition-colors duration-300"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="#"
-                className="text-sm text-slate-500 hover:text-white transition-colors duration-300"
-              >
-                Terms of Service
-              </Link>
-            </div>
           </div>
         </div>
       </div>

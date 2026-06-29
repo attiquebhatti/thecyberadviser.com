@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import philosophyImage from '@/public/images/optimized/home-architecture2-1200.webp';
 import { Section } from '@/components/layout/Section';
 import { CTAButton } from '@/components/shared/CTAButton';
 
@@ -62,7 +63,7 @@ export function PhilosophySection() {
                     <div className="absolute inset-x-0 top-0 z-10 h-1 bg-gradient-to-r from-[#FFC300]/70 via-[#FFD60A] to-[#FFC300]/70" />
                     <div className="relative aspect-[4/3]">
                       <Image
-                        src="/images/home-architecture2.jpg"
+                        src={philosophyImage}
                         alt="Enterprise security architecture preview"
                         fill
                         className="object-cover object-center"
@@ -70,15 +71,15 @@ export function PhilosophySection() {
                     </div>
                     <div className="grid grid-cols-3 gap-3 border-t border-white/[0.06] bg-white/[0.02] px-5 py-4">
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Design</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Design</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">Reference Patterns</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Focus</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Focus</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">Secure Access</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]/60">Outcome</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FFC300]">Outcome</p>
                         <p className="mt-1 text-xs font-semibold text-slate-300">Operational Clarity</p>
                       </div>
                     </div>
@@ -110,7 +111,7 @@ export function PhilosophySection() {
                         </div>
                         <div>
                           <div className="font-semibold text-white text-lg">The Cyber Adviser</div>
-                          <div className="text-sm text-slate-500">
+                          <div className="text-sm text-slate-400">
                             Strategic Security Consultant
                           </div>
                         </div>
