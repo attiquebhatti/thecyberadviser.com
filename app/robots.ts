@@ -34,6 +34,5 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: aiCrawlers, allow: '/', disallow },
     ],
     sitemap: 'https://www.thecyberadviser.com/sitemap.xml',
-    host: 'https://www.thecyberadviser.com',
   };
 }
