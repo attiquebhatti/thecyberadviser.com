@@ -16,6 +16,21 @@
 - [CyberQuiz](https://www.thecyberadviser.com/tools/cyberquiz): Real-time multiplayer cybersecurity quiz platform with curated PANW, Check Point, and F5 question banks.
 - [AI Training Chatbot](https://www.thecyberadviser.com/tools/ai-chatbot): Post-training Q&A for course alumni.
 
-## Knowledge
-- [Knowledge Base](https://www.thecyberadviser.com/knowledge-base): Technical guides on Palo Alto Networks, Check Point, Fortinet, and Zero Trust/SASE architecture.
-- [Blog](https://www.thecyberadviser.com/blogs): Articles on Cortex XDR/XSIAM, Prisma SASE, Strata NGFW, and identity security.
+## Knowledge Base (technical guides)
+- [Knowledge Base](https://www.thecyberadviser.com/knowledge-base): Index of technical guides on Palo Alto Networks, Check Point, Fortinet, and Zero Trust/SASE architecture.
+- [Integrating SD-WAN with Prisma Access](https://www.thecyberadviser.com/knowledge-base/integrating-sdwan-prisma-access): Converging Prisma SD-WAN branches with Prisma Access into one SASE fabric — traffic steering, service connections, BGP routing, and policy ownership.
+- [Scaling Mobile User Gateways (MUG)](https://www.thecyberadviser.com/knowledge-base/scaling-mobile-user-gateways): Capacity, autoscale behavior, IP pool sizing, gateway placement, and onboarding for scaling Prisma Access mobile users.
+- [Seamless Migration from MPLS to Broadband](https://www.thecyberadviser.com/knowledge-base/mpls-to-broadband-sdwan): Phased, zero-downtime plan to overlay Prisma SD-WAN, shift to broadband with app-defined path selection, and decommission MPLS.
+- [Prisma Access: Optimizing Split-Tunneling](https://www.thecyberadviser.com/knowledge-base/prisma-split-tunneling): Latency reduction for global remote workforces using Strata and Prisma Access.
+- [Securing Hybrid Cloud Connectivity](https://www.thecyberadviser.com/knowledge-base/hybrid-cloud-connectivity): Secure transit patterns between on-premise networks, AWS Transit Gateways, and Azure vWANs.
+- [Building Your First Phishing Triage Playbook](https://www.thecyberadviser.com/knowledge-base/phishing-triage-playbook): Cortex XSOAR playbook design to ingest, enrich, and triage phishing indicators.
+
+## Blog (insights)
+- [Blog](https://www.thecyberadviser.com/blogs): Index of articles on Cortex XDR/XSIAM, Prisma SASE, Strata NGFW, Zero Trust, and identity security.
+- [Identity Threat Detection and Response (ITDR)](https://www.thecyberadviser.com/blogs/identity-is-the-new-security-perimeter-itdr): Why identity is the new perimeter and how ITDR detects credential abuse and lateral movement.
+- [Prisma Access and the SASE Architecture Shift](https://www.thecyberadviser.com/blogs/prisma-access-sase-revolution): Planning a Prisma Access SASE transformation — mobile users, service connections, remote networks, routing.
+- [From Legacy VPN to ZTNA: A Phased Migration Strategy](https://www.thecyberadviser.com/blogs/legacy-vpn-to-ztna-the-migration-plan): A practical roadmap for moving from VPN to Zero Trust Network Access.
+- [Cortex XSOAR for Modern SOC Automation](https://www.thecyberadviser.com/blogs/cortex-xsoar-transforming-soc-operations): Orchestrating tools, automating enrichment, and reducing manual triage in the SOC.
+
+## Reputation
+- [Student Reviews & Testimonials](https://www.thecyberadviser.com/testimonials): Verified 5-star feedback from Attique Bhatti's instructor-led Palo Alto Networks and Prisma SD-WAN training.

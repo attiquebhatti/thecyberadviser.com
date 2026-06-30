@@ -15,6 +15,7 @@ export const author = {
   url: `${SITE_URL}/about`,
   jobTitle: 'Enterprise Cloud Security Consultant and Certified Instructor',
   worksFor: publisher,
+  sameAs: ['https://www.linkedin.com/in/attiquebhatti'],
 };
 
 export function absoluteUrl(path = '/') {
