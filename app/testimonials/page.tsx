@@ -21,25 +21,20 @@ export const metadata: Metadata = {
   },
 };
 
-const reviewJsonLd = {
+// A clean Person entity for the page. We deliberately do NOT emit
+// AggregateRating/Review here: Google does not support Person as a review host
+// type (it caused the "Invalid object type for field <parent_node>" error in
+// Search Console), and self-hosted reviews about your own entity are
+// self-serving and ineligible for review rich results. The testimonials remain
+// as visible on-page content for users and E-E-A-T.
+const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Attique Bhatti',
   url: `${SITE}/about`,
-  jobTitle: 'Enterprise Cloud Security Consultant & Certified Instructor',
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '5.0',
-    bestRating: '5',
-    ratingCount: String(FEATURED_TESTIMONIALS.length),
-    reviewCount: String(FEATURED_TESTIMONIALS.length),
-  },
-  review: FEATURED_TESTIMONIALS.map((t) => ({
-    '@type': 'Review',
-    reviewRating: { '@type': 'Rating', ratingValue: String(t.rating), bestRating: '5' },
-    author: { '@type': 'Person', name: t.name },
-    reviewBody: t.quote,
-  })),
+  jobTitle: 'Enterprise Cloud Security Consultant and Certified Instructor',
+  worksFor: { '@type': 'Organization', name: 'The Cyber Adviser', url: SITE },
+  sameAs: ['https://www.linkedin.com/in/attiquebhatti'],
 };
 
 function Stars({ n }: { n: number }) {
@@ -55,7 +50,7 @@ function Stars({ n }: { n: number }) {
 export default function TestimonialsPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-20">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: SITE },
