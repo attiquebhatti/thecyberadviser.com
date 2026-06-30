@@ -81,6 +81,23 @@ export default function SiemSizingPage() {
       <Section className="pt-0 pb-4 md:pb-6 lg:pb-8">
         <AnswerFirstBlock
           question="How do you size SIEM ingestion?"
+          faqs={[
+            {
+              question: 'What metrics drive SIEM sizing?',
+              answer:
+                'Events per second (EPS), average event size, daily ingest in GB/day, retention period, and the mix of log sources feeding the platform.',
+            },
+            {
+              question: 'How much retention should I plan for?',
+              answer:
+                'Match retention to compliance and investigation needs, and separate hot (searchable) from cold (archive) storage to control cost while meeting audit requirements.',
+            },
+            {
+              question: 'Does this replace a vendor SIEM quote?',
+              answer:
+                'No. It is a deterministic estimator for planning; confirm final sizing and licensing with your SIEM vendor.',
+            },
+          ]}
           answer="SIEM ingestion is sized by estimating events per second, daily gigabytes, source mix, parsing overhead, retention period, search concurrency, and growth. The practical target is not only storage; it is a platform that can ingest, correlate, search, and retain evidence during real investigations."
           sourceSummary="This page summarizes SOC architecture planning for SIEM, SOAR, XDR, log retention, compute, RAM, storage tiers, and investigation workflows."
           recommendedApproach="Inventory high-value log sources first, measure or estimate EPS and average event size, then model retention and search workload. Keep noisy sources separate from detection-critical sources so cost control does not remove the evidence analysts need."

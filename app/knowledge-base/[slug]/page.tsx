@@ -169,10 +169,28 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
 
   const articleUrl = `${SITE_URL}/knowledge-base/${params.slug}`;
   const techArticleJsonLd = articleJsonLd(article, `/knowledge-base/${params.slug}`, 'TechArticle');
+  const howToJsonLd =
+    article.howToSteps && article.howToSteps.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: article.title,
+          description: article.excerpt,
+          step: article.howToSteps.map((s, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: s.name,
+            text: s.text,
+          })),
+        }
+      : null;
 
   return (
     <main className="flex flex-col items-center w-full min-h-screen bg-executive-obsidian selection:bg-accent-gold selection:text-executive-obsidian pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(techArticleJsonLd) }} />
+      {howToJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
+      )}
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: SITE_URL },

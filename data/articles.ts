@@ -7,6 +7,7 @@ export interface Article {
   readTime: string;
   content: string;
   image?: string;
+  howToSteps?: { name: string; text: string }[];
 }
 
 export const articles: Article[] = [
@@ -2483,6 +2484,13 @@ The goal is practical improvement in security posture, not documentation for its
   {
     slug: 'integrating-sdwan-prisma-access',
     title: 'Integrating SD-WAN with Prisma Access',
+    howToSteps: [
+      { name: 'Choose the connection method', text: 'Decide between automated onboarding (the default for greenfield) and manual remote networks for the IPsec tunnel from each branch ION to Prisma Access.' },
+      { name: 'Route private apps over service connections', text: 'Send data center, internal DNS, and identity traffic through a Prisma Access service connection rather than the branch tunnels, for symmetric routing.' },
+      { name: 'Define per-application traffic steering', text: 'Steer internet and SaaS to Prisma Access for inspection, keep branch-to-branch on the SD-WAN fabric, and send branch-to-data-center via the service connection.' },
+      { name: 'Enable BGP between ION and Prisma Access', text: 'Use dynamic routing so a branch withdraws prefixes instantly on circuit failure and avoids asymmetric paths.' },
+      { name: 'Assign clear policy ownership', text: 'Let SD-WAN own path selection and QoS; let Prisma Access own threat prevention, URL filtering, decryption, and access control.' },
+    ],
     excerpt: 'How to converge Prisma SD-WAN branches with Prisma Access into one SASE fabric: traffic steering, service connections, routing, and clean security policy ownership.',
     category: 'PRISMA SD-WAN',
     date: '2026-01-15',
@@ -2550,6 +2558,13 @@ Converging Prisma SD-WAN and Prisma Access is less about a single feature and mo
   {
     slug: 'scaling-mobile-user-gateways',
     title: 'Scaling Mobile User Gateways (MUG)',
+    howToSteps: [
+      { name: 'Plan for peak concurrency', text: 'Size capacity around peak concurrent users per region, not the named-user total, and pre-warm capacity before known spikes.' },
+      { name: 'Size the mobile user IP pools', text: 'Provision for peak concurrency plus failover headroom, keep pools non-overlapping with every other range, and advertise them toward private apps.' },
+      { name: 'Place gateways near users', text: 'Enable the locations that match where users actually are to minimize latency and decryption overhead.' },
+      { name: 'Offload authentication to an IdP', text: 'Use SAML/IdP authentication and staged GlobalProtect agent rollouts so logins never bottleneck the gateway.' },
+      { name: 'Monitor utilization', text: 'Alert on IP pool utilization (for example at 80 percent) and track concurrent users per location before exhaustion.' },
+    ],
     excerpt: 'Capacity, autoscale behavior, IP pool sizing, gateway placement, and onboarding patterns for scaling Prisma Access mobile user gateways without outages.',
     category: 'PRISMA ACCESS',
     date: '2026-02-01',
@@ -2604,6 +2619,12 @@ Scaling Prisma Access mobile users is a capacity-planning exercise more than a c
   {
     slug: 'mpls-to-broadband-sdwan',
     title: 'Seamless Migration from MPLS to Broadband',
+    howToSteps: [
+      { name: 'Overlay in analytics mode', text: 'Install ION devices, bring up broadband as a second path, and baseline latency, jitter, and loss while production stays on MPLS.' },
+      { name: 'Shift non-critical apps to broadband', text: 'Move general web, software updates, and backups to broadband with automatic fallback while keeping latency-sensitive traffic on MPLS.' },
+      { name: 'Make broadband primary', text: 'Once analytics confirm SLAs are met, flip priority so broadband carries the bulk of traffic and MPLS becomes the backup.' },
+      { name: 'Decommission MPLS per site', text: 'Drop or downgrade MPLS site by site after a full business cycle of stable broadband operation.' },
+    ],
     excerpt: 'A phased, zero-downtime plan for overlaying Prisma SD-WAN on MPLS, shifting to broadband with app-defined path selection, and decommissioning circuits safely.',
     category: 'PRISMA SD-WAN',
     date: '2026-02-20',

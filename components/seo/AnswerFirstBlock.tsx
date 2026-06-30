@@ -6,6 +6,11 @@ type ComparisonRow = {
   watch: string;
 };
 
+type Faq = {
+  question: string;
+  answer: string;
+};
+
 type AnswerFirstBlockProps = {
   question: string;
   answer: string;
@@ -15,6 +20,7 @@ type AnswerFirstBlockProps = {
   lastReviewed?: string;
   entities?: string[];
   comparisonRows?: ComparisonRow[];
+  faqs?: Faq[];
   className?: string;
 };
 
@@ -27,10 +33,31 @@ export function AnswerFirstBlock({
   lastReviewed = 'June 28, 2026',
   entities = [],
   comparisonRows = [],
+  faqs = [],
   className,
 }: AnswerFirstBlockProps) {
+  // FAQPage structured data: the primary answer plus any supporting FAQs.
+  // Fuels answer-engine extraction (Bing/Copilot) and LLM retrieval/citation.
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: { '@type': 'Answer', text: `${answer} ${recommendedApproach}`.trim() },
+      },
+      ...faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      })),
+    ],
+  };
+
   return (
     <div className={cn('rounded-2xl border border-white/[0.08] bg-obsidian-900/50 p-6 shadow-2xl md:p-8', className)}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.65fr)]">
         <div>
           <p className="eyebrow">Answer First</p>
@@ -71,6 +98,18 @@ export function AnswerFirstBlock({
               <div className="border-b border-white/[0.06] p-4 font-semibold text-white md:border-b-0 md:border-r">{row.label}</div>
               <div className="border-b border-white/[0.06] p-4 leading-6 text-slate-300 md:border-b-0 md:border-r">{row.guidance}</div>
               <div className="p-4 leading-6 text-slate-400">{row.watch}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {faqs.length > 0 && (
+        <div className="mt-6 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Frequently asked</p>
+          {faqs.map((f) => (
+            <div key={f.question} className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5">
+              <p className="text-base font-semibold text-white">{f.question}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{f.answer}</p>
             </div>
           ))}
         </div>

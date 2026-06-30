@@ -185,6 +185,23 @@ export function ServicesContent() {
       <Section className="pt-0 pb-8 md:pb-10 lg:pb-12">
         <AnswerFirstBlock
           question="What is Cortex XDR architecture?"
+          faqs={[
+            {
+              question: 'What does a security architecture review cover?',
+              answer:
+                'It assesses your current Zero Trust, SASE, NGFW, Cortex/SOC, and cloud posture, identifies gaps against your risk and compliance goals, and delivers a prioritized remediation roadmap your team can execute.',
+            },
+            {
+              question: 'Which platforms does The Cyber Adviser specialize in?',
+              answer:
+                'Palo Alto Networks (Prisma Access, Prisma SD-WAN, Strata NGFW, and Cortex XDR/XSOAR/XSIAM), plus Check Point and F5, with vendor-neutral Zero Trust and SASE architecture guidance.',
+            },
+            {
+              question: 'Do you work with remote and global teams?',
+              answer:
+                'Yes. Engagements are delivered remotely and on-site for enterprises worldwide, including instructor-led training for technical teams.',
+            },
+          ]}
           answer="Cortex XDR architecture connects endpoint, network, identity, cloud, and firewall telemetry into one detection and response model. The goal is to give analysts a single investigation timeline, clearer incident scope, and response actions that are tied to the evidence behind each alert."
           sourceSummary="Service guidance is based on enterprise security architecture work across Palo Alto Networks Cortex, Prisma Access, SIEM, SOAR, firewall, cloud, and Zero Trust programs."
           recommendedApproach="Start with telemetry coverage and incident workflow design before tuning detections. Confirm endpoint coverage, identity signals, firewall and cloud logs, SIEM forwarding, response permissions, and analyst handoff points so Cortex XDR improves investigation quality instead of becoming another isolated alert queue."

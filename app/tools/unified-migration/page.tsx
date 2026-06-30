@@ -81,6 +81,23 @@ export default function UnifiedMigrationPage() {
       <Section className="pt-0 pb-4 md:pb-6 lg:pb-8">
         <AnswerFirstBlock
           question="What is firewall migration validation?"
+          faqs={[
+            {
+              question: 'Which firewall vendors does the tool support?',
+              answer:
+                'Cisco ASA, FortiGate, Check Point, and PAN-OS to PAN-OS, plus Panorama to Strata Cloud Manager (SCM) and Netskope/Zscaler to Prisma Access.',
+            },
+            {
+              question: 'Does my configuration leave my machine?',
+              answer:
+                'No. Both migration pipelines run entirely in your browser; uploaded configurations are never sent to a server.',
+            },
+            {
+              question: 'What does the migration output include?',
+              answer:
+                'A converted configuration, a remediation report flagging anything the target cannot ingest, a mapping file, and a coverage cross-check so you can validate completeness.',
+            },
+          ]}
           answer="Firewall migration validation checks whether converted policies, objects, NAT rules, routes, and security intent still behave as expected after moving between vendors or management platforms. A good migration is measured by preserved behavior, reduced risk, and clear exceptions, not by syntax conversion alone."
           sourceSummary="This page summarizes The Cyber Adviser's migration approach for Cisco ASA, FortiGate, Check Point, PAN-OS, Panorama, Strata Cloud Manager, Netskope, Zscaler, and Prisma Access transition planning."
           recommendedApproach="Convert in stages, compare source and target intent, review confidence findings, then validate traffic paths, NAT behavior, object references, policy order, and unsupported features before production change windows."

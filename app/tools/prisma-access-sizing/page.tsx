@@ -89,6 +89,23 @@ export default function PrismaAccessSizingPage({ searchParams }: Props) {
       <Section className="pt-0 pb-4 md:pb-6 lg:pb-8 print:hidden">
         <AnswerFirstBlock
           question="What is Prisma Access sizing?"
+          faqs={[
+            {
+              question: 'What inputs does Prisma Access sizing need?',
+              answer:
+                'Estimated mobile users by region, remote network count and bandwidth, service connections to private apps, and your resilience and logging requirements.',
+            },
+            {
+              question: 'Is this calculator official Palo Alto Networks sizing?',
+              answer:
+                'No. It is a heuristic planning aid for architecture conversations; validate the output against live telemetry and Palo Alto Networks entitlement details before design sign-off.',
+            },
+            {
+              question: 'How does Prisma Access scale for mobile users?',
+              answer:
+                'Prisma Access autoscales mobile user capacity per region. Plan for peak concurrency plus failover headroom rather than the named-user total, and size IP pools to match.',
+            },
+          ]}
           answer="Prisma Access sizing estimates the mobile users, remote networks, service connections, bandwidth, regions, resilience, and logging assumptions needed for a stable SASE deployment. It turns business and network inputs into planning numbers that architects can validate before design sign-off."
           sourceSummary="This calculator page summarizes Prisma Access planning guidance from The Cyber Adviser for SASE, GlobalProtect, remote network, ZTNA, service connection, and security logging workshops."
           recommendedApproach="Size Prisma Access from user groups and application paths first, then validate bandwidth, regional placement, service connection capacity, logging volume, and resilience. Treat the calculator output as an architecture starting point that should be checked against live telemetry and Palo Alto Networks entitlement details."
